@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui">
+    <p:fieldset legend="Estatus">
+        <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank">
+            <p:outputLabel value='No Show  '/>
+            <p:selectBooleanCheckbox value="#{reservationEditController.reservacion.noShow}"/>
+            <p:outputLabel value='Pendiente  '/>
+            <p:selectBooleanCheckbox value="#{reservationEditController.reservacion.cuponPendiente}"/>
+            <p:outputLabel value='Cancelado  '/>
+            <p:selectBooleanCheckbox value="#{reservationEditController.reservacion.cuponCancelado}"/>
+            <p:outputLabel value='Devuelto  '/>
+            <p:selectBooleanCheckbox value="#{reservationEditController.reservacion.cuponDevuelto}"/>
+        </p:panelGrid>
+    </p:fieldset>
+</html>

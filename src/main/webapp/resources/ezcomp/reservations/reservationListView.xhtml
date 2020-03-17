@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="reservation" type="com.swevolution.cucurumbe.model.entities.Reservation" displayName="reservation" required="true"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <div class="list-group-item">
+            <h4 class="list-group-item-heading">
+                #{cc.attrs.reservation.login} - #{cc.attrs.reservation.name}
+            </h4>
+            <p class="small">
+                Hotel: #{cc.attrs.reservation.hotel_L} - Agency: #{cc.attrs.reservation.agencia}<br/>
+                Arrival: <h:outputText value="#{cc.attrs.reservation.fechaLlegada}"><f:convertDateTime type="date" dateStyle="short"/></h:outputText>
+                    #{cc.attrs.reservation.horaLlegada}
+                - Departure: <h:outputText value="#{cc.attrs.reservation.fechaSale}"><f:convertDateTime type="date" dateStyle="short"/></h:outputText><br/>
+                Pax: #{cc.attrs.reservation.personas}
+            </p>
+        </div>
+    </cc:implementation>
+</html>

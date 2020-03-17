@@ -1,0 +1,749 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:general="http://xmlns.jcp.org/jsf/composite/ezcomp/general"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:hotel="http://xmlns.jcp.org/jsf/composite/ezcomp/hotel"
+      xmlns:rep="http://xmlns.jcp.org/jsf/composite/ezcomp/reps"
+      xmlns:agencia="http://xmlns.jcp.org/jsf/composite/ezcomp/agency"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:tour="http://xmlns.jcp.org/jsf/composite/ezcomp/tour"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="value" type="com.swevolution.cucurumbe.model.entities.Reservation"
+                      displayName="value" required="true"/>
+        <cc:attribute name="required" type="java.lang.Boolean"
+                      displayName="required" required="false" default="false"/>
+        <cc:attribute name="requiredMessage" type="java.lang.String"
+                      displayName="requiredMessage" required="false" default="Campo requerido"/>
+        <cc:clientBehavior name="hotelSelect" event="itemSelect" targets="hotel"/>
+        <cc:clientBehavior name="tourSelect" event="itemSelect" targets="servicio"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form>
+            <p:outputPanel id="tourCreatePanel">
+                <h:panelGroup rendered='#{not reservationCreateController.displayConfirmMessage}'>
+                    <p:tabView activeIndex="#{reservationCreateController.activeTab}">
+                        <p:tab title='Servicio'>
+
+                            <p:outputPanel styleClass="infoServicioPanel">
+                                <p:panelGrid columns="2"
+                                             layout="grid"
+                                             styleClass="ui-panelgrid-blank">
+                                    <p:fieldset legend="Información servicio">
+                                        <p:panelGrid columns="2"
+                                                     layout="grid"
+                                                     columnClasses="text-right width30p, width70p text-left"
+                                                     styleClass="ui-panelgrid-blank">
+                                            <p:outputLabel value="Sucursales:" for="sucursales" />
+                                            <general:sucursalesSelectOneMenu id='sucursales' value='#{cc.attrs.value.sucursales}'/>
+                                            <p:outputLabel value="Excursión:" for="servicio" />
+                                            <tour:tourAutocomplete id="servicio" value="#{cc.attrs.value.servicio}"/>
+
+                                            <p:outputLabel value="Promo:"
+                                                           rendered='#{not empty cc.attrs.value.servicio}'
+                                                           for="nacionalidad" />
+                                            <general:promoNacionalidadSelectOneMenu id='nacionalidad'
+                                                                                    rendered='#{not empty cc.attrs.value.servicio}'
+                                                                                    value='#{cc.attrs.value.nacionalidad}'/>
+                                            <p:outputLabel id="transportacionLabel"
+                                                           rendered='#{not empty cc.attrs.value.servicio}'
+                                                           value="Transportación:"
+                                                           for="transportacion" />
+                                            <p:selectOneMenu id="transportacion"
+                                                             rendered='#{not empty cc.attrs.value.servicio}'
+                                                             value="#{cc.attrs.value.conTransportacion}">
+                                                <f:selectItem itemValue="#{null}" itemLabel="Seleccionar Uno..." noSelectionOption="true"/>
+                                                <f:selectItem itemLabel="Con Transportación" itemValue="#{true}"/>
+                                                <f:selectItem itemLabel="Sin Transportación" itemValue="#{false}"/>
+                                                <p:ajax process="@this"/>
+                                            </p:selectOneMenu>
+
+                                            <p:outputLabel id="tipoVehiculoLabel"
+                                                           rendered='#{not empty cc.attrs.value.servicio and cc.attrs.value.servicio.manejaVehiculo}'
+                                                           value="Tipo Vehiculo:" for="tipoVehiculo" />
+                                            <p:selectOneMenu id="tipoVehiculo"
+                                                             rendered='#{not empty cc.attrs.value.servicio and cc.attrs.value.servicio.manejaVehiculo}'
+                                                             value="#{cc.attrs.value.tipoVehiculo}">
+                                                <f:selectItem itemLabel="N/A" itemValue="N/A"/>
+                                                <f:selectItem itemLabel="Jeep" itemValue="Jeep"/>
+                                                <f:selectItem itemValue="Buggy" itemLabel="Buggy"/>
+                                                <p:ajax event="change"
+                                                        update="@(.reservasPorVehiculoPanel) @(.notasVehiculoPanel)"
+                                                        process="@this"
+                                                        listener="#{reservationCreateController.tipoVehiculoChanged}"/>
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+                                        <p:outputPanel styleClass='notasVehiculoPanel'>
+                                            <p:panelGrid  columns="4" columnClasses="text-right width30p,text-left width23p,text-right width23p,text-left width23p" layout="grid" styleClass="ui-panelgrid-blank">
+                                                <p:outputLabel value="Automático:"
+                                                               for="aut"
+                                                               rendered="#{cc.attrs.value.tipoVehiculo ne 'N/A'}"/>
+                                                <p:selectBooleanButton id="aut"
+                                                                       rendered="#{cc.attrs.value.tipoVehiculo ne 'N/A'}"
+                                                                       onLabel="Si"
+                                                                       offLabel="No"
+                                                                       value="#{cc.attrs.value.aut}" title="Aut">
+                                                    <p:ajax process="@this"/>
+                                                </p:selectBooleanButton>
+                                                <p:outputLabel value="Estandar:"
+                                                               rendered="#{cc.attrs.value.tipoVehiculo ne 'N/A'}"
+                                                               for="est" />
+                                                <p:selectBooleanButton id="est"
+                                                                       onLabel="Si"
+                                                                       offLabel="No"
+                                                                       rendered="#{cc.attrs.value.tipoVehiculo ne 'N/A'}"
+                                                                       value="#{cc.attrs.value.est}" title="Est">
+                                                    <p:ajax process="@this"/>
+                                                </p:selectBooleanButton>
+                                                <p:outputLabel value="Comida:" for="comida"  rendered="false"/>
+                                                <p:inputText id="comida"
+                                                             rendered="false"
+                                                             value="#{cc.attrs.value.comida}" title="Comida">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputText>
+                                                <p:outputLabel value="No Jeep:"
+                                                               rendered="false"
+                                                               for="noJeep" />
+                                                <p:inputText id="noJeep"
+                                                             rendered="false"
+                                                             value="#{cc.attrs.value.noJeep}" title="NoJeep">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputText>
+
+                                                <p:outputLabel value="Quién Reserva:" for="quienReserva" />
+                                                <p:inputText id="quienReserva"
+                                                             value="#{cc.attrs.value.quienGeneraReserva}"
+                                                             title="Quien Reserva">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputText>
+                                                <p:outputLabel value="Quién Autoriza:" for="quienAutoriza" />
+                                                <p:inputText id="quienAutoriza"
+                                                             value="#{cc.attrs.value.quienAutoriza}" title="QuienAutoriza">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputText>
+                                            </p:panelGrid>
+                                        </p:outputPanel>
+
+
+                                        <p:panelGrid columns="2" columnClasses="text-right width30p, width70p text-left" layout="grid" styleClass="ui-panelgrid-blank">
+                                            <p:outputLabel value="Fecha:" for="fechaOperacion" />
+                                            <general:localDateSelect id="fechaOperacion" value="#{cc.attrs.value.fechaOperacion}">
+                                                <p:ajax event='dateSelect'
+                                                        listener="#{reservationCreateController.dateChanged}"
+                                                        process="@this"
+                                                        update="@(.reservasPorVehiculoPanel)"/>
+                                            </general:localDateSelect>
+                                        </p:panelGrid>
+                                    </p:fieldset>
+                                    <h:panelGroup>
+                                        <p:fieldset legend="Agencia">
+                                            <p:panelGrid columns="2" layout="grid"
+                                                         columnClasses="text-right width30p, width70p text-left"
+                                                         styleClass="ui-panelgrid-blank">
+                                                <p:outputLabel value="Representante:" for="representante" />
+                                                <rep:RepAutocomplete id="representante"
+                                                                     value="#{cc.attrs.value.representante}">
+                                                    <p:ajax event="itemSelect"
+                                                            update="@(.infoServicioPanel) @(.participantesPanel)"
+                                                            immediate="true"
+                                                            process="@this"
+                                                            listener="#{reservationCreateController.repChanged}"/>
+                                                </rep:RepAutocomplete>
+                                                <p:outputLabel value="Agencia:"
+                                                               for="nombreAgencia" />
+                                                <agencia:agencyAutocomplete id="nombreAgencia" value="#{cc.attrs.value.agencia}">
+                                                    <p:ajax event="itemSelect" process="@this"/>
+                                                </agencia:agencyAutocomplete>
+                                                <p:outputLabel value="Color:" for="color" />
+                                                <general:colorSelectOneMenu id='color' value='#{cc.attrs.value.color}'/>
+                                            </p:panelGrid>
+
+                                        </p:fieldset>
+                                        <p:outputPanel styleClass="reservasPorVehiculoPanel">
+                                            <p:fieldset legend="Reservas Por Vehiculo"
+                                                        rendered="#{cc.attrs.value.tipoVehiculo ne 'N/A'}">
+                                                <p:panelGrid columns="2" layout="grid"
+                                                             columnClasses="text-right width30p, width70p text-left"
+                                                             styleClass="ui-panelgrid-blank">
+                                                    <p:outputLabel value="#{cc.attrs.value.tipoVehiculo}"/>
+                                                    <h:outputText value="#{reservationCreateController.paxPorTipoVehiculo}"/>
+                                                </p:panelGrid>
+                                            </p:fieldset>
+                                        </p:outputPanel>
+                                        <p:outputPanel id="reservasPorCatamaran">
+                                            <p:fieldset legend="Reservas Por Catamaran"
+                                                        rendered="#{cc.attrs.value.servicio.name.toLowerCase().contains('catamaran')}">
+
+                                            </p:fieldset>
+                                        </p:outputPanel>
+
+                                        <p:fieldset legend="Espacios Por Turno"
+                                                    rendered="#{(not empty cc.attrs.value.servicio) and false}">
+                                            <h5>#{cc.attrs.value.servicio.name}</h5>
+                                            <p:dataTable value="#{reservationCreateController.turnos}"
+                                                         var="turno">
+                                                <p:column headerText="Turno">
+                                                    <h:outputText value="#{turno.name}"/>
+                                                </p:column>
+                                                <p:column headerText="Pax">
+                                                    <h:outputText value="PENDIENTE"/>
+                                                </p:column>
+                                                <p:column headerText="Max">
+                                                    <h:outputText value="#{turno.maxCapacity}"/>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </p:fieldset>
+                                    </h:panelGroup>
+
+
+                                </p:panelGrid>
+
+                            </p:outputPanel>
+                        </p:tab>
+                        <p:tab title='Participantes'>
+                            <p:outputPanel styleClass='participantesPanel'>
+                                <p:panelGrid columns="2"
+                                             layout="grid"
+                                             styleClass="ui-panelgrid-blank">
+                                    <h:panelGroup id="participanteInfoPanel">
+                                        <p:fieldset legend="Información Personal">
+                                            <p:panelGrid columns="2" layout="grid"
+                                                         columnClasses="text-right width30p, width70p text-left"
+                                                         styleClass="ui-panelgrid-blank">
+                                                <p:outputLabel value="Visitante:" for="nombreCliente" />
+                                                <p:inputText id="nombreCliente"
+                                                             required='true'
+                                                             requiredMessage='Campo Nombre Cliente requerido'
+                                                             value="#{cc.attrs.value.nombreCliente}"
+                                                             title="NombreCliente">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputText>
+
+                                                <p:outputLabel value="Hotel:" for="hotel" />
+                                                <hotel:hotelAutocomplete id="hotel" value="#{cc.attrs.value.hotel}"/>
+
+                                                <p:outputLabel value="Habitación:" for="habitacion" />
+                                                <p:inputText id="habitacion"
+                                                             value="#{cc.attrs.value.habitacion}" title="Habitacion">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputText>
+                                                <p:outputLabel value="No Cupon:" for="noCupon" />
+                                                <h:panelGroup>
+                                                    <p:inputText id="noCupon"
+                                                                 required="false"
+                                                                 requiredMessage="Campo Cupón requerido"
+                                                                 value="#{cc.attrs.value.noCupon}"
+                                                                 title="NoCupon">
+                                                        <p:ajax process="@this"/>
+                                                    </p:inputText>
+                                                    <p:message id="noCuponMessage" for="noCupon"/>
+                                                </h:panelGroup>
+                                                <p:outputLabel value="Lenguaje:" for="idioma" />
+                                                <p:selectOneMenu id="idioma"
+                                                                 required='true'
+                                                                 editable="true"
+                                                                 requiredMessage='Campo Lenguaje Requerido'
+                                                                 value="#{cc.attrs.value.idioma}"
+                                                                 title="Lenguaje">
+                                                    <f:selectItem itemLabel="Seleccionar Uno" itemValue="#{null}"
+                                                                  noSelectionOption="true"/>
+                                                    <f:selectItem itemLabel="Inglés" itemValue="Inglés"/>
+                                                    <f:selectItem itemLabel="Español" itemValue="Español"/>
+                                                    <f:selectItem itemLabel="Francés" itemValue="Francés"/>
+                                                    <f:selectItem itemLabel="Alemán" itemValue="Alemán"/>
+                                                    <f:selectItem itemLabel="Ruso" itemValue="Ruso"/>
+                                                    <p:ajax process="@this"/>
+                                                </p:selectOneMenu>
+                                                <p:outputLabel value="Turno:"
+                                                               for="pickup" />
+                                                <p:selectOneMenu id="pickup"
+                                                                 required='true'
+                                                                 requiredMessage='Horario de Pick up requerido'
+                                                                 value="#{cc.attrs.value.horario}"
+                                                                 converter="#{horarioTurnoTourConverter}"
+                                                                 var="h"
+                                                                 title="Pickup">
+                                                    <f:selectItem itemLabel="Seleccionar Uno..." itemValue="#{null}" noSelectionOption="true"/>
+                                                    <f:selectItems value="#{reservationCreateController.horarios}"
+                                                                   itemLabel="#{horario.pickup}"
+                                                                   itemValue="#{horario}"
+                                                                   var="horario"/>
+                                                    <p:column>
+                                                        <h:outputText value='#{h.turno.name}'/>
+                                                    </p:column>
+                                                    <p:column rendered="#{cc.attrs.value.conTransportacion}">
+                                                        <h:outputText value='#{h.pickup}'/>
+                                                    </p:column>
+                                                    <p:ajax process="@this"/>
+                                                </p:selectOneMenu>
+                                                <p:outputLabel value="Meeting Point:" for="meetingPoint" />
+                                                <p:inputText id="meetingPoint"
+                                                             value="#{cc.attrs.value.meetingPoint}"
+                                                             title="MeetingPoint">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputText>
+                                            </p:panelGrid>
+                                        </p:fieldset>
+
+                                    </h:panelGroup>
+                                    <h:panelGroup id="numerosParticipantesPanel">
+                                        <p:fieldset legend="Participantes">
+                                            <p:panelGrid columns="4" layout="grid"
+                                                         columnClasses="text-right, text-left, text-right, text-left"
+                                                         styleClass="ui-panelgrid-blank">
+                                                <p:outputLabel value="Adultos:" for="adulto" />
+                                                <p:inputNumber id="adulto"
+                                                               decimalPlaces="0"
+                                                               minValue="0"
+                                                               maxValue="999"
+                                                               thousandSeparator=""
+                                                               value="#{cc.attrs.value.adulto}"
+                                                               title="Adulto">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputNumber>
+                                                <p:outputLabel value="Niños:" for="nino" />
+                                                <p:inputNumber id="nino"
+                                                               minValue="0"
+                                                               decimalPlaces="0"
+                                                               maxValue="999" thousandSeparator=""
+                                                               value="#{cc.attrs.value.nino}" title="Nino">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputNumber>
+                                                <p:outputLabel value="Infantes:" for="infante" />
+                                                <p:inputNumber id="infante"
+                                                               minValue="0"
+                                                               decimalPlaces="0"
+                                                               maxValue="999" thousandSeparator=""
+                                                               value="#{cc.attrs.value.infante}" title="Infante">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputNumber>
+                                                <p:outputLabel value="Incentivo:" for="adultoCortesia" />
+                                                <p:inputNumber id="adultoCortesia"
+                                                               decimalPlaces="0"
+                                                               minValue="0"
+                                                               maxValue="999"
+                                                               thousandSeparator=""
+                                                               value="#{cc.attrs.value.adultoCortesia}"
+                                                               title="Adultos en Cortesía">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputNumber>
+                                            </p:panelGrid>
+                                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                                <p:outputLabel value="Ref. Incentivo" for="refIncentivo" />
+                                                <p:inputText id="refIncentivo"
+                                                             value='#{cc.attrs.value.referenciaCortesia}'
+                                                             title="ref incentivo">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputText>
+                                            </p:panelGrid>
+                                        </p:fieldset>
+                                        <p:fieldset legend="Buceo" rendered="#{cc.attrs.value.servicio.buceo}">
+                                            <p:panelGrid columns="4"
+                                                         columnClasses="text-right, text-left, text-right, text-left"
+                                                         layout="grid" styleClass="ui-panelgrid-blank">
+                                                <p:outputLabel value="Adulto:" for="buceoAdulto" />
+                                                <p:inputNumber id="buceoAdulto"
+                                                               minValue="0"
+                                                               decimalPlaces="0"
+                                                               maxValue="999" thousandSeparator=""
+                                                               value="#{cc.attrs.value.buceoAdultos}" title="Buceo Adultos">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputNumber>
+                                                <p:outputLabel value="Niños" for="buceoNinos" />
+                                                <p:inputNumber id="buceoNinos"
+                                                               minValue="0"
+                                                               decimalPlaces="0"
+                                                               maxValue="999" thousandSeparator=""
+                                                               value="#{cc.attrs.value.buceoNinos}" title="Buceo Niños">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputNumber>
+                                            </p:panelGrid>
+                                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                                <p:outputLabel value="Tipo" for="tipoBuceo" />
+                                                <p:inputText id="tipoBuceo"
+                                                             value="#{cc.attrs.value.tipoBuceo}"
+                                                             title="Tipo Buceo">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputText>
+                                            </p:panelGrid>
+
+                                        </p:fieldset>
+
+
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="false">
+                                        <p:fieldset legend="Participantes Reales">
+                                            <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank">
+                                                <p:outputLabel value="Adulto:" for="adultosReales" />
+                                                <p:inputNumber id="adultosReales"
+                                                               decimalPlaces="0"
+                                                               minValue="0"
+                                                               maxValue="999" thousandSeparator=""
+                                                               value="#{cc.attrs.value.adultosReales}" title="Adulto">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputNumber>
+                                                <p:outputLabel value="Nino:" for="ninosReales" />
+                                                <p:inputNumber id="ninosReales"
+                                                               decimalPlaces="0"
+                                                               minValue="0"
+                                                               maxValue="999" thousandSeparator=""
+                                                               value="#{cc.attrs.value.ninosReales}" title="Nino">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputNumber>
+                                                <p:outputLabel value="Infante:" for="infantesReales" />
+                                                <p:inputNumber id="infantesReales"
+                                                               decimalPlaces="0"
+                                                               minValue="0"
+                                                               maxValue="999" thousandSeparator=""
+                                                               value="#{cc.attrs.value.infantesReales}" title="Infante">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputNumber>
+                                            </p:panelGrid>
+                                        </p:fieldset>
+                                        <p:fieldset legend="Buceo Reales">
+                                            <p:panelGrid columns="4" layout="grid"
+                                                         styleClass="ui-panelgrid-blank">
+                                                <p:outputLabel value="Adulto:" for="buceoAdulto" />
+                                                <p:inputNumber id="buceoAdultoReales"
+                                                               decimalPlaces="0"
+                                                               minValue="0"
+                                                               maxValue="999" thousandSeparator=""
+                                                               value="#{cc.attrs.value.buceoAdultosReales}" title="Buceo Adultos">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputNumber>
+                                                <p:outputLabel value="Niños:" for="buceoNinos" />
+                                                <p:inputNumber id="buceoNinosReales"
+                                                               decimalPlaces="0"
+                                                               minValue="0"
+                                                               maxValue="999" thousandSeparator=""
+                                                               value="#{cc.attrs.value.buceoNinosReales}" title="Buceo Niños">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputNumber>
+                                            </p:panelGrid>
+                                        </p:fieldset>
+
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:outputPanel>
+
+                        </p:tab>
+                        <p:tab title='Observaciones'>
+                            <p:outputPanel id="observacionesPanel">
+
+                                <h:panelGroup rendered='false'>
+                                    <p:fieldset legend="Estatus">
+                                        <p:panelGrid columns="4" columnClasses="text-right,text-left,text-right,text-left" layout="grid" styleClass="ui-panelgrid-blank">
+                                            <p:outputLabel value='No Show'/>
+                                            <p:selectBooleanCheckbox value="#{cc.attrs.value.noShow}"/>
+                                            <p:outputLabel value='Pendiente Seguimiento'/>
+                                            <p:selectBooleanCheckbox value="#{cc.attrs.value.cuponPendiente}"/>
+                                            <p:outputLabel value='Cancelado'/>
+                                            <p:selectBooleanCheckbox value="#{cc.attrs.value.cuponCancelado}"/>
+                                            <p:outputLabel value='Devuelto'/>
+                                            <p:selectBooleanCheckbox value="#{cc.attrs.value.cuponDevuelto}"/>
+                                        </p:panelGrid>
+                                    </p:fieldset>
+
+                                </h:panelGroup>
+                                <p:fieldset legend="Notas">
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                        <p:outputLabel value="Observaciones Operativas:" for="observacionesOperativas" />
+                                        <p:inputTextarea id="observacionesOperativas"
+                                                         value="#{cc.attrs.value.observacionesOperativas}"
+                                                         title="ObservacionesOperativas">
+                                            <p:ajax process="@this"/>
+                                        </p:inputTextarea>
+                                        <p:outputLabel value="Observaciones Contables:"
+                                                       for="observacionesContables" />
+                                        <p:inputTextarea id="observacionesContables"
+                                                         value="#{cc.attrs.value.observacionesContables}" title="ObservacionesContables">
+                                            <p:ajax process="@this"/>
+                                        </p:inputTextarea>
+                                        <p:outputLabel value="Observaciones Generales:"
+                                                       for="observacionesGenerales" />
+                                        <p:inputTextarea id="observacionesGenerales"
+                                                         value="#{cc.attrs.value.observacionesGenerales}" title="ObservacionesGenerales">
+                                            <p:ajax process="@this"/>
+                                        </p:inputTextarea>
+
+                                    </p:panelGrid>
+                                </p:fieldset>
+
+
+                            </p:outputPanel>
+
+                        </p:tab>
+                        <p:tab title="Contabilidad" rendered='false'>
+                            <p:outputPanel id="contabilidadPanel">
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+                                    <p:outputLabel value="Moneda"/>
+                                    <p:selectBooleanButton onLabel="MXN"
+                                                           styleClass='defaultButton'
+                                                           offLabel="USD"
+                                                           value="#{cc.attrs.value.facturadoPesos}"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+                                    <h:panelGroup>
+                                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                            <h5>DOLAR</h5>
+                                            <p:outputLabel value="Pronostico USD:" for="pronosticoUSD" />
+                                            <p:inputText id="pronosticoUSD"
+
+                                                         value="#{cc.attrs.value.pronosticoUSD}" title="Pronostico USD">
+                                                <p:ajax event="change" process="@this" update="contabilidadPanel"/>
+                                            </p:inputText>
+                                            <p:outputLabel value="Real USD:" for="realUSD" />
+                                            <p:inputText id="realUSD"
+
+                                                         value="#{cc.attrs.value.realUSD}" title="Real USD">
+                                                <p:ajax event="change" process="@this"  update="contabilidadPanel"/>
+                                            </p:inputText>
+                                            <p:outputLabel value="Real T/C USD:" for="realTCUSD" />
+                                            <p:inputText id="realTCUSD"
+
+                                                         value="#{cc.attrs.value.realTCUSD}" title="Real T/C USD">
+                                                <p:ajax event="change" process="@this"  update="contabilidadPanel"/>
+                                            </p:inputText>
+                                            <p:outputLabel value="DTV USD:" for="dtvUSD" />
+                                            <p:inputText id="dtvUSD"
+
+                                                         value="#{cc.attrs.value.dtvUSD}" title="DTV USD">
+                                                <p:ajax event="change" process="@this"  update="contabilidadPanel"/>
+                                            </p:inputText>
+                                            <p:outputLabel value="Comisiones Rep USD:" for="comisionesUSD" />
+                                            <p:inputText id="comisionesUSD"
+                                                         value="#{cc.attrs.value.comisionesRepUSD}"
+                                                         title="Comisiones Rep USD">
+                                                <p:ajax event="change" process="@this"  update="contabilidadPanel"/>
+                                            </p:inputText>
+                                            <p:outputLabel value="Total Cash USD:" for="totalCashUSD" />
+                                            <h:outputText id="totalCashUSD" value="#{cc.attrs.value.totalCashUSD}" title="TOTAL CASH USD">
+                                                <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                            </h:outputText>
+                                        </p:panelGrid>
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                            <h5>PESOS</h5>
+                                            <p:outputLabel value="Pronostico MXN:" for="pronosticoMXN" />
+                                            <p:inputText id="pronosticoMXN"
+
+                                                         value="#{cc.attrs.value.pronosticoMXN}" title="Pronostico MXN">
+                                                <p:ajax event="change" process="@this"  update="contabilidadPanel"/>
+                                            </p:inputText>
+                                            <p:outputLabel value="Real MXN:" for="realMXN" />
+                                            <p:inputText id="realMXN"
+
+                                                         value="#{cc.attrs.value.realMXN}" title="Real MXN">
+                                                <p:ajax event="change" process="@this"  update="contabilidadPanel"/>
+                                            </p:inputText>
+                                            <p:outputLabel value="Real T/C MXN:" for="realTCMXN" />
+                                            <p:inputText id="realTCMXN"
+
+                                                         value="#{cc.attrs.value.realTCMXN}" title="Real T/C MXN">
+                                                <p:ajax event="change" process="@this"  update="contabilidadPanel"/>
+                                            </p:inputText>
+                                            <p:outputLabel value="DTV MXN:" for="dtvMXN" />
+                                            <p:inputText id="dtvMXN"
+
+                                                         value="#{cc.attrs.value.dtvMXN}" title="DTV MXN">
+                                                <p:ajax event="change" process="@this"  update="contabilidadPanel"/>
+                                            </p:inputText>
+                                            <p:outputLabel value="Otros Ingresos MXN:" for="otrosIngresosMXN" />
+                                            <p:inputText id="otrosIngresosMXN"
+                                                         value="#{cc.attrs.value.otrosIngresosMXN}" title="DTV MXN">
+                                                <p:ajax event="change" process="@this"  update="contabilidadPanel"/>
+                                            </p:inputText>
+                                            <p:outputLabel value="Total Cash MXN:" for="totalCashMXN" />
+                                            <h:outputText id="totalCashMXN" value="#{cc.attrs.value.totalCashMXN}" title="TOTAL CASH MXN">
+                                                <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                            </h:outputText>
+                                            <p:outputLabel value="Diferencia Pesos:" for="diferenciaPesos" />
+                                            <h:outputText id="diferenciaPesos" value="#{cc.attrs.value.diferenciaPesos}" title="DIFERENCIA PESOS">
+                                                <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                            </h:outputText>
+                                        </p:panelGrid>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+                                    <h:panelGroup>
+                                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                            <h5>FACTURACIÓN USD</h5>
+                                            <p:outputLabel value="Facturación USD:" for="facturacionUSD" />
+                                            <p:inputText id="facturacionUSD"
+
+                                                         value="#{cc.attrs.value.facturacionUSD}" title="FACTURACION USD">
+                                                <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                                            </p:inputText>
+                                            <p:outputLabel value="Total General USD:" for="totalGeneralUSD" />
+                                            <h:outputText id="totalGeneralUSD"
+                                                          value="#{cc.attrs.value.totalGeneralUSD}" title="TOTAL GENERAL USD">
+                                                <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                            </h:outputText>
+                                        </p:panelGrid>
+
+                                    </h:panelGroup>
+                                    <h:panelGroup>
+                                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                            <h5>FACTURACIÓN MXN</h5>
+                                            <p:outputLabel value="Facturación MXN:" for="facturacionMXN" />
+                                            <p:inputText id="facturacionMXN"
+
+                                                         value="#{cc.attrs.value.facturacionMXN}" title="FACTURACION MXN">
+                                                <p:ajax event="change" process="@this"  update="contabilidadPanel"/>
+                                            </p:inputText>
+                                            <p:outputLabel value="Total General MXN:" for="totalGeneralMXN" />
+                                            <h:outputText id="totalGeneralMXN"
+                                                          value="#{cc.attrs.value.totalGeneralMXN}" title="TOTAL GENERAL MXN">
+                                                <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                            </h:outputText>
+                                        </p:panelGrid>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:outputPanel>
+
+                        </p:tab>
+                    </p:tabView>
+                    <div class='text-center'>
+                        <p:commandButton value="Verificar"
+                                         styleClass='defaultButton important orange-btn verifyButton'
+                                         icon='fa fa-check'
+                                         process='@form'
+                                         immediate="false"
+                                         update="tourCreatePanel growl"
+                                         actionListener="#{reservationCreateController.validate()}"/>
+                    </div>
+                </h:panelGroup>
+
+                <!-- CONFIRM SCREEN -->
+                <h:panelGroup rendered='#{reservationCreateController.displayConfirmMessage}'>
+                    <p:panelGrid columns="2" layout="grid"
+                                 columnClasses="text-right, text-left"
+                                 styleClass="ui-panelgrid-blank">
+                        <p:fieldset legend="Información Reserva">
+                            <p:panelGrid columns="2" layout="grid"
+                                         columnClasses="text-right, text-left"
+                                         styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="Representante: "/>
+                                <h:outputText value="#{cc.attrs.value.representante.name}"/>
+                                <p:outputLabel value="Agencia: "/>
+                                <h:outputText value="#{cc.attrs.value.agencia.name}"/>
+                                <p:outputLabel value="Tour:"/>
+                                <h:outputText value="#{cc.attrs.value.servicio.name}"/>
+                                <p:outputLabel value="Promo:"/>
+                                <h:outputText value="#{cc.attrs.value.nacionalidad}"/>
+                                <p:outputLabel value="Transportación:"/>
+                                <h:panelGroup rendered="#{cc.attrs.value.conTransportacion}">
+                                    <i class="fas fa-check"></i>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{not cc.attrs.value.conTransportacion}">
+                                    <i class="fas fa-times"></i>
+                                </h:panelGroup>
+                                <p:outputLabel value="Vehículo:"/>
+                                <h:outputText value="#{cc.attrs.value.tipoVehiculo}"/>
+                                <p:outputLabel value="Fecha Servicio:"/>
+                                <h:panelGroup>
+                                    <h:outputText value="#{cc.attrs.value.fechaOperacion.dayOfMonth}"/> -
+                                    <h:outputText value="#{localeSelectorManager.getMonth(cc.attrs.value.fechaOperacion)}"/> -
+                                    <h:outputText value="#{cc.attrs.value.fechaOperacion.year}"/>
+                                </h:panelGroup>
+                                <p:outputLabel value="Cupon:"/>
+                                <h:outputText value="#{cc.attrs.value.noCupon}"/>
+                                <p:outputLabel value="Nombre:"/>
+                                <h:outputText value="#{cc.attrs.value.nombreCliente}"/>
+                                <p:outputLabel value="Pax:"/>
+                                <h:panelGroup>
+                                    <h:outputText value="#{cc.attrs.value.adulto}"/>.
+                                    <h:outputText value="#{cc.attrs.value.nino}"/>.
+                                    <h:outputText value="#{cc.attrs.value.infante}"/>
+                                </h:panelGroup>
+                                <p:outputLabel rendered="#{cc.attrs.value.adultoCortesia gt 0}" value="Incentivo: "/>
+                                <h:panelGroup rendered="#{cc.attrs.value.adultoCortesia gt 0}">
+                                    <h:outputText value="#{cc.attrs.value.adultoCortesia}"/>
+                                </h:panelGroup>
+                                <p:outputLabel rendered="#{cc.attrs.value.adultoCortesia gt 0}" value="Referencia Incentivo: "/>
+                                <h:panelGroup rendered="#{cc.attrs.value.adultoCortesia gt 0}">
+                                    <h:outputText value="#{cc.attrs.value.referenciaCortesia}"/>
+                                </h:panelGroup>
+                                <p:outputLabel rendered="#{(cc.attrs.value.buceoAdultos + cc.attrs.value.buceoNinos) gt 0}" value="Buceo:"/>
+                                <h:panelGroup rendered="#{(cc.attrs.value.buceoAdultos + cc.attrs.value.buceoNinos) gt 0}">
+                                    <h:outputText value="#{cc.attrs.value.buceoAdultos}"/>.
+                                    <h:outputText value="#{cc.attrs.value.buceoNinos}"/>
+                                </h:panelGroup>
+                                <p:outputLabel rendered="#{(cc.attrs.value.buceoAdultos + cc.attrs.value.buceoNinos) gt 0}" value="Tipo Buceo"/>
+                                <h:panelGroup rendered="#{(cc.attrs.value.buceoAdultos + cc.attrs.value.buceoNinos) gt 0}">
+                                    <h:outputText value="#{cc.attrs.value.tipoBuceo}"/>
+                                </h:panelGroup>
+                                <p:outputLabel value="Hotel:"/>
+                                <h:outputText value="#{cc.attrs.value.hotel.name}"/>
+                                <p:outputLabel value="Habitación:"/>
+                                <h:outputText value="#{cc.attrs.value.habitacion}"/>
+                                <p:outputLabel value="Pickup:"/>
+                                <h:outputText value="#{cc.attrs.value.horario.pickup}"/>
+                                <p:outputLabel value="Meeting Point:"/>
+                                <h:outputText value="#{cc.attrs.value.meetingPoint}"/>
+                                <p:outputLabel value="Idioma:"/>
+                                <h:outputText value="#{cc.attrs.value.idioma}"/>
+                                <p:outputLabel styleClass='largeText' value="Confirma:"/>
+                                <h:outputText styleClass='largeText' value="#{reservationsUtilityController.getConfirma(cc.attrs.value)}"/>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <p:fieldset legend="Observaciones">
+                            <p:panelGrid columns="1" layout="grid"
+                                         columnClasses="text-right, text-left"
+                                         styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="Operativas"/>
+                                <h:outputText value='#{cc.attrs.value.observacionesOperativas}'/>
+                                <p:outputLabel value="Contables"/>
+                                <h:outputText value='#{cc.attrs.value.observacionesContables}'/>
+                                <p:outputLabel value="Generales"/>
+                                <h:outputText value='#{cc.attrs.value.observacionesGenerales}'/>
+                            </p:panelGrid>
+
+                        </p:fieldset>
+                    </p:panelGrid>
+
+
+                    <div class='text-center'>
+                        <p:commandButton value="Modificar"
+                                         styleClass='defaultButton important orange-btn verifyButton'
+                                         icon='fa fa-edit'
+                                         process='@form'
+                                         update="tourCreatePanel growl"
+                                         actionListener="#{reservationCreateController.modify()}"/>
+                        <p:commandButton value="Confirmar"
+                                         styleClass='defaultButton important verifyButton'
+                                         icon='fa fa-save'
+                                         update="tourCreatePanel growl"
+                                         actionListener="#{reservationCreateController.create()}">
+                            <p:confirm header="Confirmar"
+                                       message="Guardar en base de datos?"/>
+                        </p:commandButton>
+                    </div>
+
+                </h:panelGroup>
+
+            </p:outputPanel>
+            <p:confirmDialog global="true"
+                             showEffect="fade"
+                             hideEffect="fade">
+                <p:commandButton value="Si"
+                                 type="button"
+                                 styleClass="ui-confirmdialog-yes"
+                                 icon="ui-icon-check" />
+                <p:commandButton value="No" type="button"
+                                 styleClass="ui-confirmdialog-no"
+                                 icon="ui-icon-close" />
+            </p:confirmDialog>
+        </h:form>
+    </cc:implementation>
+</html>

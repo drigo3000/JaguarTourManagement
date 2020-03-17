@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Pronostico USD"/>
+        </f:facet>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.getPronosticoUSD()}">
+                <f:convertNumber type="currency"
+                                 locale="#{localeSelectorManager.locale}"/>
+            </h:outputText>
+        </f:facet>
+        <h:outputText value="#{res.pronosticoUSD}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Pronostico MXN"/>
+        </f:facet>
+        <h:outputText value="#{res.pronosticoMXN}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.getPronosticoMXN()}">
+                <f:convertNumber type="currency"
+                                 locale="#{localeSelectorManager.locale}"/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Real USD"/>
+        </f:facet>
+        <h:outputText value="#{res.realUSD}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.getRealUSD()}">
+                <f:convertNumber type="currency"
+                                 locale="#{localeSelectorManager.locale}"/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Real MXN"/>
+        </f:facet>
+        <h:outputText value="#{res.realMXN}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.getRealMXN()}">
+                <f:convertNumber type="currency"
+                                 locale="#{localeSelectorManager.locale}"/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Real TC USD"/>
+        </f:facet>
+        <h:outputText value="#{res.realTCUSD}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.getRealTCUSD()}">
+                <f:convertNumber type="currency"
+                                 locale="#{localeSelectorManager.locale}"/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Real TC MXN"/>
+        </f:facet>
+        <h:outputText value="#{res.realTCMXN}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.getRealTCMXN()}">
+                <f:convertNumber type="currency"
+                                 locale="#{localeSelectorManager.locale}"/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="DTV USD"/>
+        </f:facet>
+        <h:outputText value="#{res.dtvUSD}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.getDTVUSD()}">
+                <f:convertNumber type="currency"
+                                 locale="#{localeSelectorManager.locale}"/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="DTV MXN"/>
+        </f:facet>
+        <h:outputText value="#{res.dtvMXN}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.getDTVUSD()}">
+                <f:convertNumber type="currency"
+                                 locale="#{localeSelectorManager.locale}"/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Comisiones Rep USD"/>
+        </f:facet>
+        <h:outputText value="#{res.comisionesRepUSD}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Otros Ingresos MXN"/>
+        </f:facet>
+        <h:outputText value="#{res.otrosIngresosMXN}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Total Cash USD"/>
+        </f:facet>
+        <h:outputText value="#{res.getTotalCashUSD()}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.getTotalCashUSD()}">
+                <f:convertNumber type="currency"
+                                 locale="#{localeSelectorManager.locale}"/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Total Cash MXN"/>
+        </f:facet>
+        <h:outputText value="#{res.getTotalCashMXN()}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.getTotalCashMXN()}">
+                <f:convertNumber type="currency"
+                                 locale="#{localeSelectorManager.locale}"/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Diferencia Pesos"/>
+        </f:facet>
+        <h:outputText value="#{res.getDiferenciaPesos()}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.getDiferenciaPesos()}">
+                <f:convertNumber type="currency"
+                                 locale="#{localeSelectorManager.locale}"/>
+            </h:outputText>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Observaciones Directos"/>
+        </f:facet>
+        <h:outputText value="#{res.observacionesDirectos}"/>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Adultos Reales"/>
+        </f:facet>
+        <h:outputText value="#{res.adultosReales}"/>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.adultosReales()}"/>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Niños Reales"/>
+        </f:facet>
+        <h:outputText value="#{res.ninosReales}"/>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.ninosReales()}"/>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Infantes Reales"/>
+        </f:facet>
+        <h:outputText value="#{res.infantesReales}"/>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.infantesReales()}"/>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Buceo Adultos"/>
+        </f:facet>
+        <h:outputText value="#{res.buceoAdultos}"/>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.buceoAdultos()}"/>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Buceo Niños"/>
+        </f:facet>
+        <h:outputText value="#{res.buceoNinos}"/>
+        <f:facet name="footer">
+            <h:outputText value="#{reservationFilterController.buceoNinos()}"/>
+        </f:facet>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn">
+        <f:facet name="header">
+            <h:outputText value="Facturación USD"/>
+        </f:facet>
+        <h:outputText value="#{res.facturacionUSD}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Facturación MXN"/>
+        </f:facet>
+        <h:outputText value="#{res.facturacionMXN}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Total Genral USD"/>
+        </f:facet>
+        <h:outputText value="#{res.getTotalGeneralUSD()}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Total Genral MXN"/>
+        </f:facet>
+        <h:outputText value="#{res.getTotalGeneralMXN()}">
+            <f:convertNumber type="currency"
+                             locale="#{localeSelectorManager.locale}"/>
+        </h:outputText>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Cupon Nuevo"/>
+        </f:facet>
+        <h:outputText value="#{res.cuponNuevo}"/>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Fecha Recuperado"/>
+        </f:facet>
+        <h:outputText value="#{res.fechaRecuperado}"/>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn centerAligned">
+        <f:facet name="header">
+            <h:outputText value="Fecha Facturado"/>
+        </f:facet>
+        <h:outputText value="#{res.fechaFacturado}"/>
+    </p:column>
+    <p:column rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+              styleClass="mediumColumn">
+        <f:facet name="header">
+            <h:outputText value="Observaciones Diferencias Pax"/>
+        </f:facet>
+        <h:outputText value="#{res.observacionesDiferenciasPax}"/>
+    </p:column>
+
+</html>

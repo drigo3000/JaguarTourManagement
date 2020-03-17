@@ -1,0 +1,25 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <div class="footer clearfix">
+        <div class="footer-links">
+            <p:link outcome="/priv/index" class="first">Dashboard</p:link>
+            <span class="link-divider">|</span>
+            <p:link outcome="/priv/user/edit">Perfil
+                <f:param name="id" value="#{sessionInfo.currentUserLogin}"/>
+            </p:link>
+            <span class="link-divider">|</span>
+            <p:link outcome="/priv/reservations/list"
+                    rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.RESERVACIONES}">Reservas
+            </p:link>
+        </div>
+        <br/>
+        <p:graphicImage library="imgs"
+                        name="sw_banner.png" style='width:100px'/><br/>
+        <span>Copyright Sw-Evolution Systems, 2019</span>
+    </div>
+</ui:composition>

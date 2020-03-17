@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:user="http://xmlns.jcp.org/jsf/composite/ezcomp/users"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head></h:head>
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Perfil"/>
+                    <p:menuitem value="Editar" outcome="/priv/user/profile"><f:param name="id" value="#{sessionInfo.currentUserLogin}"/></p:menuitem>
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="content">
+            <user:userEditForm user="#{userViewController.user}"
+                               isNew="false"
+                               viewOnly="false"
+                               formTitle="Editar Registro: #{userViewController.user.login}"
+                               saveButtonListener="#{userViewController.edit()}"/>
+        </ui:define>
+    </ui:composition>
+</html>

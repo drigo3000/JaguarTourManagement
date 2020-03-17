@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Servicios" outcome="/priv/tour/list" />
+                    <p:menuitem value="Calculadora" outcome="/priv/tour/calculadora" />
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="content">
+            <h:form>
+                <p:outputPanel id='generalInputPanel'>
+                    <div class="card">
+                        <h5>Calcuar Ingresos</h5>
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <p:fieldset legend="General">
+                                    <p:outputLabel value="Agencia" for="agencia"/>
+                                    <p:autoComplete id="agencia"
+                                                    required="true"
+                                                    requiredMessage="Agencia Requerido"
+                                                    value="#{calculadoraController.agencia}"
+                                                    converter="#{agencyConverter}"
+                                                    title="Agencia"
+                                                    var="agenciaItem"
+                                                    minQueryLength="3"
+                                                    itemLabel="#{agenciaItem.name}"
+                                                    itemValue="#{agenciaItem}"
+                                                    completeMethod="#{agencyListManager.filterAgency}">
+                                        <p:ajax process="@this"/>
+                                    </p:autoComplete>
+                                    <p:outputLabel value="Hotel" for="hotel"/>
+                                    <p:autoComplete id="hotel"
+                                                    required="true"
+                                                    requiredMessage="Campo Hotel requerido"
+                                                    value="#{calculadoraController.hotel}"
+                                                    converter="#{hotelConverter}"
+                                                    title="Hotel"
+                                                    var="hotelItem"
+                                                    minQueryLength="3"
+                                                    itemLabel="#{hotelItem.name}"
+                                                    itemValue="#{hotelItem}"
+                                                    forceSelection="true"
+                                                    completeMethod="#{hotelListController.filterHotels}">
+                                        <p:column>
+                                            <h:outputText value='#{hotelItem.name}'/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value='#{hotelItem.operation}'/>
+                                        </p:column>
+                                    </p:autoComplete>
+                                </p:fieldset>
+                            </div>
+                        </div>
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-6">
+                                <p:fieldset legend="Operado">
+                                    <p:outputLabel value="Tour" for="tourOperado"/>
+                                    <p:autoComplete id="tourOperado"
+                                                    required='true'
+                                                    requiredMessage='Servicio Requerido'
+                                                    value="#{calculadoraController.tourOperado}"
+                                                    converter="#{tourConverter}"
+                                                    title="Servicio"
+                                                    var="tourItem"
+                                                    minQueryLength="2"
+                                                    itemLabel="#{tourItem.name}"
+                                                    itemValue="#{tourItem}"
+                                                    completeMethod="#{tourListManager.filterTour}"/>
+                                    <p:outputLabel value="Adultos" for="adultosOperado"/>
+                                    <p:inputNumber minValue="0"
+                                                   decimalPlaces="0"
+                                                   value="#{calculadoraController.adultosOperado}" id="adultosOperado"/>
+                                    <p:outputLabel value="Niños" for="ninosOperado"/>
+                                    <p:inputNumber minValue="0"
+                                                   decimalPlaces="0"
+                                                   value="#{calculadoraController.ninosOperado}" id="ninosOperado"/>
+                                    <p:outputLabel value="IMPUESTO" for="impuestoOperado"/>
+                                    <p:inputNumber id="impuestoOperado"
+                                                   value="#{calculadoraController.impuestoOperado}"
+                                                   decimalPlaces="2" decimalSeparator="."
+                                                   disabled="false"
+                                                   required="false"
+                                                   requiredMessage="Precio Adulto requerido"
+                                                   minValue="0.00"
+                                                   symbol="$"
+                                                   thousandSeparator=","/>
+                                    <p:outputLabel value="IMA" for="imaOperado"/>
+                                    <p:inputNumber id="imaOperado"
+                                                   value="#{calculadoraController.imaOperado}"
+                                                   disabled="true"
+                                                   decimalPlaces="2" decimalSeparator="."
+                                                   minValue="0.00"
+                                                   symbol="$"
+                                                   thousandSeparator=","/>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <p:fieldset legend="Cuponeado">
+                                    <p:outputLabel value="Tour" for="tourCuponeado"/>
+                                    <p:autoComplete id="tourCuponeado"
+                                                    required='true'
+                                                    requiredMessage='Servicio Requerido'
+                                                    value="#{calculadoraController.tourCuponeado}"
+                                                    converter="#{tourConverter}"
+                                                    title="Servicio"
+                                                    var="tourItem"
+                                                    minQueryLength="2"
+                                                    itemLabel="#{tourItem.name}"
+                                                    itemValue="#{tourItem}"
+                                                    completeMethod="#{tourListManager.filterTour}"/>
+                                    <p:outputLabel value="Adultos" for="adultosCuponeado"/>
+                                    <p:inputNumber minValue="0"
+                                                   decimalPlaces="0"
+                                                   value="#{calculadoraController.adultosCuponeado}" id="adultosCuponeado"/>
+                                    <p:outputLabel value="Niños" for="ninosCuponeado"/>
+                                    <p:inputNumber minValue="0"
+                                                   decimalPlaces="0"
+                                                   value="#{calculadoraController.ninosCuponeado}" id="ninosCuponeado"/>
+                                    <p:outputLabel value="IMPUESTO" for="impuestoCuponeado"/>
+                                    <p:inputNumber id="impuestoCuponeado"
+                                                   value="#{calculadoraController.impuestoCuponeado}"
+                                                   decimalPlaces="2" decimalSeparator="."
+                                                   required="true"
+                                                   requiredMessage="Precio Adulto requerido"
+                                                   minValue="0.00"
+                                                   symbol="$"
+                                                   thousandSeparator=","/>
+                                    <p:outputLabel value="Neto" for="netoCuponeado"/>
+                                    <p:inputNumber id="netoCuponeado"
+                                                   value="#{calculadoraController.netoCuponeado}"
+                                                   disabled="true"
+                                                   decimalPlaces="2" decimalSeparator="."
+                                                   minValue="0.00"
+                                                   symbol="$"
+                                                   thousandSeparator=","/>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-g-12">
+                                <p:fieldset legend="Opciones">
+                                    <p:commandButton value="Calcular"
+                                                     actionListener="#{calculadoraController.calcular()}"
+                                                     update="generalInputPanel growl"
+                                                     styleClass="defaultButton"/>
+                                </p:fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+                </p:outputPanel>
+
+
+
+
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Configuración" outcome="/priv/settings/index" />
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="content">
+            <div class="card">
+                <h5>Editar Preferencias Globales</h5>
+                <h:form>
+                    <p:outputPanel id="inputPanel"></p:outputPanel>
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                        <p:outputLabel value='Tipo de Cambio' for="tipoDeCambio"/>
+                        <p:inputNumber id='tipoDeCambio' decimalPlaces="2" decimalSeparator="."
+                                       required="true"
+                                       requiredMessage="Tipo de Cambio requerido"
+                                       minValue="0.00"
+                                       symbol="$"
+                                       thousandSeparator=","
+                                       value="#{cucurumbeGlobalController.cg.tipoDeCambio}"/>
+                        <p:inputNumber id='maxJeep'
+                                       decimalPlaces="0"
+                                       decimalSeparator="."
+                                       required="true"
+                                       requiredMessage="Max Jeep requerido"
+                                       minValue="0"
+                                       thousandSeparator=","
+                                       value="#{cucurumbeGlobalController.cg.maxJeep}"/>
+                        <p:inputNumber id='maxBuggy'
+                                       decimalPlaces="0"
+                                       decimalSeparator="."
+                                       required="true"
+                                       requiredMessage="Max Jeep requerido"
+                                       minValue="0"
+                                       thousandSeparator=","
+                                       value="#{cucurumbeGlobalController.cg.maxBuggy}"/>
+                        <p:commandButton value="Guardar"
+                                         icon="ui-icon ui-icon-disk"
+                                         styleClass="defaultButton"
+                                         update='inputPanel growl'
+                                         actionListener="#{cucurumbeGlobalController.save}">
+                            <p:confirm header="Confirmar"
+                                       message="¿Guardar cambios a configuración general? "
+                                       icon="fas fa-exclamation-triangle"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
+

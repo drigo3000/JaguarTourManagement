@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="user"
+                      type="com.swevolution.cucurumbe.model.entities.User"
+                      displayName="user"
+                      required="true"/>
+        <cc:attribute name="isNew"
+                      default="false"
+                      type="java.lang.Boolean"
+                      displayName="isNew"/>
+        <cc:attribute name="viewOnly"
+                      default="true"
+                      type="java.lang.Boolean"
+                      displayName="viewOnly"/>
+        <cc:attribute name="formTitle"
+                      type="java.lang.String"
+                      displayName="formTitle"
+                      default="Editar"
+                      required="false"/>
+        <cc:attribute name="saveButtonListener"
+                      method-signature="void actionListener(javax.faces.event.ActionEvent)" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <div class="card">
+            <h5>#{cc.attrs.formTitle}</h5>
+            <p:panelGrid columns="1"
+                         layout='grid'
+                         styleClass="fullwidth ui-noborder">
+                <p:outputLabel for="name" value="Name"/>
+                <p:inputText id="name"
+                             required="true"
+                             requiredMessage="Name field required"
+                             value="#{representativeEditController.representante.name}" styleClass="fullwidth" />
+                <p:outputLabel for="telefono" value="Teléfono"/>
+                <p:inputMask id="telefono"
+                             mask="(999) 999-9999"
+                             value="#{representativeEditController.representante.telephone}"
+                             title="Telephone" />
+                <p:outputLabel value="Agencia:" for="nombreAgencia" />
+                <h:panelGroup>
+                    <div class='inputGroupContainer'>
+                        <div>
+                            <p:autoComplete id="nombreAgencia"
+                                            value="#{representativeEditController.representante.agencia}"
+                                            converter="#{agencyConverter}"
+                                            title="Agencia"
+                                            var="agenciaItem"
+                                            minQueryLength="3"
+                                            itemLabel="#{agenciaItem.name}"
+                                            itemValue="#{agenciaItem}"
+                                            completeMethod="#{representativeEditController.filterAgency}"/>
+                        </div>
+                        <div>
+                            <p:commandButton icon='fa fa-search'
+                                             immediate="true"
+                                             actionListener="#{representativeEditController.openAgencySearchDialog}">
+                                <p:ajax event="dialogReturn"
+                                        listener="#{representativeEditController.handleAgencyFromDialog}"
+                                        update="nombreAgencia"/>
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </h:panelGroup>
+                <p:outputLabel for="email" value="Email"/>
+                <p:inputText id="email"
+                             required="false"
+                             value="#{representativeEditController.representante.email}" />
+                <p:commandButton id="saveButton" actionListener="#{representativeEditController.edit}"
+                                 icon="ui-icon ui-icon-disk"
+                                 value="Save" update="@form growl">
+                </p:commandButton>
+
+            </p:panelGrid>
+
+        </div>
+    </cc:implementation>
+</html>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+
+    </h:head>
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-tabs navbar-default nav-justified">
+                <li><p:link outcome="add">New</p:link></li>
+                <li><p:link outcome="list">List</p:link></li>
+            </ul>
+            <h1 align="center">Upload</h1>
+            <h:form enctype="multipart/form-data">
+
+                <p:selectOneMenu value="#{repUploader.type}">
+                    <f:selectItem itemValue="GUEST" itemLabel="GUEST"/>
+                    <f:selectItem itemValue="REPRESENTATIVE" itemLabel="REPRESENTATIVE"/>
+                    <f:selectItem itemValue="OPERADOR" itemLabel="OPERADOR"/>
+                </p:selectOneMenu>
+                <p:fileUpload id="fileUploader"
+                              auto="true"
+                              allowTypes="/(\.|\/)(xls|xlsx|xlsm)$/i"
+                              multiple="false"
+                              update="users growl userInfoForm:submitButton"
+                              fileUploadListener="#{repUploader.uploadRecords}"
+                              mode="advanced"></p:fileUpload>
+                <p:spacer height="25px"/>
+                <div class="alert alert-info">
+                    <p><b>The User file</b> must be an excel file that has the following format:</p>
+                    <ul>
+                        <li><b>Tab name: </b>Must be <i>USERS</i></li>
+                        <li><b>First Column: </b>User login</li>
+                        <li><b>Second Column: </b>User Name. In the case that the login information already exists the name will be
+                            updated with the file information.</li>
+                        <li><b>File name</b>: It does not matter which name is used for the file as long as there is a <i>Users</i> tab.</li>
+                    </ul>
+                    <p>Remember that new agents will have a default password of 1234. It is recommendable that they change this
+                        as soon as possible to avoid identity theft.</p>
+                </div>
+                <p:outputPanel autoUpdate="true">
+                    <p:dataTable id="users"
+                                 rendered='#{not empty repUploader.users}'
+                                 value="#{repUploader.users}"
+                                 var="entry">
+                        <p:column headerText="Login">
+                            <h:outputText value="#{entry.login}"/>
+                        </p:column>
+                        <p:column headerText="Name">
+                            <h:outputText value="#{entry.name}"/>
+                        </p:column>
+                        <p:column headerText="Type">
+                            <h:outputText value="#{entry.role}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:outputPanel>
+            </h:form>
+            <h:form id="userInfoForm">
+                <p:panelGrid columns="1" styleClass="fullwidth ui-noborder">
+                    <p:commandButton id="submitButton" action="#{repUploader.createUserList()}"
+                                     value="Create"
+                                     update="growl">
+                        <p:confirm header="Confirm create" message="Confirm add user list?"/>
+                    </p:commandButton>
+                </p:panelGrid>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+            </h:form>
+
+
+        </div>
+    </div>
+</html>
+

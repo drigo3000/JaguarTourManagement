@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ge="http://xmlns.jcp.org/jsf/composite/ezcomp/general"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/WEB-INF/includes/morpheus/template_search.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Hoteles" outcome="/priv/hotel/list" />
+                    <p:menuitem value="Zonas" outcome="/priv/hotel/zonas" />
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="searchform">
+            <p:panel header="Búsqueda">
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank grid-pad" style="margin-top:10px">
+                    <p:outputLabel value="Zona"/>
+                    <ge:zoneSelectOneMenu value="#{hotelZonasEditController.zona}"/>
+                    <p:outputLabel value="Sub Zona 1"/>
+                    <p:inputText value="#{hotelZonasEditController.subzona}"/>
+                    <p:outputLabel value="Sub Zona 2"/>
+                    <p:inputText value="#{hotelZonasEditController.sububicacion}"/>
+                    <p:commandButton value="Búscar"
+                                     icon='fa fa-search'
+                                     styleClass='defaultButton'
+                                     actionListener="#{hotelZonasEditController.search}"
+                                     update='@(.dataTableOutputPanel) growl'/>
+                </p:panelGrid>
+            </p:panel>
+        </ui:define>
+
+        <ui:define name="searchresults">
+            <p:outputPanel styleClass="dataTableOutputPanel">
+                <div class="card">
+                    <h5>Hoteles</h5>
+                    <p:dataTable id='dataTable'
+                                 rowKey="#{item.id}"
+                                 selectionMode="multiple"
+                                 selection="#{hotelZonasEditController.selectedHotels}"
+                                 value="#{hotelZonasEditController.hoteles}"
+                                 var="item">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nombre"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+                        <p:column styleClass="column50 centerAligned">
+                            <f:facet name="header">
+                                <h:outputText value="ZONA"/>
+                            </f:facet>
+                            <h:outputText value="#{item.operation}"/>
+                        </p:column>
+                        <p:column styleClass="mediumColumn centerAligned">
+                            <f:facet name="header">
+                                <h:outputText value="SUB ZONA 1"/>
+                            </f:facet>
+                            <h:outputText value="#{item.subOperation}"/>
+                        </p:column>
+                        <p:column styleClass="mediumColumn centerAligned">
+                            <f:facet name="header">
+                                <h:outputText value="SUB ZONA 2"/>
+                            </f:facet>
+                            <h:outputText value="#{item.subLocation}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+                <div class="card">
+                    <h5>Editar Hoteles</h5>
+                    <p:panelGrid columns="2" columnClasses="labelColumn, inputColumn"
+                                 layout="grid"
+                                 class="ui-noborder">
+                        <p:outputLabel value="Zona"/>
+                        <ge:zoneSelectOneMenu value="#{hotelZonasEditController.zonaEdit}"/>
+                        <p:outputLabel value="Sub Zona 1"/>
+                        <p:inputText value="#{hotelZonasEditController.subzonaEdit}"/>
+                        <p:outputLabel value="Sub Zona 2"/>
+                        <p:inputText value="#{hotelZonasEditController.sububicacionEdit}"/>
+                        <h:panelGroup/>
+                        <p:commandButton value="Guardar" icon="fa fa-save"
+                                         styleClass="defaultButton"
+                                         actionListener="#{hotelZonasEditController.editHotels}"
+                                         update="@(.dataTableOutputPanel) growl"/>
+                    </p:panelGrid>
+                </div>
+
+            </p:outputPanel>
+        </ui:define>
+    </ui:composition>
+</html>
+

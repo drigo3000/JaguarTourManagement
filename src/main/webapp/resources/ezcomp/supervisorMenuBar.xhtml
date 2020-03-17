@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form>
+            <p:menubar autoDisplay="false">
+                <p:menuitem  outcome="/priv/sup/index" icon="fa fa-home" value="Home"/>
+                <p:submenu  label="CMS" icon="fa fa-address-book">
+                    <p:submenu  label="Tours" icon="fa fa-bus" rendered="false">                    
+                        <p:menuitem  outcome="/priv/sup/tour/list" icon="fa fa fa-list" value="List"/>
+                        <p:menuitem  outcome="/priv/sup/tour/add" icon="fa fa fa-plus-circle" value="Add"/>
+                        <p:submenu label="Providers" icon="fa fa-map-marker">                                    
+                            <p:menuitem  outcome="/priv/sup/tour/provider/list" icon="fa fa fa-list" value="List"/>
+                            <p:menuitem  outcome="/priv/sup/tour/provider/add" icon="fa fa fa-plus-circle" value="Add"/>
+                        </p:submenu>
+                        <p:submenu label="Reservations" icon="fa fa-map-marker">                                    
+                            <p:menuitem  outcome="/priv/sup/tour/reservations/list" icon="fa fa fa-list" value="List"/>
+                            <p:menuitem  outcome="/priv/sup/tour/reservations/add" icon="fa fa fa-plus-circle" value="Add"/>
+                            <p:submenu label="Confirms" icon="fa fa-map-marker">                                    
+                                <p:menuitem  outcome="/priv/sup/tour/reservations/confirms/list" icon="fa fa fa-list" value="List"/>
+                                <p:menuitem  outcome="/priv/sup/tour/reservations/confirms/add" icon="fa fa fa-plus-circle" value="Add"/>
+                            </p:submenu>
+                        </p:submenu>
+
+                    </p:submenu>
+                    <p:submenu  label="Users" icon="fa fa-users">
+                        <p:submenu  label="Representatives" icon="fa fa-user">
+                            <p:menuitem  outcome="/priv/sup/rep/list" icon="fa fa fa-list" value="List"/>
+                            <p:menuitem  outcome="/priv/sup/rep/add" icon="fa fa-plus-circle" value="Add" rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"/>                                    
+                            <p:menuitem  outcome="/priv/sup/rep/inactives" value="Inactives" icon="fa fa-power-off" rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"/>                                    
+                            <p:menuitem  outcome="/priv/sup/rep/load" value="Data" icon="fa fa-upload" rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"/>                                    
+                        </p:submenu>
+                        <p:submenu  label="Supervisors" icon="fa fa-user-circle">
+                            <p:menuitem  outcome="/priv/sup/supervisors/list" icon="fa fa fa-list" value="List"/>
+                            <p:menuitem  outcome="/priv/sup/supervisors/add" icon="fa fa-plus" value="Add" rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"/>          
+                            <p:menuitem  outcome="/priv/sup/supervisors/inactives" value="Inactives" icon="fa fa-power-off" rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"/>
+                            <p:menuitem  outcome="/priv/sup/supervisors/load" value="Data" icon="fa fa-upload" rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"/>                                    
+                        </p:submenu>
+                        <p:submenu  label="Web Admins" icon="fa fa-users" rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}">
+                            <p:menuitem  outcome="/priv/sup/admin/list" icon="fa fa fa-list" value="List"/>
+                            <p:menuitem  outcome="/priv/sup/admin/add" icon="fa fa-plus" value="Add"/>          
+                            <p:menuitem  outcome="/priv/sup/admin/inactives" value="Inactives" icon="fa fa-power-off"/>
+                            <p:menuitem  outcome="/priv/sup/admin/load" value="Data" icon="fa fa-upload"/>                                    
+                        </p:submenu>
+                    </p:submenu>                    
+                    <p:submenu label="Agencies" icon="fa fa-flag">
+                        <p:menuitem  outcome="/priv/sup/agency/list" icon="fa fa fa-list" value="List"/>
+                        <p:menuitem  outcome="/priv/sup/agency/add" icon="fa fa-plus-circle" value="Add" rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"/>
+                        <p:menuitem  outcome="/priv/sup/agency/inactives" value="Inactives" icon="fa fa-power-off" rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"/>
+                        <p:menuitem  outcome="/priv/sup/agency/load" value="Data" icon="fa fa-upload" rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"/>
+                    </p:submenu>
+
+                    <p:submenu label="Hotels" icon="fa fa-bed">
+                        <p:menuitem  outcome="/priv/sup/hotel/list" icon="fa fa fa-list" value="List"/>
+                        <p:menuitem  outcome="/priv/sup/hotel/add" icon="fa fa-plus-circle" value="Add" rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"/>                                                                
+                        <p:menuitem  outcome="/priv/sup/hotel/inactives" value="Inactives" icon="fa fa-power-off" rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"/>
+                        <p:menuitem  outcome="/priv/sup/hotel/load" value="Data" icon="fa fa-upload" rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"/>
+                    </p:submenu>
+                    <p:submenu rendered="false" label="Service Reports" icon="fa fa-file">
+                        <p:menuitem  outcome="/priv/sup/csr/customerServiceReportList" icon="fa fa fa-list" value="List"/>
+                        <p:menuitem  outcome="/priv/sup/csr/addCustomerServiceReport" icon="fa fa fa-plus-circle" value="Create"/>
+                    </p:submenu>
+                    <p:submenu label="Zone Assignment" icon="fa fa-map-marker">                                    
+                        <p:menuitem  outcome="/priv/sup/assignment/list" icon="fa fa fa-list" value="List"/>
+                        <p:menuitem  outcome="/priv/sup/assignment/add" icon="fa fa fa-plus-circle" value="Add"/>
+                    </p:submenu>                    
+                </p:submenu>
+                <p:menuitem  outcome="/priv/sup/supervisors/repedit" icon="fa fa-user" value="Profile">
+                    <f:param name="id" value="#{sessionInfo.currentUserLogin}"/>
+                </p:menuitem>
+                <p:menuitem  outcome="/priv/sup/sendMessage" icon="fa fa-comments" value="Send Message"/>
+                <p:menuitem  action="#{logoutManager.invalidateSession()}"  
+                             style="position:absolute; right: 6px;"
+                             icon="fa fa-sign-out" value="Logout"/>
+            </p:menubar>
+        </h:form>
+    </cc:implementation>
+</html>

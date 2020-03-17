@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="hotel" type="com.swevolution.cucurumbe.model.entities.Hotel" displayName="hotel" required="true"/>
+        <cc:attribute name="outcome" type="java.lang.String" required="true" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:link outcome="#{cc.attrs.outcome}" class="list-group-item mainIndexItem">
+            <h4 class="list-group-item-heading">
+                <i class="fas fa-hotel"></i>&nbsp;<h:outputText value="#{cc.attrs.hotel.name}"/>
+            </h4>
+            <f:param name="id" value="#{cc.attrs.hotel.login}"/>
+        </p:link>
+    </cc:implementation>
+</html>

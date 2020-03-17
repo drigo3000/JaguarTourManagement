@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:general='http://xmlns.jcp.org/jsf/composite/ezcomp/general'
+      xmlns:rep="http://xmlns.jcp.org/jsf/composite/ezcomp/reps"
+      xmlns:agencia="http://xmlns.jcp.org/jsf/composite/ezcomp/agency"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <p:fieldset legend="Agencia">
+        <p:panelGrid columns="2" layout="grid"
+                     columnClasses="text-right width30p, width70p text-left"
+                     styleClass="ui-panelgrid-blank">
+            <p:outputLabel value="Representante:" for="representante" />
+            <h:panelGroup>
+                <div class='inputGroupContainer'>
+                    <div>
+                        <rep:RepAutocomplete id="representante"
+                                             value="#{reservationEditController.reservacion.representante}">
+                            <p:ajax event="itemSelect"
+                                    update="@(.infoServicioPanel) @(.participantesPanel)"
+                                    immediate="true"
+                                    process="@this"
+                                    listener="#{reservationEditController.repChanged}"/>
+                        </rep:RepAutocomplete>
+                    </div>
+                    <div>
+                        <p:commandButton icon='fa fa-search'
+                                         immediate="true"
+                                         actionListener="#{reservationEditController.openRepresentativeSearchDialog()}">
+                            <p:ajax event="dialogReturn"
+                                    listener="#{reservationEditController.handleRepresentativeFromDialog}"
+                                    update="@(.infoServicioPanel) @(.participantesPanel)"/>
+                        </p:commandButton>
+                    </div>
+                </div>
+            </h:panelGroup>
+            <p:outputLabel value="Agencia:"
+                           for="nombreAgencia" />
+            <agencia:agencyAutocomplete id="nombreAgencia"
+                                        value="#{reservationEditController.reservacion.agencia}">
+                <p:ajax event="itemSelect" process="@this"/>
+            </agencia:agencyAutocomplete>
+            <p:outputLabel value="Color:" for="color" />
+            <general:colorSelectOneMenu id='color'
+                                        required="true"
+                                        requiredMessage="Campo color requerido"
+                                        value='#{reservationEditController.reservacion.color}'>
+                <p:ajax event="itemSelect" process="@this"/>
+            </general:colorSelectOneMenu>
+        </p:panelGrid>
+
+    </p:fieldset>
+
+</html>

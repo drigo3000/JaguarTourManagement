@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:addon='http://xmlns.jcp.org/jsf/composite/ezcomp/addons'
+      xmlns:user='http://xmlns.jcp.org/jsf/composite/ezcomp/users'
+      xmlns:res='http://xmlns.jcp.org/jsf/composite/ezcomp/reservations'
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/WEB-INF/includes/morpheus/template_search_horizontal.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Venta AddOns" outcome="/priv/addons/ventaaddon/list" />
+                    <p:menuitem value="Filtro" outcome="/priv/addons/ventaaddon/list" />
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="searchform">
+            <div class="card">
+                <h5>Búsqueda</h5>
+                <p:panelGrid columns="1"
+                             layout="grid"
+                             styleClass="ui-panelgrid-blank grid-pad"
+                             style="margin-top:10px">
+                    <p:outputLabel value="DESDE:"/>
+                    <p:calendar value="#{ventaAddOnFilterOptionsController.from}"
+                                pattern="dd/MM/yyyy"
+                                converter="#{localDateConverter}"/>
+                    <p:outputLabel value="HASTA:"/>
+                    <p:calendar value="#{ventaAddOnFilterOptionsController.to}"
+                                pattern="dd/MM/yyyy"
+                                converter="#{localDateConverter}"/>
+                    <p:outputLabel value='AddOn'/>
+                    <addon:addOnAutocomplete value='#{ventaAddOnFilterOptionsController.addOn}'/>
+                    <p:outputLabel value='Guia'/>
+                    <user:guiaAutocomplete value='#{ventaAddOnFilterOptionsController.guia}'/>
+                    <p:outputLabel value='Reserva'/>
+                    <res:reservationAutocomplete value='#{ventaAddOnFilterOptionsController.reserva}'/>
+                    <p:outputLabel value='Creador'/>
+                    <user:userAutocomplete value='#{ventaAddOnFilterOptionsController.creador}'/>
+                    <p:commandButton value="Búscar"
+                                     icon='fa fa-search'
+                                     styleClass='defaultButton'
+                                     actionListener="#{ventaAddOnFilterController.search}"
+                                     update='dataTableOutputPanel growl'/>
+                </p:panelGrid>
+            </div>
+        </ui:define>
+        <ui:define name="searchresults">
+            <div class='card'>
+                <h5>Ventas AddOn</h5>
+                <p:outputPanel id="dataTableOutputPanel">
+                    <div class="ui-g-6">
+                        <h:panelGroup>
+                            <p:dataTable value="#{ventasAddOnTotalsController.tours}"
+                                         rendered='#{not empty ventaAddOnFilterController.ventas}'
+                                         var='tour'>
+                                <f:facet name='header'>
+                                    VENTAS ADDONS POR TOUR
+                                </f:facet>
+                                <p:column headerText="Tour">
+                                    <h:outputText value="#{tour.key.name}" />
+                                </p:column>
+                                <p:column headerText="Cantidad" styleClass='mediumColumn centerAligned'>
+                                    <h:outputText value="#{tour.value}" />
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGroup>
+                    </div>
+                    <div class='ui-g-6'>
+                        <h:panelGroup>
+                            <p:dataTable value="#{ventasAddOnTotalsController.guias}"
+                                         rendered='#{not empty ventaAddOnFilterController.ventas}'
+                                         var='guia'>
+                                <f:facet name='header'>
+                                    VENTAS ADDONS POR GUIA
+                                </f:facet>
+                                <p:column headerText="Guía">
+                                    <h:outputText value="#{guia.key.name}" />
+                                </p:column>
+                                <p:column headerText="Cantidad" styleClass="mediumColumn centerAligned">
+                                    <h:outputText value="#{guia.value}" />
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGroup>
+                    </div>
+                    <div class='clearfix'/>
+
+                    <p:dataTable value="#{ventaAddOnFilterController.ventas}"
+                                 var='venta'>
+                        <f:facet name='header'>
+                            VENTAS ADDONS
+                        </f:facet>
+                        <p:column headerText="AddOn">
+                            <h:outputText value="#{venta.addOn.name}"/>
+                        </p:column>
+                        <p:column headerText="Cantidad" styleClass="mediumColumn centerAligned">
+                            <h:outputText value="#{venta.cantidad}"/>
+                            <f:facet name='footer'>
+                                <h:outputText value='#{ventasAddOnTotalsController.cantidadTotal}'/>
+                            </f:facet>
+                        </p:column>
+                        <p:column headerText="Guia" styleClass="mediumColumn centerAligned">
+                            <h:outputText value="#{venta.guia.name}"/>
+                        </p:column>
+                        <p:column headerText="Reserva" styleClass='mediumColumn centerAligned'>
+                            <h:outputText value="#{venta.reserva.id}"/>
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{venta.reserva.nombreCliente}"/>
+                        </p:column>
+                        <p:column headerText="Tour">
+                            <h:outputText value="#{venta.reserva.servicio.name}"/>
+                        </p:column>
+                    </p:dataTable>
+
+
+
+
+
+                </p:outputPanel>
+            </div>
+        </ui:define>
+
+    </ui:composition>
+</html>
+

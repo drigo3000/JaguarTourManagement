@@ -1,0 +1,228 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pm="http://primefaces.org/morpheus">
+    <div class="layout-sidebar">
+        <pm:tabMenu id="tabMenu" activeIndex="-1">
+
+            <pm:tab  icon="fa fa-fw fa-home" id="hometab" title="Inicio">
+                <h:form >
+                    <pm:menu id='homemenu'
+                             widgetVar="homeVar">
+                        <p:menuitem id="dashboardmenuitem" value="Dashboard"
+                                    icon="fa fa-fw fa-home"
+                                    outcome="/priv/index"/>
+                    </pm:menu>
+
+                </h:form>
+
+            </pm:tab>
+
+            <pm:tab  icon="fa fa-calendar-o"
+                     id="reservacionestab"
+                     rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.RESERVACIONES}"
+                     title="Reservaciones">
+                <h:form >
+                    <pm:menu id='reservacionesmenu'
+                             widgetVar="reservacionesVar">
+                        <p:menuitem id='reservacionesaddmenuitem'
+                                    value="Registro"
+                                    icon="fa fa-fw fa-plus"
+                                    outcome="/priv/reservations/add"/>
+                        <p:menuitem id="reservacionesfiltromenuitem"
+                                    value="Filtro"
+                                    icon="fa fa-fw fa-list"
+                                    outcome="/priv/reservations/list"/>
+                        <p:submenu label="Reportes"
+                                   icon="fa fa-file">
+                            <p:menuitem id="reservacionesefectivasmenuitem"
+                                        value="Efectivas"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/reservations/efectivas"/>
+                            <p:menuitem id="preliminaresfiltromenuitem"
+                                        value="Preliminares"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/reservations/preliminares"/>
+                            <p:menuitem id="cambiosmenuitem"
+                                        value="Cambios Dia Siguiente"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/reservations/cambios"/>
+                            <p:menuitem id="concentradofiltromenuitem"
+                                        value="Concentrado"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/dashboard/concentrado"/>
+                        </p:submenu>
+                        <p:submenu id="agenciasdashboardmenu"
+                                   rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+                                   label="Agencias"
+                                   icon="fa fa-handshake">
+                            <p:menuitem id='agenciasdashboardmenuitem' value="Dashboard"
+                                        icon="fa fa-fw fa-home"
+                                        outcome="/priv/agency/dashboard"/>
+                            <p:menuitem id='agenciasconcentradomenuitem' value="Concentrado Rendimiento"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/agency/concentrado"/>
+                        </p:submenu>
+                        <p:submenu label="Operaciones"
+                                   rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.GERENTE_DE_TRANSPORTACION}"
+                                   icon="fas fa-shuttle-van">
+                            <p:menuitem id="pickupsmenuitem"
+                                        value="Asignar Pickups"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/operaciones/pickups"/>
+                            <p:menuitem id="guiasmenuitem"
+                                        value="Asignar Guia"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/operaciones/guias"/>
+                            <p:menuitem id="dropoffsmenuitem"
+                                        value="Asignar Dropoffs"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/operaciones/dropoffs"/>
+                        </p:submenu>
+                    </pm:menu>
+                </h:form>
+            </pm:tab>
+            <pm:tab  icon="fas fa-camera"
+                     rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+                     id="addonstab"
+                     title="AddOns">
+                <h:form >
+                    <pm:menu id='addonmenu'
+                             widgetVar="addonVar">
+                        <p:submenu label="Ventas" icon="fa fa-dollar">
+
+                            <p:menuitem id="ventaaddonagregarmenuitem"
+                                        value="Agregar"
+                                        icon="fa fa-fw fa-plus"
+                                        outcome="/priv/addons/ventaaddon/add"/>
+                            <p:menuitem id="ventaaddonfiltromenuitem"
+                                        value="Filtro"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/addons/ventaaddon/list"/>
+
+                        </p:submenu>
+                        <p:submenu label="AddOn"
+                                   icon='fa fa-camera'>
+                            <p:menuitem id="addonagregarmenuitem"
+                                        value="Agregar"
+                                        icon="fa fa-fw fa-plus"
+                                        outcome="/priv/addons/add"/>
+                            <p:menuitem id="addonfiltromenuitem"
+                                        value="Filtro"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/addons/list"/>
+                        </p:submenu>
+
+                    </pm:menu>
+                </h:form>
+
+            </pm:tab>
+            <pm:tab id='dashboardtab'  icon="fas fa-fw fa-cogs"
+                    title="Configuración General">
+                <h:form >
+                    <pm:menu id="configmenu"
+                             widgetVar="configVar">
+
+                        <p:submenu label="Servicios"
+                                   rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+                                   icon="fa fa-bus">
+                            <p:menuitem id='serviciosaddmenuitem'
+                                        value="Registro"
+                                        icon="fa fa-fw fa-plus"
+                                        outcome="/priv/tour/add"/>
+                            <p:menuitem id='serviciosfiltromenuitem'
+                                        value="Filtro"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/tour/list"/>
+                            <p:menuitem id='tourcostosunitariosmenuitem'
+                                        value="Costos Unitarios"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/tour/costos"/>
+                            <p:menuitem id='tourimasserviciomenuitem'
+                                        value="Tour IMAs"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/tour/imas"/>
+                            <p:menuitem id='calculadoramenuitem'
+                                        rendered="false"
+                                        value="Calculadora"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/tour/calculadora"/>
+                        </p:submenu>
+                        <p:submenu id='hotelesmenu'
+                                   rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+                                   label="Hotel"
+                                   icon='fa fa-hotel'>
+                            <p:menuitem id='hotelesaddmenuitem'
+                                        value="Registro"
+                                        icon="fa fa-fw fa-plus"
+                                        outcome="/priv/hotel/add"/>
+                            <p:menuitem id="hotelesfiltromenuitem" value="Filtro"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/hotel/list"/>
+                            <p:menuitem id="hoteleszonasmenuitem" value="Zonas"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/hotel/zonas"/>
+                            <p:menuitem id="hotelPositionMenuItem" value="Posiciones"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/hotel/positions"/>
+                            <p:menuitem id="tophotelfiltromenuitem" value="Top Hotel"
+                                        rendered="false"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/hotel/tophotel"/>
+                        </p:submenu>
+                        <p:submenu id="agenciasmenu"
+                                   rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+                                   label="Agencias"
+                                   icon="fa fa-handshake">
+                            <p:menuitem id='agenciasaddmenuitem' value="Registro"
+                                        icon="fa fa-fw fa-plus"
+                                        outcome="/priv/agency/add"/>
+                            <p:menuitem id='agenciasfiltromenuitem' value="Filtro"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/agency/list"/>
+                        </p:submenu>
+                        <p:submenu id='representantesmenu'
+                                   label="Representantes"
+                                   icon="fa fa-user-circle">
+                            <p:menuitem id="representantesaddmenuitem" value="Registro"
+                                        icon="fa fa-fw fa-plus"
+                                        outcome="/priv/representantes/add"/>
+                            <p:menuitem id="representantesfiltromenuitem" value="Filtro"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/representantes/list"/>
+                            <p:menuitem id="toprepfiltromenuitem" value="Top Rep"
+                                        rendered='false'
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/representantes/toprep"/>
+                        </p:submenu>
+                        <p:submenu label="Usuarios"
+                                   icon="fa fa-users">
+                            <p:menuitem id="usuariosaddmenuitem"
+                                        value="Registro"
+                                        icon="fa fa-fw fa-plus"
+                                        rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+                                        outcome="/priv/user/add"/>
+                            <p:menuitem id="usuariosfiltromenuitem"
+                                        value="Filtro"
+                                        icon="fa fa-fw fa-list"
+                                        rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+                                        outcome="/priv/user/list"/>
+                            <p:menuitem id="contactosfiltromenuitem" value="Contactos"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/user/contacts"/>
+                        </p:submenu>
+                        <p:menuitem id="settingsmenuitem" value="Configuración"
+                                    rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
+                                    icon="fas fa-fw fa-cogs"
+                                    outcome="/priv/settings/index"/>
+                    </pm:menu>
+
+                </h:form>
+            </pm:tab>
+        </pm:tabMenu>
+    </div>
+
+</ui:composition>

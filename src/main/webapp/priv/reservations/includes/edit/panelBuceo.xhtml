@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui">
+    <p:fieldset legend="Buceo" rendered="#{reservationEditController.reservacion.servicio.buceo}">
+        <p:panelGrid columns="4"
+                     columnClasses="text-right, text-left, text-right, text-left"
+                     layout="grid" styleClass="ui-panelgrid-blank">
+            <p:outputLabel value="Adulto:" for="buceoAdulto" />
+            <p:inputNumber id="buceoAdulto"
+                           minValue="0"
+                           decimalPlaces="0"
+                           maxValue="999" thousandSeparator=""
+                           value="#{reservationEditController.reservacion.buceoAdultos}" title="Buceo Adultos">
+                <p:ajax process="@this"/>
+            </p:inputNumber>
+            <p:outputLabel value="Niños" for="buceoNinos" />
+            <p:inputNumber id="buceoNinos"
+                           minValue="0"
+                           decimalPlaces="0"
+                           maxValue="999" thousandSeparator=""
+                           value="#{reservationEditController.reservacion.buceoNinos}" title="Buceo Niños">
+                <p:ajax process="@this"/>
+            </p:inputNumber>
+        </p:panelGrid>
+        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+            <p:outputLabel value="Tipo" for="tipoBuceo" />
+            <p:inputText id="tipoBuceo"
+                         value="#{reservationEditController.reservacion.tipoBuceo}"
+                         title="Tipo Buceo">
+                <p:ajax process="@this"/>
+            </p:inputText>
+        </p:panelGrid>
+
+    </p:fieldset>
+
+</html>

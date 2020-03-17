@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <!-- CONFIRM SCREEN -->
+    <h:panelGroup rendered='#{reservationCreateController.displayConfirmMessage and not reservationCreateController.displayConfirmation}'>
+        <p:panelGrid columns="2" layout="grid"
+                     styleClass="ui-panelgrid-blank">
+            <p:fieldset legend="Información Reserva">
+                <p:panelGrid columns="2" layout="grid"
+                             columnClasses="labelColumn, inputColumn"
+                             styleClass="ui-panelgrid-blank">
+                    <p:outputLabel value="Representante: "/>
+                    <h:outputText value="#{reservationCreateController.reservacion.representante.name}"/>
+                    <p:outputLabel value="Agencia: "/>
+                    <h:outputText value="#{reservationCreateController.reservacion.agencia.name}"/>
+                    <p:outputLabel value="Tour:"/>
+                    <h:outputText value="#{reservationCreateController.reservacion.servicio.name}"/>
+                    <p:outputLabel value="Promo:"/>
+                    <h:outputText value="#{reservationCreateController.reservacion.nacionalidad}"/>
+                    <p:outputLabel value="Transportación:"/>
+                    <h:panelGroup rendered="#{reservationCreateController.reservacion.conTransportacion}">
+                        <i class="fas fa-check"></i>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{not reservationCreateController.reservacion.conTransportacion}">
+                        <i class="fas fa-times"></i>
+                    </h:panelGroup>
+                    <p:outputLabel value="Vehículo:"/>
+                    <h:outputText value="#{reservationCreateController.reservacion.tipoVehiculo}"/>
+                    <p:outputLabel value="Fecha Servicio:"/>
+                    <h:panelGroup>
+                        <h:outputText value="#{reservationsUtilityController.getDay(reservationCreateController.reservacion.fechaOperacion)}, "/>
+                        <h:outputText value="#{reservationCreateController.reservacion.fechaOperacion.dayOfMonth}"/> -
+                        <h:outputText value="#{localeSelectorManager.getMonth(reservationCreateController.reservacion.fechaOperacion)}"/> -
+                        <h:outputText value="#{reservationCreateController.reservacion.fechaOperacion.year}"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Cupon:"/>
+                    <h:outputText value="#{reservationCreateController.reservacion.noCupon}"/>
+                    <p:outputLabel value="Nombre:"/>
+                    <h:outputText value="#{reservationCreateController.reservacion.nombreCliente}"/>
+                    <p:outputLabel value="Pax:"/>
+                    <h:panelGroup>
+                        <h:outputText value="#{reservationCreateController.reservacion.adulto}"/>.
+                        <h:outputText value="#{reservationCreateController.reservacion.nino}"/>.
+                        <h:outputText value="#{reservationCreateController.reservacion.infante}"/>
+                    </h:panelGroup>
+                    <p:outputLabel rendered="#{reservationCreateController.reservacion.adultoCortesia gt 0}" value="Incentivo: "/>
+                    <h:panelGroup rendered="#{reservationCreateController.reservacion.adultoCortesia gt 0}">
+                        <h:outputText value="#{reservationCreateController.reservacion.adultoCortesia}"/>
+                    </h:panelGroup>
+                    <p:outputLabel rendered="#{reservationCreateController.reservacion.adultoCortesia gt 0}" value="Referencia Incentivo: "/>
+                    <h:panelGroup rendered="#{reservationCreateController.reservacion.adultoCortesia gt 0}">
+                        <h:outputText value="#{reservationCreateController.reservacion.referenciaCortesia}"/>
+                    </h:panelGroup>
+                    <p:outputLabel rendered="#{(reservationCreateController.reservacion.buceoAdultos + reservationCreateController.reservacion.buceoNinos) gt 0}" value="Buceo:"/>
+                    <h:panelGroup rendered="#{(reservationCreateController.reservacion.buceoAdultos + reservationCreateController.reservacion.buceoNinos) gt 0}">
+                        <h:outputText value="#{reservationCreateController.reservacion.buceoAdultos}"/>.
+                        <h:outputText value="#{reservationCreateController.reservacion.buceoNinos}"/>
+                    </h:panelGroup>
+                    <p:outputLabel rendered="#{(reservationCreateController.reservacion.buceoAdultos + reservationCreateController.reservacion.buceoNinos) gt 0}" value="Tipo Buceo"/>
+                    <h:panelGroup rendered="#{(reservationCreateController.reservacion.buceoAdultos + reservationCreateController.reservacion.buceoNinos) gt 0}">
+                        <h:outputText value="#{reservationCreateController.reservacion.tipoBuceo}"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Hotel:"/>
+                    <h:outputText value="#{reservationCreateController.reservacion.hotel.name}"/>
+                    <p:outputLabel value="Habitación:"/>
+                    <h:outputText value="#{reservationCreateController.reservacion.habitacion}"/>
+                    <p:outputLabel value="Pickup:"/>
+                    <h:outputText value="#{reservationCreateController.reservacion.pickup}"/>
+                    <p:outputLabel value="Meeting Point:"/>
+                    <h:outputText value="#{reservationCreateController.reservacion.meetingPoint}"/>
+                    <p:outputLabel value="Idioma:"/>
+                    <h:outputText value="#{reservationCreateController.reservacion.idioma}"/>
+                </p:panelGrid>
+            </p:fieldset>
+            <p:fieldset legend="Observaciones">
+                <p:panelGrid columns="1" layout="grid"
+                             styleClass="ui-panelgrid-blank">
+                    <p:outputLabel value="Operativas"/>
+                    <h:outputText value='#{reservationCreateController.reservacion.observacionesOperativas}'/>
+                    <p:outputLabel value="Contables"/>
+                    <h:outputText value='#{reservationCreateController.reservacion.observacionesContables}'/>
+                    <p:outputLabel value="Generales"/>
+                    <h:outputText value='#{reservationCreateController.reservacion.observacionesGenerales}'/>
+                </p:panelGrid>
+
+            </p:fieldset>
+        </p:panelGrid>
+
+
+        <div class='text-center'>
+            <p:commandButton value="Modificar"
+                             styleClass='defaultButton important orange-btn verifyButton'
+                             icon='fa fa-edit'
+                             process='@form'
+                             update="@(.tourCreatePanel) growl"
+                             actionListener="#{reservationCreateController.modify()}"/>
+            <p:commandButton value="Confirmar"
+                             styleClass='defaultButton important verifyButton'
+                             icon='fa fa-save'
+                             update="@(.tourCreatePanel) @(.lastReservationsPanel) growl"
+                             actionListener="#{reservationCreateController.create()}">
+                <p:confirm header="Confirmar"
+                           message="Guardar en base de datos?"/>
+            </p:commandButton>
+        </div>
+
+    </h:panelGroup>
+    <h:panelGroup rendered='#{reservationCreateController.displayConfirmation and not reservationCreateController.displayConfirmMessage}'>
+        <div class='text-center'>
+            <h1>#{reservationCreateController.reservacion.claveConfirmacion}</h1>
+            <p:commandButton value="Nueva Reservacion"
+                             styleClass='defaultButton important verifyButton green-btn'
+                             icon='fa fa-plus'
+                             update='@(.tourCreatePanel) growl'
+                             actionListener='#{reservationCreateController.reset()}'/>
+        </div>
+    </h:panelGroup>
+
+</html>

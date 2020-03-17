@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene Scope="Project" version="2">
+    <Scope Scope="Faces Configuration Only"/>
+    <Scope Scope="Project">
+        <Node id="resources/ezcomp/supervisorMenuBar.xhtml" x="900" y="1200" zoom="true"/>
+        <Node id="resources/ezcomp/representativeMenubar.xhtml" x="400" y="1650" zoom="true"/>
+        <Node id="index.xhtml" x="900" y="450" zoom="true"/>
+        <Node id="resources/ezcomp/assignmentToolbar.xhtml" x="2150" y="300" zoom="true"/>
+    </Scope>
+    <Scope Scope="All Faces Configurations"/>
+</Scene>

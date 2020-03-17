@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:general='http://xmlns.jcp.org/jsf/composite/ezcomp/general'
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="content">
+
+            <p:outputPanel styleClass="mainPanel">
+                <p:tabView>
+                    <p:tab title="General">
+                        <h:form>
+                            <p:outputPanel styleClass="generalInfoPanel">
+                                <div class="card">
+                                    <h5>Información General Agencia</h5>
+                                    <p:outputPanel id="inputPanel">
+                                        <p:panelGrid columns="2"
+                                                     columnClasses='labelColumn, inputColumn'
+                                                     layout='grid'
+                                                     styleClass="fullwidth ui-noborder">
+                                            <p:outputLabel for="name" value="Nombre"/>
+                                            <p:inputText id="name"
+                                                         disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
+                                                         validator='#{agencytNameValidator.validateEdit}'
+                                                         required="true"
+                                                         requiredMessage="Name field required"
+                                                         value="#{agencyEditController.agency.name}"
+                                                         styleClass="fullwidth" />
+                                            <p:outputLabel for="metaMensual" value="Meta Mensual:"/>
+                                            <p:inputNumber id="metaMensual" minValue="0"
+                                                           disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
+                                                           decimalPlaces="0"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           value="#{agencyEditController.agency.metaMensual}"/>
+                                            <p:outputLabel for="description" value="Descripción"/>
+                                            <p:inputTextarea id="description"
+                                                             disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
+                                                             rows="5"
+                                                             required="false"
+                                                             requiredMessage="Description field required"
+                                                             value="#{agencyEditController.agency.description}" />
+                                            <p:outputLabel value="Activa"/>
+                                            <p:selectBooleanCheckbox
+                                                disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
+                                                value="#{agencyEditController.agency.active}"/>
+                                            <h:panelGroup/>
+                                            <h:panelGroup styleClass="alignright">
+                                                <p:commandButton id="saveButton"
+                                                                 rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"
+                                                                 styleClass='defaultButton'
+                                                                 actionListener="#{agencyEditController.edit}"
+                                                                 icon="ui-icon ui-icon-disk"
+                                                                 value="Guardar" update="inputPanel growl">
+                                                    <p:confirm header="Confirmar"
+                                                               message="¿Editar información Agencia? "
+                                                               icon="fas fa-exclamation-triangle"/>
+                                                </p:commandButton>
+                                            </h:panelGroup>
+                                        </p:panelGrid>
+                                    </p:outputPanel>
+                                </div>
+                            </p:outputPanel>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </h:form>
+
+
+                    </p:tab>
+                    <p:tab title="Representantes">
+                        <h:form>
+                            <p:outputPanel id="representantesPanel">
+                                <div class='card'>
+                                    <h5>Representantes</h5>
+                                    <p:outputPanel deferred="true" deferredMode="visible">
+                                        <p:dataTable value="#{representativesByAgencyController.reps}"
+                                                     var='rep'>
+                                            <f:facet name='header'>
+                                                Representantes
+                                            </f:facet>
+
+                                            <p:column headerText="Name">
+                                                <h:outputText value='#{rep.name}'/>
+                                            </p:column>
+                                            <p:column styleClass='singleOptionColumn'>
+                                                <p:link outcome="/priv/representantes/edit" styleClass="ui-button iconButton ui-corner-all">
+                                                    <i class="fa fa-mouse-pointer"></i>
+                                                    <f:param name="id" value="#{rep.id}"/>
+                                                </p:link>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:outputPanel>
+
+                                </div>
+                            </p:outputPanel>
+                        </h:form>
+
+                    </p:tab>
+                    <p:tab title="Ventas">
+                        <ui:include src="includes/ventas.xhtml"/>
+                    </p:tab>
+                    <p:tab title="Rendimiento">
+                        <ui:include src="includes/rendimiento.xhtml"/>
+                    </p:tab>
+                    <p:tab title="IMAs">
+                        <ui:include src="includes/imas.xhtml"/>
+                    </p:tab>
+                </p:tabView>
+            </p:outputPanel>
+            <!-- ADENDUMS -->
+
+
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,582 @@
+body{
+    color: #100b09 !important;
+    font-size: 12px;
+}
+
+.ui-widget {
+    font-size: 1.05em !important;
+}
+
+.ui-toolbar{
+    margin-bottom: 1.5rem !important;
+}
+
+.ui-datatable{
+    font-family: Verdana ,Georgia !important;
+    font-size: 0.62rem !important;
+    letter-spacing: 0px !important;
+    table-layout: fixed !important;
+    margin-bottom: 15px;
+    color: black !important;
+}
+
+.ui-state-highlight{
+    color: black !important;
+}
+
+.reservaAsignada{
+    background-color:#a2cec4 !important;
+}
+
+.renglonReservaCancelada{
+    background-color:#ffbcbc !important;
+}
+
+.reglonReservaNoShow{
+    background-color:#ffbcbc !important;
+}
+
+.ui-selectonemenu{
+}
+
+.ui-selectonemenu-label{
+    font-size: 1rem !important;
+}
+
+.fullwidth{
+    width:100% !important;
+}
+
+.inputGroupContainer{
+    display: grid;
+    grid-column-gap: 5px;
+    grid-template-columns: 1fr 50px;;
+}
+
+.inputGroupContainer2{
+    display: grid;
+    grid-column-gap: 5px;
+    grid-template-columns: 1fr 100px;;
+}
+
+.singleOptionColumn{
+    width:50px;
+}
+
+.selectionColumn{
+    width:20px !important;
+}
+
+.agencyColumn{
+    width:80px !important;
+}
+
+.smallColumn{
+    width: 30px;
+}
+
+.tourColumn{
+    width: 280px;
+}
+
+.dateColumn{
+    width: 75px;
+}
+
+.column5{
+    width:5px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.column10{
+    width:10px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.column15{
+    width:15px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.column20{
+    width:20px !important;
+}
+
+.column30{
+    width:30px !important;
+}
+
+.column40{
+    width:40px !important;
+    min-width: 40px !important;
+}
+
+.column50{
+    width:50px !important;
+    min-width: 50px !important;
+}
+
+.column60{
+    width:60px !important;
+}
+
+.column70{
+    width:70px !important;
+}
+
+.column80{
+    width: 80px !important;
+}
+
+.column90{
+    width:90px !important;
+}
+
+.column100{
+    width:100px !important;
+}
+
+.column120{
+    width:120px !important;
+}
+
+.column140{
+    width:140px !important;
+}
+
+.column150{
+    width:150px !important;
+}
+
+.column160{
+    width:160px !important;
+}
+
+.column180{
+    width:180px !important;
+}
+
+.column200{
+    width:200px !important;
+}
+.column300{
+    width:300px !important;
+}
+
+.column400{
+    width:300px !important;
+}
+
+.width30p{
+    width:30% !important;
+}
+
+.width23p{
+    width:23% !important;
+}
+
+.width50p{
+    width:50% !important;
+}
+
+.width70p{
+    width:70% !important;
+}
+
+.fourColumnLabel30{
+    width:30% !important;
+    text-align: right;
+}
+
+.fourColumnLabel23{
+    width:23% !important;
+    text-align: right;
+}
+
+.fourColumnInput23{
+    width:23% !important;
+    text-align: left;
+}
+
+.fourColumnLabel{
+    width:25% !important;
+    text-align: right;
+}
+
+.fourColumnInput{
+    width:25% !important;
+    text-align: left;
+}
+
+
+.mediumColumn{
+    width:150px !important;
+}
+
+.optionsButton{
+    width:40px !important;
+}
+
+.ui-scrollpanel-content {
+    padding-left: 0px !important;
+    right: 13px;
+}
+
+.ui-scrollpanel {
+    width: 100% !important;
+}
+
+.ui-scrollpanel-container,
+.ui-scrollpanel-content {
+    width: auto !important;
+}
+
+.centerAligned{
+    text-align: center !important;
+}
+
+.ui-inputfield, .ui-widget{
+    color: black !important;
+}
+
+.col33{
+    width:33%;
+}
+
+.col50{
+    width:50%;
+}
+
+.col25{
+    width:25%;
+}
+
+.text-right{
+    text-align: right;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.text-left{
+    text-align: left;
+}
+
+.cucuButton{
+    padding: 4px !important;
+}
+
+.defaultButton{
+    width:120px !important;
+    margin-bottom: 10px;
+}
+
+.defaultSearchButton{
+    width:45px !important;
+    margin-bottom: 10px;
+}
+
+.defaultButton.important{
+    padding:6px 10px;
+}
+
+.verifyButton{
+    margin-top: 25px;
+}
+
+.ui-menubar{
+    margin-bottom: 25px;
+}
+
+.ui-datatable tfoot td{
+    font-weight: bolder;
+    color: black !important;
+}
+
+.ui-tabs-nav .ui-state-default, .ui-panel-titlebar{
+    background-color: rgb(0,197,167) !important;
+    padding: 6px 15px !important;
+    color: white !important;
+}
+
+.ui-tabs-nav .ui-state-default:hover{
+    background-color: rgb(253,253,253) !important;
+}
+
+.ui-tabs-nav .ui-state-default a{
+    color: white !important;
+}
+
+.ui-tabs-nav .ui-state-active{
+    border-bottom: 3px solid rgb(0,197,167) !important;
+    background-color: rgb(253,253,253) !important;
+}
+
+.ui-tabs-nav .ui-state-active a{
+    color: rgb(0,197,167) !important;
+}
+
+.ui-tabs-nav .ui-state-default a:hover{
+    color: rgb(0,197,167) !important;
+}
+
+.ui-outputlabel{
+    font-weight: bold;
+}
+
+.card h5:first-child{
+    color: black;
+    font-weight: bolder;
+}
+
+.largeText{
+    font-size: 1.3rem !important;
+}
+
+.topbar-menu{
+    font-size: 1.1rem;
+}
+
+.topbar-menu i{
+    margin: 5px 10px;
+}
+
+.ui-fieldset{
+    margin-bottom: 20px !important;
+}
+
+.ui-fieldset-legend{
+    color: rgb(0,197,167) !important;
+}
+
+body .ui-state-disabled{
+    opacity: 1 !important;
+}
+
+.ui-tabs .ui-tabs-panel{
+    padding: 10px 0px !important;
+}
+
+.ui-panelgrid .ui-panelgrid-cell{
+    padding: 3px 2px !important;
+}
+
+.ui-outputlabel{
+    margin-left: 4px;
+}
+
+.rightColumn{
+    padding-left: 15px !important;
+}
+
+.labelColumn{
+    font-weight: bolder !important;
+    width:30%;
+}
+
+.inputColumn{
+    width:69%;
+}
+
+.green{
+    color: green !important;
+}
+
+.red{
+    color: red !important;
+}
+
+.gray{
+    color: gray !important;
+}
+
+.directos{
+    background-color: rgb(156,214,136) !important;
+}
+
+.famTrip{
+    background-color: rgb(252,255,0) !important;
+}
+
+.cortesias{
+    background-color: rgb(0,175,248) !important;
+}
+
+.incentivos{
+    background-color: rgb(124,0,165) !important;
+}
+
+.pink{
+    background-color: rgb(247,0,86) !important;
+}
+
+.popsidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0px;
+    left:61px;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.popsidenav .closebtn {
+    position: absolute;
+    top: 78px;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.indexCardNumber{
+    font-size: 0.9rem;
+    font-weight: 900;
+    color:rgb(0,197,167) !important;
+}
+
+.basicInfo{
+    height: 150px;
+    overflow: hidden;
+}
+
+.hiddenColumn{
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.ui-selectonemenu-panel.hideDisabled .ui-selectonemenu-item.ui-state-disabled {
+    display: none;
+}
+
+.iconButton{
+    padding:8px 8px 5px;
+    width:55px;
+}
+
+.ui-accordion-header{
+    padding: 15px 30px !important;
+}
+
+@media screen and (max-width: 640px) {
+    .inputColumn{
+        width:100%;
+        text-align: left;
+    }
+
+    .labelColumn{
+        width:100%;
+        text-align: left;
+    }
+
+    .fourColumnLabel{
+        width:100% !important;
+        text-align: left;
+    }
+
+    .fourColumnInput{
+        width:100% !important;
+        text-align: left;
+    }
+
+    .fourColumnLabel30{
+        width:100% !important;
+        text-align: left;
+    }
+
+    .fourColumnLabel23{
+        width:100% !important;
+        text-align: left;
+    }
+
+    .fourColumnInput23{
+        width:100% !important;
+        text-align: left;
+    }
+
+    .ui-tabs-header{
+        width:100%;
+    }
+
+}
+
+@media screen and (max-height: 450px) {
+    .popsidenav {padding-top: 15px;}
+}
+
+@media print {
+
+    .ui-datatable td,.ui-datatable th {
+        font: Georgia, "Times New Roman", Times, serif;
+        background: #fff;
+        font-size: 5pt !important;
+        text-shadow: none !important;
+    }
+
+    /* All styles for print should goes here */
+    .layout-wrapper{
+        width: 95%;
+        height: auto;
+        margin: 50px auto;
+
+    }
+
+    .print100pt{
+        width: 100pt !important;
+
+    }
+
+    .print80pt{
+        width: 80pt !important;
+
+    }
+
+    .print70pt{
+        width: 70pt !important;
+
+    }
+
+    .print60pt{
+        width: 60pt !important;
+
+    }
+
+    .print50pt{
+        width: 50pt !important;
+
+    }
+
+    .print40pt{
+        width: 40pt !important;
+
+    }
+
+    .print30pt{
+        width: 30pt !important;
+
+    }
+
+    .print20pt{
+        width: 20pt !important;
+
+    }
+    .print10pt{
+        width: 10pt !important;
+
+    }
+    .print3pt{
+        width: 1pt !important;
+
+    }
+
+    .print2pt{
+        width: 2pt !important;
+
+    }
+}

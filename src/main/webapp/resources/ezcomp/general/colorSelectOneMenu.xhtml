@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="value" type="java.lang.String"
+                      displayName="value" required="true"/>
+        <cc:attribute name="required" type="java.lang.Boolean"
+                      displayName="required" required="false" default="false"/>
+        <cc:attribute name="requiredMessage" type="java.lang.String"
+                      displayName="requiredMessage" required="false" default="Campo requerido"/>
+        <cc:clientBehavior
+            name="itemSelect"
+            event="itemSelect"
+            targets="#{cc.attrs.id}"
+            />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:selectOneMenu id="#{cc.attrs.id}"
+                         required='#{cc.attrs.required}'
+                         requiredMessage='#{cc.attrs.requiredMessage}'
+                         value="#{cc.attrs.value}">
+            <f:selectItem itemLabel='Seleccionar uno...' itemValue="#{null}"
+                          noSelectionOption="true"/>
+            <f:selectItem itemLabel='FACTURABLE' itemValue='FACTURABLE'/>
+            <f:selectItem itemLabel='DIRECTOS' itemValue='DIRECTOS'/>
+            <f:selectItem itemLabel='INCENTIVOS' itemValue='INCENTIVOS'/>
+            <f:selectItem itemLabel='CORTESIAS' itemValue='CORTESIAS'/>
+            <f:selectItem itemLabel='FAM TRIP' itemValue='FAM TRIP'/>
+        </p:selectOneMenu>
+    </cc:implementation>
+</html>

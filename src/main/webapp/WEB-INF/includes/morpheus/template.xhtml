@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>
+            <ui:insert name="title">Cucurumbe Group</ui:insert></title>
+        <h:outputScript name="js/nanoscroller.js" library="morpheus-layout" />
+        <h:outputScript name="js/layout.js" library="morpheus-layout" />
+        <h:outputScript name="selection.js" library="js"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous"></link>
+        <ui:insert name="head"/>
+    </h:head>
+
+    <h:body styleClass="main-body">
+        <script>
+            $.extend($.ui.keyCode, {
+                NUMPAD_ENTER: 108
+            });
+        </script>
+        <p:importEnum type="com.swevolution.cucurumbe.business.session.SecurityClearance"
+                      var="SecurityRoles"
+                      allSuffix="ALL_SECURITY_ROLES"/>
+        <p:growl id="growl" escape="false" widgetVar="wmsj" life="5000" showDetail="true"/>
+        <div class="layout-wrapper layout-ltr">
+            <ui:insert name="maincontainer">
+                <h:panelGroup rendered="#{sessionInfo.currentUser.needsResetPassword}">
+                    <div class="">
+                        <div class="ui-g ui-fluid">
+                            <div class="ui-g-12 ui-lg-12">
+                                <ui:include src="/WEB-INF/includes/templates/user/editpassword.xhtml"/>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </h:panelGroup>
+                <h:panelGroup rendered="#{not sessionInfo.currentUser.needsResetPassword}">
+                    <ui:insert name="topbar">
+                        <ui:include src="./topbar.xhtml" />
+                    </ui:insert>
+                    <ui:insert name='menu'>
+                        <ui:include src="./menu.xhtml" />
+                    </ui:insert>
+                    <div class="layout-content">
+                        <div class="ui-g ui-fluid">
+                            <div class="ui-g-12 ui-lg-12">
+                                <ui:insert name="breadcrumbs"/>
+                            </div>
+                            <div class="ui-g-12 ui-lg-12">
+                                <ui:insert name="nav"/>
+                            </div>
+                            <div class="ui-g-12 ui-lg-12">
+                                <ui:insert name="content"/>
+                            </div>
+                        </div>
+                        <ui:include src="./footer.xhtml" />
+
+                    </div>
+                </h:panelGroup>
+
+            </ui:insert>
+
+        </div>
+
+
+        <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+            <f:facet name="start">
+                <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="" />
+            </f:facet>
+        </p:ajaxStatus>
+
+        <h:outputStylesheet name="css/nanoscroller.css" library="morpheus-layout" />
+        <h:outputStylesheet name="css/animate.css" library="morpheus-layout" />
+        <h:outputStylesheet name="css/layout-cyan.css" library="morpheus-layout" />
+        <h:outputStylesheet name="css/default.css" library="morpheus-layout" />
+        <h:outputStylesheet name="default.css" library="css" />
+        <script>
+            $(document).ready(function () {
+                var wrapper = $(document.body).children('.layout-wrapper');
+                var sidebar = wrapper.children('.layout-sidebar');
+                sidebar.css('overflow', 'visible');
+                wrapper.removeClass('layout-wrapper-menu-active layout-wrapper-menu-active-restore');
+            });
+
+        </script>
+        <ui:insert name="scripts"/>
+
+    </h:body>
+
+</html>

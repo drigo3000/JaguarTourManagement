@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="value" type="com.swevolution.cucurumbe.model.entities.User" displayName="user" required="true"/>
+        <cc:clientBehavior
+            name="itemSelect"
+            event="itemSelect"
+            targets="#{cc.attrs.id}"
+            />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:autoComplete id="#{cc.attrs.id}" value="#{cc.attrs.value}"
+                        converter="#{userConverter}"
+                        title="Usuario"
+                        var="userItem"
+                        minQueryLength="3"
+                        itemLabel="#{userItem.name}"
+                        itemValue="#{userItem}"
+                        completeMethod="#{userAutocompleteController.filterUser}">
+        </p:autoComplete>
+    </cc:implementation>
+</html>

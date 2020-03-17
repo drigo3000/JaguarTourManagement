@@ -1,0 +1,22 @@
+.table{
+    width:100%;
+}
+
+.labelColumn{
+    text-align: right;
+    width:20%;
+}
+
+.inputColumn{
+    width:80%;
+}
+
+@media(max-width: 749px){
+    .labelColumn{
+        width:50%;
+    }
+
+    .inputColumn{
+        width:50%;
+    }
+}

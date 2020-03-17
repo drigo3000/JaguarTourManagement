@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:panelGroup rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.RESERVACIONES}">
+        <div class='card'>
+            <h5>Mis últimas reservas</h5>
+            <p:dataTable value="#{userReservationsController.reservas}" var="item">
+                <f:facet name='header'>
+                    Reservas
+                </f:facet>
+                <p:column styleClass="dateColumn centerAligned">
+                    <f:facet name="header">
+                        <h:outputText value="Fecha"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaOperacion.dayOfMonth}-#{item.fechaOperacion.monthValue}-#{item.fechaOperacion.year}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Representante"/>
+                    </f:facet>
+                    <h:outputText value="#{item.representante.name}"/>
+                </p:column>
+                <p:column styleClass="mediumColumn centerAligned">
+                    <f:facet name="header">
+                        <h:outputText value="Cupon"/>
+                    </f:facet>
+                    <h:outputText value="#{item.noCupon}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Servicio"/>
+                    </f:facet>
+                    <h:outputText value="#{item.servicio.name}"/>
+                </p:column>
+                <p:column styleClass="column70 centerAligned">
+                    <f:facet name="header">
+                        <h:outputText value="Pax"/>
+                    </f:facet>
+                    <h:outputText value="#{item.adulto}.#{item.nino}.#{item.infante}"/>
+                    <h:outputText rendered="#{item.adultoCortesia gt 0}" value=" (#{item.adultoCortesia})"/>
+                </p:column>
+                <p:column styleClass="column200 centerAligned">
+                    <f:facet name="header">
+                        <h:outputText value="Confirma"/>
+                    </f:facet>
+                    <h:outputText value="#{item.claveConfirmacion}"/>
+                </p:column>
+                <f:facet name="footer">
+                    #{userReservationsController.reservas.size()}
+                </f:facet>
+            </p:dataTable>
+        </div>
+    </h:panelGroup>
+
+</html>
+

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Servicios" outcome="/priv/tour/list" />
+                    <p:menuitem value="Agregar" outcome="/priv/tour/add" />
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="content">
+            <h:form>
+
+                <p:outputPanel id='generalInputPanel'>
+                    <div class="card">
+                        <h5>Registro Servicio</h5>
+                        <p:fieldset legend="Información General">
+                            <p:panelGrid columns="1"
+                                         layout='grid'
+                                         styleClass="fullwidth ui-noborder">
+                                <p:outputLabel for="name" value="Nombre:"/>
+                                <p:inputText id="name"
+                                             required="true"
+                                             validator="#{tourNameValidator.validateAdd}"
+                                             requiredMessage="Nombre requerido"
+                                             value="#{tourCreateManager.tour.name}" />
+                                <p:outputLabel for="grupo" value="Grupo:"/>
+                                <p:inputText id="grupo"
+                                             required="true"
+                                             requiredMessage="Campo Grupo Requerido"
+                                             value="#{tourCreateManager.tour.grupo}" />
+                                <p:outputLabel for="iniciales" value="Iniciales Confirma:"/>
+                                <p:inputText id="iniciales"
+                                             required="true"
+                                             validator="#{tourInitialsValidator.validateInicialesAdd}"
+                                             requiredMessage="Iniciales campo requerido"
+                                             value="#{tourCreateManager.tour.inicialesConfirma}" />
+                                <p:outputLabel for="description" value="Description"/>
+                                <p:editor id="description"
+                                          required="false"
+                                          requiredMessage="Description field required"
+                                          value="#{tourCreateManager.tour.description}" />
+                                <p:outputLabel for="manejaVehiculo" value="Maneja Vehiculo"/>
+                                <p:selectBooleanButton id="manejaVehiculo"
+                                                       styleClass='defaultButton'
+                                                       offLabel="No" onLabel="Si"
+                                                       value='#{tourCreateManager.tour.manejaVehiculo}'/>
+                                <p:outputLabel for="buceo" value="Buceo"/>
+                                <p:selectBooleanButton id="buceo"
+                                                       styleClass='defaultButton'
+                                                       offLabel="No" onLabel="Si"
+                                                       value='#{tourCreateManager.tour.buceo}'/>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <p:fieldset legend="Costos">
+                            <p:panelGrid columns="4" layout="grid" class="ui-noborder">
+                                <p:outputLabel for="costoUnitarioAdulto" value="Costo Unitario Adulto RVM/CUN"/>
+                                <p:inputText id='costoUnitarioAdulto' value="#{tourCreateManager.tour.costoUnitarioAdulto}"/>
+                                <p:outputLabel for="costoUnitarioNino" value="Costo Unitario Niño  RVM/CUN"/>
+                                <p:inputText id='costoUnitarioNino' value="#{tourCreateManager.tour.costoUnitarioNino}"/>
+                                <p:outputLabel for="costoUnitarioAdultoCZM" value="Costo Unitario Adulto CZM"/>
+                                <p:inputText id='costoUnitarioAdultoCZM' value="#{tourCreateManager.tour.costoUnitarioAdultoCZM}"/>
+                                <p:outputLabel for="costoUnitarioNinoCZM" value="Costo Unitario Niño  CZM"/>
+                                <p:inputText id='costoUnitarioNinoCZM' value="#{tourCreateManager.tour.costoUnitarioNinoCZM}"/>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <div class='text-right'>
+                            <p:commandButton id="saveButton"
+                                             styleClass="defaultButton verifyButton"
+                                             actionListener="#{tourCreateManager.create()}"
+                                             icon="ui-icon ui-icon-disk"
+                                             value="Guardar" update="generalInputPanel growl">
+                                <p:confirm header="Confirmar"
+                                           message="¿Agregar a base de datos? "
+                                           icon="fas fa-exclamation-triangle"/>
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </p:outputPanel>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form>
+            <p:menubar>
+                <p:menuitem style="padding-right: 15px;" outcome="zone_select" icon="fa fa-edit" value="Zone Selection">
+                    <f:param name="display" value="dt"/>
+                    <f:param name="id" value="#{sessionInfo.currentUser.login}"/>
+                </p:menuitem>
+                <p:menuitem style="padding-right: 15px;" outcome="repview" icon="fa fa-list-ol" value="Representatives">
+                    <f:param name="display" value="dt"/>
+                </p:menuitem>
+                <p:menuitem style="padding-right: 15px;" outcome="zoneview" icon="fa fa-map-marker" value="Zones">
+                    <f:param name="display" value="dt"/>
+                </p:menuitem>
+                <p:menuitem style="padding-right: 15px;" outcome="zonereview" icon="fa fa-th-list" value="Zone Review">
+                    <f:param name="display" value="dt"/>
+                </p:menuitem>
+                <p:menuitem style="padding-right: 15px;" outcome="repedit" icon="fa fa-gears" value="My Account">
+                    <f:param name="display" value="dt"/>
+                    <f:param name="id" value="#{sessionInfo.currentUser.login}"/>
+                </p:menuitem>
+                <p:menuitem style="padding-right: 15px;" outcome="repview_m" icon="fa fa-list-alt" value="Mobile View"/>
+                <p:menuitem style="position:absolute; right: 6px;" action="#{logoutManager.invalidateSession()}"                                         
+                            icon="fa fa-sign-out" value="Logout"/>
+            </p:menubar>
+        </h:form>
+    </cc:implementation>
+</html>

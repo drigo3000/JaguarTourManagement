@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:res="http://xmlns.jcp.org/jsf/composite/ezcomp/reservations"
+      xmlns:general="http://xmlns.jcp.org/jsf/composite/ezcomp/general">
+    <ui:composition template="/WEB-INF/includes/morpheus/template_search_horizontal.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Reservaciones" outcome="/priv/reservations/list" />
+                    <p:menuitem value="Efectivas" outcome="/priv/reservations/efectivas"/>
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="searchform">
+            <div class='card'>
+                <h5>Búsqueda</h5>
+                <p:panelGrid columns="1" layout="grid"
+                             styleClass="ui-panelgrid-blank grid-pad" style="margin-top:10px">
+                    <p:outputLabel value="DE:"/>
+                    <general:localDateSelect value="#{reservacionesEfectivasController.from}"/>
+                    <p:outputLabel value="HASTA:"/>
+                    <general:localDateSelect value="#{reservacionesEfectivasController.to}"/>
+                    <p:commandButton id="searchButton"
+                                     icon="fa fa-search"
+                                     value="Búscar"
+                                     update="dataTableOutputPanel growl"
+                                     actionListener="#{reservacionesEfectivasController.search}"/>
+                </p:panelGrid>
+            </div>
+
+            <p:defaultCommand target="searchButton"/>
+        </ui:define>
+
+        <ui:define name="searchresults">
+            <p:outputPanel id="dataTableOutputPanel">
+                <div class='card'>
+                    <h:panelGroup rendered="#{empty reservacionesEfectivasController.reservas}">
+                        <h5>No se ha encontrado ningun resultado</h5>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{not empty reservacionesEfectivasController.reservas}">
+                        <h5>Resultados</h5>
+                        <res:reservationTotals/>
+                        <p:scrollPanel mode="native">
+                            <ui:include src="includes/_listaReporteEfectivas.xhtml"/>
+                        </p:scrollPanel>
+                    </h:panelGroup>
+                </div>
+            </p:outputPanel>
+        </ui:define>
+    </ui:composition>
+</html>
+

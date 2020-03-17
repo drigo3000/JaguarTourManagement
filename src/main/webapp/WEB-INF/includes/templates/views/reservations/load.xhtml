@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-tabs navbar-default nav-justified">
+                <li><p:link outcome="list">List</p:link></li>
+            </ul>
+            <p:spacer height="15px"/>
+            <h:form enctype="multipart/form-data">
+                <p:fileUpload id="fileUploader"
+                              auto="true"
+                              update="growl"
+                              allowTypes="/(\.|\/)(xls|xlsx|xlsm)$/i"
+                              multiple="false"
+                              fileUploadListener="#{reservationsUploader.uploadRecords}"
+                              mode="advanced"></p:fileUpload>
+                <p:spacer height="25px"/>
+            </h:form>
+            <div class="alert alert-info">
+                <p><b>The Sales file</b> must be an excel file that has the following format:</p>
+                <ul>
+                    <li><b>Tab name: </b>Must be <i>RESERVATIONS</i></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</html>
+

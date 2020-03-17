@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:general="http://xmlns.jcp.org/jsf/composite/ezcomp/general"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Agencias" outcome="/priv/agency/list" />
+                    <p:menuitem value="Concentrado Rendimiento" outcome="/priv/agency/concentrado" />
+                </p:breadCrumb>
+            </h:form>
+
+        </ui:define>
+        <ui:define name="content">
+            <h:form>
+                <p:panelGrid columns="7" class="ui-noborder">
+                    <p:outputLabel value="De"/>
+                    <general:localDateSelect value='#{agenciaRendimientoController.from}'/>
+                    <p:outputLabel value="Hasta"/>
+                    <general:localDateSelect value='#{agenciaRendimientoController.to}'/>
+                    <p:outputLabel value="Incentivo Por Pax"/>
+                    <p:inputNumber value="#{agenciaRendimientoController.incentivoPax}"
+                                   decimalPlaces="2"
+                                   minValue="0"
+                                   decimalSeparator="."
+                                   thousandSeparator=","
+                                   symbol="$"/>
+                    <p:commandButton value='Buscar'
+                                     icon='fa fa-search'
+                                     update="dataTableOutputPanel growl"
+                                     actionListener="#{agencyPerformanceDashboard.initAgenciesInfo()}"/>
+                </p:panelGrid>
+                <p:contextMenu for="dataTableContainer">
+                    <p:menuitem value="Rendimiento"
+                                oncomplete="PF('rendimientoDialog').show()"
+                                icon="fa fa-search"/>
+                </p:contextMenu>
+                <p:outputPanel id="dataTableOutputPanel">
+                    <p:outputPanel id="dataTableContainer">
+                        <p:dataTable value="#{agencyPerformanceDashboard.concentradoAgencias}"
+                                     selection="#{agencyPerformanceDashboard.concentradoAdencia}"
+                                     rowKey="#{agencyPerformanceDashboard.concentradoAdencia.agencia.id}#{agencyPerformanceDashboard.concentradoAdencia.sucursal}"
+                                     selectionMode="single"
+                                     var="concentrado">
+                            <p:column headerText="Agencia"
+                                      sortBy="#{concentrado.agencia.name}">
+                                <h:outputText value="#{concentrado.agencia.name}"/>
+                            </p:column>
+                            <p:column headerText="Sucursal" sortBy="#{concentrado.sucursal}">
+                                <h:outputText value="#{concentrado.sucursal}"/>
+                            </p:column>
+                            <p:column headerText="Pax" styleClass="column50 centerAligned" sortBy="#{concentrado.pax}">
+                                <h:outputText value="#{concentrado.pax}"/>
+                            </p:column>
+                            <p:column headerText="Ingreso Bruto"
+                                      sortBy="#{concentrado.ingresoBruto}"
+                                      styleClass="column80 centerAligned">
+                                <h:outputText value="#{concentrado.ingresoBruto}">
+                                    <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                </h:outputText>
+                                <f:facet name="footer">
+                                    <h:outputText value="#{agencyPerformanceDashboard.sumaTotalIngresoBruto(agencyPerformanceDashboard.concentradoAgencias)}">
+                                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                    </h:outputText>
+                                </f:facet>
+                            </p:column>
+                            <p:column headerText="Costo Total"
+                                      sortBy="#{concentrado.costoTotal}"
+                                      styleClass="column80 centerAligned">
+                                <h:outputText value="#{concentrado.costoTotal}">
+                                    <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                </h:outputText>
+                                <f:facet name="footer">
+                                    <h:outputText value="#{agencyPerformanceDashboard.sumaCostoTotal(agencyPerformanceDashboard.concentradoAgencias)}">
+                                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                    </h:outputText>
+                                </f:facet>
+                            </p:column>
+                            <p:column headerText="%"
+                                      sortBy="#{concentrado.getPorcentajeCosto()}"
+                                      styleClass="column50 centerAligned">
+                                <h:outputText value="#{concentrado.getPorcentajeCosto()}">
+                                    <f:convertNumber type="percent" locale="#{localeSelectorManager.locale}"
+                                                     minFractionDigits="2"
+                                                     maxFractionDigits="2"/>
+                                </h:outputText>
+                                <f:facet name="footer">
+                                    <h:outputText value="#{agencyPerformanceDashboard.getPorcentajeCosto(agencyPerformanceDashboard.concentradoAgencias)}">
+                                        <f:convertNumber type="percent" locale="#{localeSelectorManager.locale}"
+                                                         minFractionDigits="2"
+                                                         maxFractionDigits="2"/>
+                                    </h:outputText>
+                                </f:facet>
+                            </p:column>
+                            <p:column headerText="Incentivo"
+                                      sortBy="#{concentrado.incentivoTotal}"
+                                      styleClass="column80 centerAligned">
+                                <h:outputText value="#{concentrado.incentivoTotal}">
+                                    <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                </h:outputText>
+                                <f:facet name="footer">
+                                    <h:outputText value="#{agencyPerformanceDashboard.sumaIncentivoTotal(agencyPerformanceDashboard.concentradoAgencias)}">
+                                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                    </h:outputText>
+                                </f:facet>
+                            </p:column>
+                            <p:column headerText="%"
+                                      sortBy="#{concentrado.getPorcentajeIncentivo()}"
+                                      styleClass="column50 centerAligned">
+                                <h:outputText value="#{concentrado.getPorcentajeIncentivo()}">
+                                    <f:convertNumber type="percent" locale="#{localeSelectorManager.locale}"
+                                                     minFractionDigits="2"
+                                                     maxFractionDigits="2"/>
+                                </h:outputText>
+                                <f:facet name="footer">
+                                    <h:outputText value="#{agencyPerformanceDashboard.getPorcentajeIncentivo(agencyPerformanceDashboard.concentradoAgencias)}">
+                                        <f:convertNumber type="percent" locale="#{localeSelectorManager.locale}"
+                                                         minFractionDigits="2"
+                                                         maxFractionDigits="2"/>
+                                    </h:outputText>
+                                </f:facet>
+                            </p:column>
+                            <p:column headerText="Rendimiento"
+                                      sortBy="#{concentrado.rendimiento}"
+                                      styleClass="column80 centerAligned">
+                                <h:outputText value="#{concentrado.rendimiento}">
+                                    <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                </h:outputText>
+                                <f:facet name="footer">
+                                    <h:outputText value="#{agencyPerformanceDashboard.sumaRendimientoTotal(agencyPerformanceDashboard.concentradoAgencias)}">
+                                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                    </h:outputText>
+                                </f:facet>
+                            </p:column>
+                            <p:column headerText="%"
+                                      sortBy="#{concentrado.getPorcentajeRendimiento()}"
+                                      styleClass="column50 centerAligned">
+                                <h:outputText value="#{concentrado.getPorcentajeRendimiento()}">
+                                    <f:convertNumber type="percent" locale="#{localeSelectorManager.locale}"
+                                                     minFractionDigits="2"
+                                                     maxFractionDigits="2"/>
+                                </h:outputText>
+                                <f:facet name="footer">
+                                    <h:outputText value="#{agencyPerformanceDashboard.getPorcentajeRendimiento(agencyPerformanceDashboard.concentradoAgencias)}">
+                                        <f:convertNumber type="percent" locale="#{localeSelectorManager.locale}"
+                                                         minFractionDigits="2"
+                                                         maxFractionDigits="2"/>
+                                    </h:outputText>
+                                </f:facet>
+                            </p:column>
+                        </p:dataTable>
+                    </p:outputPanel>
+                </p:outputPanel>
+                <p:dialog header="Rendimiento" widgetVar="rendimientoDialog"
+                          modal="true"
+                          showEffect="fade"
+                          hideEffect="fade"
+                          resizable="false">
+                    <p:outputPanel id="detail">
+                        DETALLES
+                    </p:outputPanel>
+                </p:dialog>
+
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

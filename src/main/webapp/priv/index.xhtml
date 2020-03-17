@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Dashboard" outcome="/priv/index" />
+                </p:breadCrumb>
+            </h:form>
+
+        </ui:define>
+        <ui:define name="content">
+            <ui:include src="/WEB-INF/includes/templates/views/dashboard/concentradoview.xhtml"/>
+            <ui:include src="/WEB-INF/includes/templates/views/dashboard/utility.xhtml"/>
+            <ui:include src="/WEB-INF/includes/templates/views/reservations/ultimasreservas.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:general='http://xmlns.jcp.org/jsf/composite/ezcomp/general'
+      xmlns:agency='http://xmlns.jcp.org/jsf/composite/ezcomp/agency'
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/WEB-INF/includes/morpheus/template_search_horizontal.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Agencias" outcome="/priv/agency/list" />
+                    <p:menuitem value="Dashboard" outcome="/priv/agency/dashboard" />
+                </p:breadCrumb>
+            </h:form>
+
+        </ui:define>
+        <ui:define name="searchform">
+            <div class='card'>
+                <h5>Búsqueda</h5>
+                <p:panelGrid columns="1" layout="grid"
+                             styleClass="ui-panelgrid-blank grid-pad" style="margin-top:10px">
+                    <p:outputLabel value="Agencia"/>
+                    <agency:agencyAutocomplete value="#{agenciaRendimientoCompletoController.agency}"
+                                               required='true'
+                                               requiredMessage="Campo Agencia Requerido"/>
+                    <p:outputLabel value="De"/>
+                    <general:localDateSelect value='#{agenciaRendimientoCompletoController.from}'/>
+                    <p:outputLabel value="Hasta"/>
+                    <general:localDateSelect value='#{agenciaRendimientoCompletoController.to}'/>
+                    <p:outputLabel value="Incentivo Por Pax"/>
+                    <p:inputNumber value="#{agenciaRendimientoCompletoController.incentivoPax}"
+                                   decimalPlaces="2"
+                                   minValue="0"
+                                   decimalSeparator="."
+                                   thousandSeparator=","
+                                   symbol="$"/>
+                    <p:commandButton value='Buscar'
+                                     icon='fa fa-search'
+                                     update="dataTableOutputPanel growl"
+                                     actionListener="#{agenciaRendimientoCompletoController.search(agenciaRendimientoCompletoController.agency)}"/>
+                </p:panelGrid>
+            </div>
+        </ui:define>
+        <ui:define name="searchresults">
+            <p:outputPanel id="dataTableOutputPanel">
+                <div class='card'>
+                    <h5>Rendimiento Por Agencia #{agenciaRendimientoCompletoController.agency.name}</h5>
+                    <p:repeat value="#{agenciaRendimientoCompletoController.contenedor.sucursales}"
+                              var="sucursal">
+                        <div class="card">
+                            <h5>#{sucursal.name}</h5>
+                            <p:repeat value="#{sucursal.zonas}" var="z">
+                                <p:dataTable value="#{z.registrosRendimiento}"
+                                             var='reg1'>
+                                    <f:facet name="header">
+                                        #{z.name}
+                                    </f:facet>
+                                    <p:column headerText="Servicio">
+                                        <h:outputText value='#{reg1.servicio.name}'/>
+                                    </p:column>
+                                    <p:column headerText="Ad"  styleClass="column30 centerAligned">
+                                        <h:outputText value='#{reg1.paxAdultos}'/>
+                                        <f:facet name="footer">
+                                            <h:outputText value="#{agenciaRendimientoCompletoController.getAdultos(z.registrosRendimiento)}"/>
+                                        </f:facet>
+                                    </p:column>
+                                    <p:column headerText="Ni"  styleClass="column30 centerAligned">
+                                        <h:outputText value='#{reg1.paxNinos}'/>
+                                        <f:facet name="footer">
+                                            <h:outputText value="#{agenciaRendimientoCompletoController.getNinos(z.registrosRendimiento)}"/>
+                                        </f:facet>
+                                    </p:column>
+                                    <p:column headerText="Ingreso Bruto Adultos"
+                                              rendered="false"
+                                              styleClass="column100 centerAligned">
+                                        <h:outputText value='#{reg1.getIngresoBrutoAdulto()}'>
+                                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Ingreso Bruto Niños"
+                                              rendered="false"
+                                              styleClass="column100 centerAligned">
+                                        <h:outputText value='#{reg1.getIngresoBrutoNino()}'>
+                                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Ingreso Total Bruto" styleClass="column100 centerAligned">
+                                        <h:outputText value='#{reg1.getIngresoTotalBruto()}'>
+                                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                        </h:outputText>
+                                        <f:facet name="footer">
+                                            <h:outputText value="#{agenciaRendimientoCompletoController.sumaIngresoTotalBruto(z.registrosRendimiento)}">
+                                                <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                            </h:outputText>
+                                        </f:facet>
+                                    </p:column>
+                                    <p:column headerText="Costo Unitario Adulto"
+                                              rendered='false'
+                                              styleClass="column100 centerAligned">
+                                        <h:outputText value="#{reg1.servicio.costoUnitarioAdulto}">
+                                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Costo Unitario Niño"
+                                              rendered='false'
+                                              styleClass="column100 centerAligned">
+                                        <h:outputText value="#{reg1.servicio.costoUnitarioNino}">
+                                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                            <br/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Costo Total" styleClass="column100 centerAligned">
+                                        <h:outputText value="#{reg1.getCostoTotalUSD()}">
+                                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                        </h:outputText>
+                                        <f:facet name="footer">
+                                            <h:outputText value="#{agenciaRendimientoCompletoController.sumaCostoTotal(z.registrosRendimiento)}">
+                                                <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                            </h:outputText>
+                                            <br/>
+                                            <h:outputText value="#{agenciaRendimientoCompletoController.getPorcentajeCosto(z.registrosRendimiento)}">
+                                                <f:convertNumber type="percent" locale="#{localeSelectorManager.locale}"
+                                                                 minFractionDigits="2"
+                                                                 maxFractionDigits="2"/>
+                                            </h:outputText>
+                                        </f:facet>
+                                    </p:column>
+                                    <p:column headerText="Inc" styleClass="column100 centerAligned">
+                                        <h:outputText value="#{reg1.getTotalIncentivo(agenciaRendimientoCompletoController.incentivoPax)}">
+                                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                        </h:outputText>
+                                        <f:facet name="footer">
+                                            <h:outputText value="#{agenciaRendimientoCompletoController.sumaIncentivoTotal(z.registrosRendimiento)}">
+                                                <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                            </h:outputText>
+                                            <br/>
+                                            <h:outputText value="#{agenciaRendimientoCompletoController.getPorcentajeIncentivo(z.registrosRendimiento)}">
+                                                <f:convertNumber type="percent" locale="#{localeSelectorManager.locale}"
+                                                                 minFractionDigits="2"
+                                                                 maxFractionDigits="2"/>
+                                            </h:outputText>
+                                        </f:facet>
+                                    </p:column>
+                                    <p:column headerText="Rdto" styleClass="column100 centerAligned">
+                                        <h:outputText value="#{reg1.getRendimiento()}">
+                                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                        </h:outputText>
+                                        <f:facet name="footer">
+                                            <h:outputText value="#{agenciaRendimientoCompletoController.sumaRendimientoTotal(z.registrosRendimiento)}">
+                                                <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                            </h:outputText>
+                                            <br/>
+                                            <h:outputText value="#{agenciaRendimientoCompletoController.getPorcentajeRendimiento(z.registrosRendimiento)}">
+                                                <f:convertNumber type="percent" locale="#{localeSelectorManager.locale}"
+                                                                 minFractionDigits="2"
+                                                                 maxFractionDigits="2"/>
+                                            </h:outputText>
+                                        </f:facet>
+                                    </p:column>
+                                </p:dataTable>
+
+                            </p:repeat>
+                        </div>
+                    </p:repeat>
+                </div>
+            </p:outputPanel>
+        </ui:define>
+    </ui:composition>
+</html>
+

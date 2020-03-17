@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/WEB-INF/includes/morpheus/template_search.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Servicios" outcome="/priv/tour/list" />
+                    <p:menuitem value="Filtro" outcome="/priv/tour/list"/>
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="searchform">
+            <p:panel header="Búsqueda">
+                <p:panelGrid columns="1"
+                             columnClasses="width80"
+                             layout="grid"
+                             styleClass="ui-panelgrid-blank grid-pad" style="margin-top:10px">
+                    <p:outputLabel value="Nombre"/>
+                    <p:inputText value="#{tourListManager.name}"/>
+                    <p:commandButton icon="fa fa-search"
+                                     styleClass='defaultButton'
+                                     actionListener="#{tourListManager.search}"
+                                     update="dataTableOutputPanel growl"
+                                     value="Buscar"/>
+                </p:panelGrid>
+            </p:panel>
+        </ui:define>
+        <ui:define name="searchresults">
+            <p:outputPanel id="dataTableOutputPanel">
+                <p:panel header="Filtro Servicios" rendered="#{not empty tourListManager.agencies}">
+                    <p:dataTable value="#{tourListManager.agencies}" var="item" reflow="true">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Name"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+                        <p:column class="mediumColumn centerAligned">
+                            <f:facet name="header">
+                                <h:outputText value="Grupo"/>
+                            </f:facet>
+                            <h:outputText value="#{item.grupo}"/>
+                        </p:column>
+                        <p:column class="smallColumn">
+                            <f:facet name="header">
+                                <h:outputText value="Abv"/>
+                            </f:facet>
+                            <h:outputText value="#{item.inicialesConfirma}"/>
+                        </p:column>
+                        <p:column class="smallColumn centerAligned">
+                            <f:facet name="header">
+                                <h:outputText value="Buceo"/>
+                            </f:facet>
+                            <h:panelGroup rendered="#{item.buceo}">
+                                <i class="fas fa-check"></i>
+                            </h:panelGroup>
+                        </p:column>
+                        <p:column class="smallColumn centerAligned">
+                            <f:facet name="header">
+                                <h:outputText value="Vehiculo"/>
+                            </f:facet>
+                            <h:panelGroup rendered="#{item.manejaVehiculo}">
+                                <i class="fas fa-check"></i>
+                            </h:panelGroup>
+                        </p:column>
+                        <p:column class="smallColumn centerAligned">
+                            <f:facet name="header">
+                                <h:outputText value="Activo"/>
+                            </f:facet>
+                            <h:panelGroup rendered="#{item.active}">
+                                <i class="fas fa-check"></i>
+                            </h:panelGroup>
+                        </p:column>
+                        <p:column styleClass="singleOptionColumn">
+                            <p:link outcome="edit"
+                                    styleClass="ui-button ui-widget ui-state-default ui-corner-all cucuButton" >
+                                <i class="fa fa-mouse-pointer"></i><f:param name="id" value="#{item.id}"/>
+                            </p:link>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+
+            </p:outputPanel>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:hotel="http://xmlns.jcp.org/jsf/composite/ezcomp/hotel"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <div class='card'>
+            <h5>Horarios Por Hotel</h5>
+            <h:form>
+                <p:panelGrid columns="2" class="ui-noborder">
+                    <hotel:hotelAutocomplete value="#{hotelHorariosController.hotel}">
+                        <p:ajax event="itemSelect" process="@this"
+                                update='@(.hotelHorariosPanel)'
+                                listener="#{hotelHorariosController.search()}"/>
+                    </hotel:hotelAutocomplete>
+                    <p:commandButton value='Buscar' icon="fa fa-search"
+                                     update='@(.hotelHorariosPanel)'
+                                     actionListener="#{hotelHorariosController.search()}"/>
+                </p:panelGrid>
+            </h:form>
+
+            <p:outputPanel styleClass='hotelHorariosPanel'>
+                <p:scrollPanel style="height: 300px" mode='native'>
+                    <p:dataTable value="#{hotelHorariosController.horarios}"
+                                 var="horario">
+                        <f:facet name="header">
+                            Horarios
+                        </f:facet>
+                        <p:column headerText="Servicio">
+                            <h:outputText value="#{horario.turno.tour.name}"/>
+                        </p:column>
+                        <p:column headerText="Turno">
+                            <h:outputText value="#{horario.turno.name}"/>
+                        </p:column>
+                        <p:column styleClass="column40 text-center" headerText="Pickup">
+                            <h:outputText value="#{horario.pickup}"/>
+                        </p:column>
+                        <p:column styleClass="column60 text-center" headerText="Fecha Cambio">
+                            <h:panelGroup rendered="#{not empty horario.turno.fechaDeCambio}">
+                                <h:outputText value="#{horario.turno.fechaDeCambio.dayOfMonth}/"/>
+                                <h:outputText value="#{horario.turno.fechaDeCambio.monthValue}/"/>
+                                <h:outputText value="#{horario.turno.fechaDeCambio.year}"/>
+                            </h:panelGroup>
+
+                        </p:column>
+                        <p:column styleClass="column40 text-center" headerText="Nuevo Pickup">
+                            <h:outputText value="#{horario.nuevoPickup}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:scrollPanel>
+
+            </p:outputPanel>
+
+        </div>
+    </cc:implementation>
+</html>

@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="value" type="com.swevolution.cucurumbe.model.entities.Agency"
+                      displayName="value" required="true"/>
+        <cc:attribute name="required" type="java.lang.Boolean"
+                      displayName="required" required="false" default="false"/>
+        <cc:attribute name="requiredMessage" type="java.lang.String"
+                      displayName="requiredMessage" required="false" default="Campo requerido"/>
+        <cc:clientBehavior
+            name="itemSelect"
+            event="itemSelect"
+            targets="#{cc.attrs.id}"
+            />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:autoComplete id="#{cc.attrs.id}"
+                        required="#{cc.attrs.required}"
+                        requiredMessage="#{cc.attrs.requiredMessage}"
+                        value="#{cc.attrs.value}"
+                        converter="#{agencyConverter}"
+                        title="Agencia"
+                        var="agenciaItem"
+                        minQueryLength="3"
+                        itemLabel="#{agenciaItem.name}"
+                        itemValue="#{agenciaItem}"
+                        completeMethod="#{agencyAutocompleteController.filterAgency}">
+            <p:column>
+                <h:outputText value='#{agenciaItem.name}'/>
+            </p:column>
+            <p:column styleClass='column20 centerAligned'>
+                <h:panelGroup rendered="#{not agenciaItem.active}">
+                    <i style='color: red;' class="fas fa-power-off"></i>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{agenciaItem.active}">
+                    <i style='color: green;' class="fas fa-power-off"></i>
+                </h:panelGroup>
+            </p:column>
+        </p:autoComplete>
+    </cc:implementation>
+</html>

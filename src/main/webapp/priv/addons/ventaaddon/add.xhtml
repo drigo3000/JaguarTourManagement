@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:addon='http://xmlns.jcp.org/jsf/composite/ezcomp/addons'
+      xmlns:res='http://xmlns.jcp.org/jsf/composite/ezcomp/reservations'
+      xmlns:user='http://xmlns.jcp.org/jsf/composite/ezcomp/users'
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Venta AddOns" outcome="/priv/addons/ventaaddon/list" />
+                    <p:menuitem value="Agregar" outcome="/priv/addons/ventaaddon/add" />
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="content">
+            <h:form>
+                <p:outputPanel styleClass="outputPanel">
+                    <div class="card">
+                        <h5>Registro Venta</h5>
+                        <p:panelGrid columns="2"
+                                     layout='grid'
+                                     columnClasses="labelColumn, inputColumn"
+                                     styleClass="fullwidth ui-noborder">
+                            <p:outputLabel value="Add On"/>
+                            <addon:addOnAutocomplete value="#{ventaAddOnCreateController.entity.addOn}"/>
+                            <p:outputLabel value="Reserva"/>
+                            <res:reservationAutocomplete value="#{ventaAddOnCreateController.entity.reserva}"/>
+                            <p:outputLabel value="Guia"/>
+                            <user:guiaAutocomplete value="#{ventaAddOnCreateController.entity.guia}"/>
+                            <p:outputLabel value="Cantidad"/>
+                            <p:inputText required="true"
+                                         requiredMessage="Campo cantidad requerido"
+                                         value="#{ventaAddOnCreateController.entity.cantidad}">
+                                <p:ajax process="@this"/>
+                            </p:inputText>
+
+
+                            <h:panelGroup/>
+                            <p:commandButton value='Guardar' icon="fa fa-save"
+                                             styleClass='defaultButton'
+                                             actionListener="#{ventaAddOnCreateController.edit}"
+                                             update='@(.outputPanel) growl'>
+                                <p:confirm header="Guardar en base de datos"
+                                           message="Guardar en base de datos?"/>
+                            </p:commandButton>
+                        </p:panelGrid>
+                    </div>
+                </p:outputPanel>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:users="http://xmlns.jcp.org/jsf/composite/ezcomp/users">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav>
+                <ul class="nav nav-tabs navbar-default nav-justified">
+                    <li><p:link rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}" outcome="add">
+                            <i class="fas fa-plus"></i>&nbsp;New</p:link></li>
+                    <li><p:link rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}" outcome="load"><i class="fas fa-upload"></i>&nbsp;Upload</p:link></li>
+                </ul>
+            </nav>
+            <h:form styleClass="form-horizontal">
+                <h1 align="center"><i class="fas fa-users"></i>&nbsp;User List</h1>
+                <div class="form-group row">
+                    <div class="col-md-9 spaced-form-group">
+                        <span class="small">Name</span><br/>
+                        <p:inputText styleClass="form-control"
+                                     placeholder="Representative Name"
+                                     value="#{userListView.name}"/>
+
+                    </div>
+                    <div class="col-md-3 spaced-form-group">
+                        <span class="small">&nbsp;</span><br/>
+                        <p:commandLink id="submitButton"
+                                       styleClass="form-control btn btn-default"
+                                       actionListener="#{userListView.search}"
+                                       update="dataTableContainer growl">
+                            <i class="fa fa-search"></i>&nbsp;Search
+                        </p:commandLink>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4 spaced-form-group">
+                        <h:selectOneMenu id="operation" value="#{userListView.operation}"
+                                         required="true"
+                                         styleClass="form-control"
+                                         requiredMessage="Operation field required">
+                            <f:selectItem itemLabel="Select one option" itemValue="#{null}"
+                                          noSelectionOption="true"/>
+                            <f:selectItems value="#{operationsLocatorBean.operations}" var="op"
+                                           itemLabel="#{op}" itemValue="#{op}"/>
+                        </h:selectOneMenu>
+
+                    </div>
+                    <div class="col-md-4 spaced-form-group">
+                        <h:selectOneMenu value="#{userListView.userType}" styleClass="form-control">
+                            <f:selectItem itemLabel="GUEST" itemValue="GUEST"/>
+                            <f:selectItem itemLabel="REPRESENTATIVE" itemValue="REPRESENTATIVE"/>
+                            <f:selectItem itemLabel="TEAM_LEADER" itemValue="TEAM_LEADER"/>
+
+                            <f:selectItem itemLabel="FIT" itemValue="INDIVIDUAL"/>
+                            <f:selectItem itemLabel="Operative" itemValue="OPERATIVE"/>
+                            <f:selectItem itemLabel="Special Projects" itemValue="SPECIAL_PROJECTS"/>
+
+                            <f:selectItem itemLabel="OPERADOR" itemValue="OPERADOR" />
+                            <f:selectItem itemLabel="VIP" itemValue="VIP" />
+                            <f:selectItem itemLabel="QA" itemValue="QA"/>
+                            <f:selectItem itemLabel="QA Continuous Improvement Supervisor" itemValue="QA_CONTINUOUS_IMPROVEMENT_SUPERVISOR"/>
+                            <f:selectItem itemLabel="QA Customer Centric Manager" itemValue="QA_CUSTOMER_CENTRIC_MANAGER"/>
+
+                            <f:selectItem itemLabel="Airport Customer Service SubManager" itemValue="AIRPORT_CUSTOMER_SERVICE_SUBMANAGER" />
+                            <f:selectItem itemLabel="Airport Customer Service Manager" itemValue="AIRPORT_CUSTOMER_SERVICE_MANAGER"/>
+                            <f:selectItem itemLabel="Airport Transportation Manager" itemValue="AIRPORT_TRANSPORTATION_MANAGER"/>
+                            <f:selectItem itemLabel="Airport Operations And Service Director" itemValue="AIRPORT_OPERATIONS_AND_SERVICE_DIRECTOR"/>
+
+                            <f:selectItem itemLabel="SUPERVISOR" itemValue="SUPERVISOR"/>
+                            <f:selectItem itemLabel="MANAGER" itemValue="MANAGER"/>
+                            <f:selectItem itemLabel="DIRECTOR" itemValue="DIRECTOR"/>
+                            <f:selectItem  itemLabel="WEBADMIN" itemValue="WEBADMIN"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="col-md-4 spaced-form-group">
+                        <h:selectOneMenu value="#{userListView.active}"
+                                         disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.SUPERVISOR}"
+                                         styleClass="form-control">
+                            <f:selectItem itemValue="false" itemLabel="False"/>
+                            <f:selectItem itemValue="true" itemLabel="True"/>
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+
+                <p:outputPanel id="dataTableContainer">
+                    <p:repeat id="tableData" value="#{userSearchBean.users}"
+                              var="rep">
+                        <users:userListItem user="#{rep}" outcome="profile"/>
+                    </p:repeat>
+                </p:outputPanel>
+                <p:defaultCommand target="submitButton"/>
+            </h:form>
+        </div>
+    </div>
+</html>
+

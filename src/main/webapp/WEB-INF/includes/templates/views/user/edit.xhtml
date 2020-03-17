@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:users="http://xmlns.jcp.org/jsf/composite/ezcomp/users"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head></h:head>
+    <ul class="nav nav-tabs navbar-default nav-justified">
+        <h:panelGroup rendered="#{not (request.isUserInRole('GUEST')) }">
+            <li>
+                <p:link outcome="/priv/user/performance">
+                    <i class="fas fa-chart-line"></i>Performance
+                    <f:param name="id" value="#{request.getParameter('id')}"/>
+                </p:link>
+            </li>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{not (request.isUserInRole('GUEST') or request.isUserInRole('REPRESENTATIVE')) }">
+            <li>
+                <p:link outcome="/priv/user/profile">
+                    <i class="fas fa-user"></i>&nbsp;Profile
+                    <f:param name="id" value="#{request.getParameter('id')}"/>
+                </p:link>
+            </li>
+        </h:panelGroup>
+        <li>
+            <p:link outcome="reports/list"><i class="fas fa-file-alt"></i>&nbsp;History<f:param name="id" value="#{userViewController.user.login}"/></p:link>
+        </li>
+    </ul>
+    <h1 align="center"><i class="fas fa-user"></i>&nbsp;#{userViewController.user.name}</h1>
+    <hr/>
+    <users:UserEditProfile user="#{userViewController.user}"
+                           viewOnly="false"
+                           isNew="false"
+                           saveButtonListener="#{userViewController.edit()}"/>
+</html>

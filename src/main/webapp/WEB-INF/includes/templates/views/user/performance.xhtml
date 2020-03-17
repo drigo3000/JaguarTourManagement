@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <div class="container">
+        <ul class="nav nav-tabs navbar-default nav-justified">
+            <h:panelGroup rendered="#{sessionInfo.userSecurityClearance gt SecurityRoles.GUEST}">
+                <li>
+                    <p:link outcome="/priv/user/reports/list">
+                        <i class="fas fa-file-alt"></i>&nbsp;History
+                        <f:param name="id" value="#{userViewController.user.login}"/>
+                    </p:link>
+                </li>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.REPRESENTATIVE }">
+                <li>
+                    <p:link outcome="/priv/user/profile">
+                        <i class="fas fa-user"></i>&nbsp;Profile
+                        <f:param name="id" value="#{request.getParameter('id')}"/>
+                    </p:link>
+                </li>
+            </h:panelGroup>
+        </ul>
+        <h2 class="text-center"><i class="fas fa-compass"></i>&nbsp;#{userViewController.user.login} - Performance</h2>
+        <h:form>
+            <div class="row">
+                <div class="col-md-6">
+                    <p:chart type="line" model="#{repPerformanceChartControl.effectivenessModel}" responsive="true" style="height:340px;"  widgetVar="effectivenesschart"/>
+                </div>
+                <div class="col-md-6">
+                    <p:chart type="line" model="#{repPerformanceChartControl.salesModel}" responsive="true" style="height:340px;"  widgetVar="saleschart"/>
+                </div>
+                <div class="col-md-6">
+                    <p:chart type="line" model="#{repPerformanceChartControl.direccionamientoModel}" responsive="true" style="height:340px;"  widgetVar="dirchart"/>
+                </div>
+                <div class="col-md-6">
+                    <p:chart type="line" model="#{repPerformanceChartControl.positionModel}" responsive="true" style="height:340px;"  widgetVar="positionchart"/>
+                </div>
+            </div>
+        </h:form>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="list-group">
+                    <p:repeat value="#{repPerformanceChartControl.records}" var="record">
+                        <div class="list-group-item">
+                            <h4>
+                                Position: #{record.position}<br/>
+                                Effectiveness: <h:outputText value="#{record.average}"><f:convertNumber type="percent" minFractionDigits="2" maxFractionDigits="2"/></h:outputText><br/>
+                                Sales: <h:outputText value="#{record.sales}"><f:convertNumber type="currency" currencySymbol="$" minFractionDigits="2" maxFractionDigits="2"/></h:outputText><br/>
+                                Direccionamiento: <h:outputText value="#{record.direccionamiento}"><f:convertNumber type="percent" minFractionDigits="2" maxFractionDigits="2"/></h:outputText><br/>
+                                Selected #{record.zone.name}
+
+                            </h4>
+                            <p>Dates:
+                                <h:outputText value="#{record.zone.zoneAssignment.from}">
+                                    <f:convertDateTime type="date" dateStyle="medium" locale="#{localeSelectorManager.locale}"/>
+                                </h:outputText>
+                                -
+                                <h:outputText value="#{record.zone.zoneAssignment.to}">
+                                    <f:convertDateTime type="date" dateStyle="medium" locale="#{localeSelectorManager.locale}"/>
+                                </h:outputText>
+                            </p>
+                        </div>
+                    </p:repeat>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</html>

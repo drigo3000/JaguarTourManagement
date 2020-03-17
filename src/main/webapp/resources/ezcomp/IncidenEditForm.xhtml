@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="incident" type="com.swevolution.cucurumbe.model.entities.Incident" displayName="incident" required="true"/>
+        <cc:attribute name="saveButtonListener" required="true" method-signature="void actionListener(javax.faces.event.ActionEvent)" />  
+        <cc:attribute name="responsibles" type="java.util.List" required="true" />
+        <cc:attribute name="hotels" type="java.util.List" required="true" />
+        <cc:attribute name="representatives" type="java.util.List" required="true" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form>
+            <div class="form-group row">
+                <p:outputLabel value="Date Received" for="fechaRecepcion" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-3">
+                    <p:calendar id="fechaRecepcion" value="#{cc.attrs.incident.fechaRecepcion}"
+                                title="FechaRecepcion" required="true" requiredMessage="The FechaRecepcion field is required."/>
+                </div>
+                <p:outputLabel value="Response from Area:" for="fechaRespuestaArea" styleClass="form-control-label col-sm-3"/>
+                <div class="col-sm-3">
+                    <p:calendar id="fechaRespuestaArea" value="#{cc.attrs.incident.fechaRespuestaArea}" 
+                                title="FechaRespuestaArea" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Date Closed" for="fechaCierre" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-3">
+                    <p:calendar id="fechaCierre" value="#{cc.attrs.incident.fechaCierre}" title="FechaCierre" />
+                </div>
+                <p:outputLabel value="Response Time" for="tiempoDeRespuesta" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-3">
+                    <p:calendar id="tiempoDeRespuesta" value="#{cc.attrs.incident.tiempoDeRespuesta}"
+                                pattern="HH:mm" timeOnly="true"
+                                title="TiempoDeRespuesta" required="true"
+                                requiredMessage="The TiempoDeRespuesta field is required."/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Status:" for="estatus" styleClass="form-control-label col-sm-3" />
+                <div class="col-sm-9">
+                    <p:selectOneMenu id="estatus" value="#{cc.attrs.incident.estatus}" 
+                                 styleClass="form-control"
+                                 title="status" required="true" 
+                                 requiredMessage="The Estatus field is required.">
+                        <f:selectItem itemValue="#{null}" noSelectionOption="true" itemLabel="Select One Option..."/>
+                    </p:selectOneMenu>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Responsible" for="responsable" styleClass="col-sm-3"/>
+                <div class="col-sm-9">
+                    <p:selectOneMenu id="responsable" 
+                                     converter="#{userConverter}" 
+                                     styleClass="form-control"
+                                     filter="true"
+                                     filterMatchMode="contains"
+                                     value="#{cc.attrs.incident.responsable}" >
+                        <f:selectItem itemValue="#{null}" noSelectionOption="true" itemLabel="Select One Option..."/>
+                        <f:selectItems value="#{cc.attrs.responsibles}"
+                                       var="user"
+                                       itemLabel="#{user.name}"
+                                       itemValue="#{user}"/>
+                    </p:selectOneMenu>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Reservation" for="reserva" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-9">
+                    <p:inputText id="reserva" value="#{cc.attrs.incident.reserva}" 
+                                 styleClass="form-control"
+                                 title="Reserva" required="true" requiredMessage="The Reserva field is required."/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Coupon" for="cupon" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-9">
+                    <p:inputText id="cupon" value="#{cc.attrs.incident.cupon}" 
+                                 styleClass="form-control"
+                                 title="Coupon" required="true" requiredMessage="The Cupon field is required."/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Cause" for="causa" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-9">
+                    <p:inputText id="causa" value="#{cc.attrs.incident.causa}"
+                                 styleClass="form-control"
+                                 title="Causa" required="true" requiredMessage="The Causa field is required."/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Action Taken" for="accionRealizada" styleClass="col-sm-3" />
+                <div class="col-sm-9">
+                    <p:inputText id="accionRealizada" value="#{cc.attrs.incident.accionRealizada}" 
+                                 styleClass="form-control"
+                                 title="AccionRealizada" required="true" requiredMessage="The AccionRealizada field is required."/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Parameter" for="parametro" styleClass="col-sm-3"/>
+                <div class="col-sm-9">
+                    <p:inputText id="parametro" value="#{cc.attrs.incident.parametro}" 
+                                 styleClass="form-control"
+                                 title="Parametro" required="true" requiredMessage="The Parametro field is required."/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <p:outputLabel value="Category" for="categoria" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-9">
+                    <p:inputText id="categoria" value="#{cc.attrs.incident.categoria}"
+                                 styleClass="form-control"
+                                 title="Categoria" required="true" requiredMessage="The Categoria field is required."/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Challenges" for="problematica" styleClass="col-sm-3 form-control-label" />
+                <div class="col-sm-9">
+                    <p:inputText id="problematica" value="#{cc.attrs.incident.problematica}"
+                                 styleClass="form-control"
+                                 title="Problematica" required="true" requiredMessage="The Problematica field is required."/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Action" for="accion" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-9">
+                    <p:inputText id="accion" value="#{cc.attrs.incident.accion}"
+                                 styleClass="form-control"
+                                 title="Accion" required="true" requiredMessage="The Accion field is required."/>
+                </div>
+            </div>                
+            <div class="form-group row">
+                <p:outputLabel value="Refund" for="reembolsoUSD" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-9">
+                    <p:inputText id="reembolsoUSD" value="#{cc.attrs.incident.reembolsoUSD}" 
+                                 styleClass="form-control"
+                                 title="ReembolsoUSD" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Responsibility" for="responsabilidad" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-9">
+                    <p:inputText id="responsabilidad" value="#{cc.attrs.incident.responsabilidad}" 
+                                 styleClass="form-control"
+                                 title="Responsabilidad" 
+                                 required="true" requiredMessage="The Responsabilidad field is required."/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Agency" for="agenciaMayorista" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-9">
+                    <p:inputText id="agenciaMayorista" value="#{cc.attrs.incident.agenciaMayorista}" 
+                                 styleClass="form-control"
+                                 title="AgenciaMayorista" required="true" requiredMessage="The AgenciaMayorista field is required."/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Hotel:" for="hotel" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-9">
+                    <p:selectOneMenu id="hotel" styleClass="form-control"
+                                     filter="true"
+                                     filterMatchMode="contains"
+                                     converter="#{hotelConverter}"
+                                     value="#{cc.attrs.incident.hotel}" >
+                        <f:selectItem itemValue="#{null}" noSelectionOption="true" itemLabel="Select One Option..."/>
+                        <f:selectItems value="#{cc.attrs.hotels}"
+                                       var="hotel"
+                                       itemLabel="#{hotel.name}"
+                                       itemValue="#{hotel}"/>
+                    </p:selectOneMenu>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Representative" for="representante" styleClass="form-control-label col-sm-3"/>
+                <div class="col-sm-9">
+                    <p:selectOneMenu id="representante" 
+                                     filter="true"
+                                     filterMatchMode="contains"
+                                     styleClass="form-control"
+                                     converter="#{userConverter}"
+                                     value="#{cc.attrs.incident.representante}" >
+                        <f:selectItem itemValue="#{null}" noSelectionOption="true" itemLabel="Select One Option..."/>
+                        <f:selectItems value="#{cc.attrs.representatives}"
+                                       var="rep"
+                                       itemLabel="#{rep.name}"
+                                       itemValue="#{rep}"/>
+                    </p:selectOneMenu>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Channel" for="canalDeVenta" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-9">
+                    <p:inputText id="canalDeVenta" value="#{cc.attrs.incident.canalDeVenta}" 
+                                 styleClass="form-control"
+                                 title="CanalDeVenta" required="true" requiredMessage="The CanalDeVenta field is required."/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Provider" for="proveedor" styleClass="col-sm-3 form-control-label"/>
+                <div class="col-sm-9">
+                    <p:inputText id="proveedor" value="#{cc.attrs.incident.proveedor}"
+                                 styleClass="form-control"
+                                 title="Proveedor" required="true" requiredMessage="The Proveedor field is required."/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Tour / Transfer" for="excursionTraslado" styleClass="form-control-label col-sm-3"/>
+                <div class="col-sm-9">
+                    <p:inputText id="excursionTraslado" value="#{cc.attrs.incident.excursionTraslado}"
+                                 styleClass="form-control"
+                                 title="ExcursionTraslado" required="true" requiredMessage="The ExcursionTraslado field is required."/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <p:outputLabel value="Reported" for="reporto" styleClass="form-control-label col-sm-3"/>
+                <div class="col-sm-9">
+                    <p:inputText id="reporto" value="#{cc.attrs.incident.reporto}" 
+                                 styleClass="form-control"
+                                 title="Reporto" required="true" requiredMessage="The Reporto field is required."/>
+                </div>
+            </div>        
+            <div class="form-group row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-9">                    
+                    <p:commandLink styleClass="btn btn-success" actionListener="#{cc.attrs.saveButtonListener}" 
+                                   update="@form">
+                        Save
+                    </p:commandLink>
+                    <p:messages showDetail="true"/>
+                    <p:growl showDetail="true"/>
+                </div>
+            </div>
+        </h:form>
+
+    </cc:implementation>
+</html>

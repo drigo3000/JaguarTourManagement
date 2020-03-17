@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:dataTable
+        id="listaReportePreliminar"
+        rowStyleClass="#{reservationsUtilityController.getRowClassPreliminar(res)}"
+        value="#{preliminaresFilterController.reservations}"
+        var="res">
+        <p:column rendered='false' styleClass="column30 centerAligned" headerText="Est." exportable="false">
+            <h:panelGroup id='cuponCanceladoIcon' rendered='#{res.cuponCancelado}'>
+                <i class="fas fa-square-full" style='color: rgb(255,0,0);'></i>
+                <p:tooltip for="cuponCanceladoIcon"  value="Cupon Cancelado"/>
+            </h:panelGroup>
+            <h:panelGroup id='noShowIcon' rendered="#{res.noShow}">
+                <i class="fas fa-square-full" style='color: rgb(0,255,0);'></i>
+                <p:tooltip for="noShowIcon"  value="No Show"/>
+            </h:panelGroup>
+            <h:panelGroup id='cuponPendienteIcon' rendered='#{res.cuponPendiente}'>
+                <i class="fas fa-square-full" style='color: rgb(255,116,0);'></i>
+                <p:tooltip for="cuponPendienteIcon"  value="Cupon Pendiente"/>
+            </h:panelGroup>
+            <h:panelGroup id='cuponDevueltoIcon' rendered='#{res.cuponDevuelto}'>
+                <i class="fas fa-square-full" style='color: rgb(199,144,0);'></i>
+                <p:tooltip for="cuponDevueltoIcon"  value="Cupon Devuelto"/>
+            </h:panelGroup>
+        </p:column>
+        <p:column headerText="ID" rendered='false' styleClass="column40 centerAligned">
+            <h:outputText value="#{res.id}"/>
+        </p:column>
+        <p:column styleClass="column150 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Creado"/>
+            </f:facet>
+            <h:outputText value="#{res.localDateCreated.dayOfMonth}"/>/<h:outputText value="#{res.localDateCreated.monthValue}"/>/<h:outputText value="#{res.localDateCreated.year}"/>&nbsp;&nbsp;
+            <h:outputText value="#{res.localDateCreated.hour}"/>:<h:outputText rendered="#{res.localDateCreated.minute lt 10}" value="0"/><h:outputText value="#{res.localDateCreated.minute}"/>
+        </p:column>
+        <p:column styleClass="column150 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Editado"/>
+            </f:facet>
+            <h:outputText value="#{res.localDateUpdated.dayOfMonth}"/>/<h:outputText value="#{res.localDateUpdated.monthValue}"/>/<h:outputText value="#{res.localDateUpdated.year}"/>&nbsp;&nbsp;
+            <h:outputText value="#{res.localDateUpdated.hour}"/>:<h:outputText rendered="#{res.localDateUpdated.minute lt 10}" value="0"/><h:outputText value="#{res.localDateUpdated.minute}"/>
+        </p:column>
+        <p:column styleClass="column70 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Operación"/>
+            </f:facet>
+            <h:outputText value="#{res.fechaOperacion.dayOfMonth}"/>/<h:outputText value="#{res.fechaOperacion.monthValue}"/>/<h:outputText value="#{res.fechaOperacion.year}"/>
+        </p:column>
+        <p:column
+            styleClass="column100 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Color"/>
+            </f:facet>
+            <h:panelGroup rendered="#{res.cuponCancelado}">
+                <h:outputText value="CUPONES CANCELADOS "/>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{res.noShow}">
+                <h:outputText value="NO SHOW"/>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{not res.cuponCancelado and not res.noShow}">
+                <h:outputText value="#{res.color}"/>
+            </h:panelGroup>
+        </p:column>
+        <p:column
+            styleClass="column100 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Sucursales"/>
+            </f:facet>
+            <h:outputText value="#{res.sucursales}"/>
+        </p:column>
+        <p:column styleClass="column200">
+            <f:facet name="header">
+                <h:outputText value="Servicio"/>
+            </f:facet>
+            <h:outputText value="#{res.servicio.name}"/>
+        </p:column>
+        <p:column rendered='false' styleClass="column30 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Tran"/>
+            </f:facet>
+            <h:panelGroup rendered="#{res.conTransportacion}">
+                Si
+            </h:panelGroup>
+        </p:column>
+        <p:column
+            styleClass="column40 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Zona"/>
+            </f:facet>
+            <h:outputText value="#{res.lugarReserva}"/>
+        </p:column>
+        <p:column styleClass="column80">
+            <f:facet name="header">
+                <h:outputText value="Reservó"/>
+            </f:facet>
+            <h:outputText value="#{res.quienGeneraReserva}"/>
+        </p:column>
+        <p:column rendered='false' styleClass="column200 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Usuario"/>
+            </f:facet>
+            <h:outputText value="#{res.quienReserva.name}"/>
+        </p:column>
+        <p:column styleClass="dateColumn centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Fecha de Venta"/>
+            </f:facet>
+            <h:outputText value="#{res.localDateCreated.dayOfMonth}"/>/<h:outputText value="#{res.localDateCreated.monthValue}"/>/<h:outputText value="#{res.localDateCreated.year}"/>
+        </p:column>
+        <p:column styleClass="column200">
+            <f:facet name="header">
+                <h:outputText value="Representante"/>
+            </f:facet>
+            <h:outputText value="#{res.representante.name}"/>
+        </p:column>
+        <p:column styleClass="column100 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Agencia"/>
+            </f:facet>
+            <h:outputText value="#{res.agencia.name}"/>
+        </p:column>
+        <p:column
+            styleClass="column40 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Adultos"/>
+            </f:facet>
+            <f:facet name="footer">
+                <h:outputText value="#{reservationTotalsController.adultos}"/>
+            </f:facet>
+            <h:outputText value="#{res.adulto}"/>
+        </p:column>
+        <p:column
+            styleClass="column40 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Niños"/>
+            </f:facet>
+            <f:facet name="footer">
+                <h:outputText value="#{reservationTotalsController.ninos}"/>
+            </f:facet>
+            <h:outputText value="#{res.nino}"/>
+        </p:column>
+        <p:column
+            styleClass="column40 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Infantes"/>
+            </f:facet>
+            <f:facet name="footer">
+                <h:outputText value="#{reservationTotalsController.infantes}"/>
+            </f:facet>
+            <h:outputText value="#{res.infante}"/>
+        </p:column>
+        <p:column
+            styleClass="column40 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Incentivos"/>
+            </f:facet>
+            <f:facet name="footer">
+                <h:outputText value="#{reservationTotalsController.cortesias}"/>
+            </f:facet>
+            <h:outputText value="#{res.adultoCortesia}"/>
+        </p:column>
+        <p:column
+            styleClass="column80 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Ref. Incentivo"/>
+            </f:facet>
+            <h:outputText value="#{res.referenciaCortesia}"/>
+        </p:column>
+        <p:column
+            styleClass="column30 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Buceo Ad."/>
+            </f:facet>
+            <f:facet name="footer">
+                <h:outputText value="#{reservationTotalsController.buceoAdultos}"/>
+            </f:facet>
+            <h:outputText value="#{res.buceoAdultos}"/>
+        </p:column>
+        <p:column
+            styleClass="column30 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Buceo N."/>
+            </f:facet>
+            <f:facet name="footer">
+                <h:outputText value="#{reservationTotalsController.buceoNinos}"/>
+            </f:facet>
+            <h:outputText value="#{res.buceoNinos}"/>
+        </p:column>
+        <p:column
+            styleClass="column300">
+            <f:facet name="header">
+                <h:outputText value="Cliente"/>
+            </f:facet>
+            <h:outputText value="#{res.nombreCliente}"/>
+        </p:column>
+        <p:column
+            styleClass="column300">
+            <f:facet name="header">
+                <h:outputText value="Hotel"/>
+            </f:facet>
+            <h:outputText value="#{res.hotel.name}"/>
+        </p:column>
+        <p:column
+            styleClass="column200 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Cupon"/>
+            </f:facet>
+            <h:outputText value="#{res.noCupon}"/>
+        </p:column>
+        <p:column styleClass="column50 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Hab."/>
+            </f:facet>
+            <h:outputText value="#{res.habitacion}"/>
+        </p:column>
+        <p:column
+            styleClass="column50 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Idioma"/>
+            </f:facet>
+            <h:outputText value="#{res.idioma}"/>
+        </p:column>
+        <p:column
+            styleClass="column50 centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Pickup"/>
+            </f:facet>
+            <h:outputText value="#{res.pickup}"/>
+        </p:column>
+        <p:column
+            styleClass="column100">
+            <f:facet name="header">
+                <h:outputText value="Meeting Point"/>
+            </f:facet>
+            <h:outputText value="#{res.meetingPoint}"/>
+        </p:column>
+        <p:column
+            styleClass="smallColumn centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Aut"/>
+            </f:facet>
+            <h:panelGroup rendered="#{res.aut}">
+                Si
+            </h:panelGroup>
+        </p:column>
+        <p:column
+            styleClass="smallColumn centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Est"/>
+            </f:facet>
+            <h:panelGroup rendered="#{res.est}">
+                Si
+            </h:panelGroup>
+        </p:column>
+        <p:column styleClass="column40">
+            <f:facet name="header">
+                <h:outputText value="Comida"/>
+            </f:facet>
+            <h:outputText value="#{res.comida}"/>
+        </p:column>
+        <p:column styleClass="column40">
+            <f:facet name="header">
+                <h:outputText value="No Jeep"/>
+            </f:facet>
+            <h:outputText value="#{res.noJeep}"/>
+        </p:column>
+        <p:column
+            styleClass="mediumColumn centerAligned">
+            <f:facet name="header">
+                <h:outputText value="Clave Confirmación"/>
+            </f:facet>
+            <h:outputText value="#{res.claveConfirmacion}"/>
+        </p:column>
+        <p:column
+            styleClass="column100">
+            <f:facet name="header">
+                <h:outputText value="Quien Autoriza"/>
+            </f:facet>
+            <h:outputText value="#{res.quienAutoriza}"/>
+        </p:column>
+        <p:column
+            styleClass="column300">
+            <f:facet name="header">
+                <h:outputText value="Observaciones Operativas"/>
+            </f:facet>
+            <h:outputText value="#{res.observacionesOperativas}"/>
+        </p:column>
+        <p:column
+            styleClass="column300">
+            <f:facet name="header">
+                <h:outputText value="Observaciones Contables"/>
+            </f:facet>
+            <h:outputText value="#{res.observacionesContables}"/>
+        </p:column>
+        <p:column
+            styleClass="column300">
+            <f:facet name="header">
+                <h:outputText value="Observaciones Generales"/>
+            </f:facet>
+            <h:outputText value="#{res.observacionesGenerales}"/>
+        </p:column>
+        <p:column
+            styleClass="column80">
+            <f:facet name="header">
+                <h:outputText value="Cupon Pendiente"/>
+            </f:facet>
+            <h:panelGroup rendered="#{res.cuponPendiente}">
+                Pendiente
+            </h:panelGroup>
+        </p:column>
+        <p:column
+            styleClass="column80">
+            <f:facet name="header">
+                <h:outputText value="No Show"/>
+            </f:facet>
+            <h:panelGroup rendered="#{res.noShow}">
+                No Show
+            </h:panelGroup>
+        </p:column>
+        <p:column exportable="false" styleClass="singleOptionColumn">
+            <p:link outcome="edit" styleClass="ui-button iconButton ui-corner-all">
+                <i class="fa fa-mouse-pointer"></i>
+                <f:param name="id" value="#{res.id}"/>
+            </p:link>
+        </p:column>
+    </p:dataTable>
+    <div class="text-center">
+        <p:commandButton icon="fa fa-copy"
+                         onclick="copyToClipboard(document.getElementById('searchform:listaReportePreliminar'))"
+                         class="defaultButton"/>
+    </div>
+
+</html>

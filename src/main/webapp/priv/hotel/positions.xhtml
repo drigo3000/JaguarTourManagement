@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Hoteles" outcome="/priv/hotel/list" />
+                    <p:menuitem value="Posiciones"/>
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="content">
+            <div class="card">
+                <h5>Editar Posiciones de Hoteles</h5>
+                <h:form>
+                    <p:panelGrid columns="1" layout="grid">
+                        <p:outputLabel value='Zona'/>
+                        <p:selectOneMenu value="#{hotelPositionController.zona}">
+                            <f:selectItem itemLabel="Riviera Maya" itemValue="RVM"/>
+                            <f:selectItem itemLabel="Cancún" itemValue="CUN"/>
+                            <f:selectItem itemLabel="Cozumel" itemValue="CZM"/>
+                        </p:selectOneMenu>
+                        <p:commandButton value="Buscar"
+                                         styleClass='defaultButton'
+                                         update='orderListPanel'
+                                         actionListener="#{hotelPositionController.filtrarHotelesPorZona()}"/>
+                    </p:panelGrid>
+                    <p:outputPanel id='orderListPanel'>
+                        <p:orderList value="#{hotelPositionController.hotels}" var="hotel"
+                                     converter="#{hotelConverter}"
+                                     responsive="true"
+                                     itemValue="#{hotel}"
+                                     controlsLocation="left">
+                            <f:facet name="caption">#{hotelPositionController.zona}</f:facet>
+                            <p:column style="width:20px;">
+                                <h:outputText value="#{hotel.position}" />
+                            </p:column>
+                            <p:column styleClass="column150">
+                                <h:outputText value="#{hotel.name}" />
+                            </p:column>
+                            <p:column styleClass="column70">
+                                <h:outputText value="#{hotel.operation}" />
+                            </p:column>
+                            <p:column styleClass="column70">
+                                <h:outputText value="#{hotel.subOperation}" />
+                            </p:column>
+                            <p:column styleClass="column70">
+                                <h:outputText value="#{hotel.subLocation}" />
+                            </p:column>
+                        </p:orderList>
+                        <p:commandButton value="Guardar"
+                                         styleClass='defaultButton'
+                                         icon="fa fa-save"
+                                         actionListener="#{hotelPositionController.updatePositions}"
+                                         update="growl orderListPanel"/>
+                    </p:outputPanel>
+
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
+

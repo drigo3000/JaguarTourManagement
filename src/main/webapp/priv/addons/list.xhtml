@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="AddOns" outcome="/priv/addons/list" />
+                    <p:menuitem value="Filtro" outcome="/priv/addons/list"/>
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="content">
+            <div class="card">
+                <h5>AddOns</h5>
+                <p:dataTable value="#{addOnFilterController.addOns}"
+                             var='addon'>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{addon.name}"/>
+                    </p:column>
+                    <p:column headerText="Descripción">
+                        <h:outputText value="#{addon.description}"/>
+                    </p:column>
+                    <p:column headerText="Incluye">
+                        <h:outputText value="#{addon.incluye}"/>
+                    </p:column>
+                    <p:column headerText="Precio Venta" styleClass='column70 centerAligned'>
+                        <h:outputText value="#{addon.precioVenta}">
+                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Comision USD" styleClass='column70 centerAligned'>
+                        <h:outputText value="#{addon.comisionUSD}">
+                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Comision MXN" styleClass='column70 centerAligned'>
+                        <h:outputText value="#{addon.comisionPesos}">
+                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column exportable="false" styleClass="singleOptionColumn">
+                        <p:link outcome="edit" styleClass="ui-button iconButton ui-corner-all">
+                            <i class="fa fa-mouse-pointer"></i>
+                            <f:param name="id" value="#{addon.id}"/>
+                        </p:link>
+                    </p:column>
+                </p:dataTable>
+            </div>
+
+        </ui:define>
+
+    </ui:composition>
+</html>
+

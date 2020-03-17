@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:res="http://xmlns.jcp.org/jsf/composite/ezcomp/reservations"
+      xmlns:user="http://xmlns.jcp.org/jsf/composite/ezcomp/users"
+      xmlns:hotel="http://xmlns.jcp.org/jsf/composite/ezcomp/hotel"
+      xmlns:rep="http://xmlns.jcp.org/jsf/composite/ezcomp/reps"
+      xmlns:agency="http://xmlns.jcp.org/jsf/composite/ezcomp/agency"
+      xmlns:tour="http://xmlns.jcp.org/jsf/composite/ezcomp/tour"
+      xmlns:general="http://xmlns.jcp.org/jsf/composite/ezcomp/general"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/WEB-INF/includes/morpheus/template_search_horizontal.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Reservaciones" outcome="/priv/reservations/list" />
+                    <p:menuitem value="Filtro" outcome="/priv/reservations/list"/>
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="searchform">
+            <div class='card'>
+                <h5>Búsqueda</h5>
+                <p:panelGrid columns="1" layout="grid"
+                             styleClass="ui-panelgrid-blank grid-pad" style="margin-top:10px">
+                    <p:outputLabel value="REPORTE"/>
+                    <p:selectOneMenu value="#{reservationFilterOptionsController.view}" panelStyleClass="hideDisabled">
+                        <f:selectItem itemLabel="Lista Resumida" itemValue="1"/>
+                        <f:selectItem itemLabel="Reporte General" itemValue="2"/>
+                        <f:selectItem itemLabel="Lista Detallada" itemValue="3" itemDisabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.RESERVACIONES}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="FECHAS"/>
+                    <p:selectOneMenu value="#{reservationFilterOptionsController.dateOperated}">
+                        <f:selectItem itemValue="#{true}" itemLabel="Operación"/>
+                        <f:selectItem itemValue="#{false}" itemLabel="Registro"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="RANGO"/>
+                    <p:calendar value="#{reservationFilterOptionsController.from}"
+                                pattern="dd/MM/yyyy"
+                                converter="#{localDateConverter}"/>
+                    <p:calendar value="#{reservationFilterOptionsController.to}"
+                                pattern="dd/MM/yyyy"
+                                converter="#{localDateConverter}"/>
+                    <p:outputLabel value="CUPÓN"/>
+                    <p:inputText value='#{reservationFilterOptionsController.cupon}'/>
+                    <p:outputLabel value="ZONA:" for="lugarReserva" />
+                    <general:zonaSelectCheckboxMenu id='lugarReserva' value="#{reservationFilterOptionsController.lugarReserva}"/>
+                    <p:outputLabel value="COLOR"/>
+                    <general:colorSelectCheckbox value="#{reservationFilterOptionsController.color}"/>
+                    <p:outputLabel value="ESTATUS"/>
+                    <general:statusSelectCheckboxMenu value="#{reservationFilterOptionsController.statuses}"/>
+                    <p:outputLabel value="SUCURSALES:" for="sucursales" />
+                    <general:sucursalesSelectCheckboxMenu id='sucursales' value="#{reservationFilterOptionsController.sucursales}"/>
+                    <p:outputLabel value="SERVICIO"/>
+                    <tour:tourAutocomplete value="#{reservationFilterOptionsController.servicio}"/>
+                    <p:outputLabel value="GRUPO" rendered="false"/>
+                    <tour:tourGrupoAutocomplete rendered="false" value="#{reservationFilterOptionsController.grupo}"/>
+                    <p:outputLabel value='CONFIRMA'/>
+                    <p:inputText id="claveConfirma"
+                                 title="Clave de Confirmacion"
+                                 value="#{reservationFilterOptionsController.claveDeConfirma}"/>
+                    <p:outputLabel value="AGENCIA"/>
+                    <agency:agencyAutocomplete value="#{reservationFilterOptionsController.agencia}"/>
+                    <p:outputLabel value="REP"/>
+                    <rep:RepAutocomplete value="#{reservationFilterOptionsController.rep}"/>
+                    <p:outputLabel value="HOTEL"/>
+                    <hotel:hotelAutocomplete value="#{reservationFilterOptionsController.hotel}"/>
+                    <p:outputLabel value="RESERVÓ"/>
+                    <user:userAutocomplete value="#{reservationFilterOptionsController.reservo}"/>
+                    <p:commandButton id="searchButton"
+                                     icon="fa fa-search"
+                                     value="Búscar"
+                                     update="dataTableOutputPanel growl"
+                                     actionListener="#{reservationFilterController.search}"/>
+                </p:panelGrid>
+            </div>
+
+            <p:defaultCommand target="searchButton"/>
+        </ui:define>
+
+        <ui:define name="searchresults">
+            <p:outputPanel id="dataTableOutputPanel">
+                <div class='card'>
+                    <h:panelGroup rendered="#{empty reservationFilterController.reservations}">
+                        <h5>No se ha encontrado ningun resultado</h5>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{not empty reservationFilterController.reservations}">
+                        <h5>Resultados</h5>
+                        <res:reservationTotals/>
+                        <p:scrollPanel mode="native">
+                            <ui:include src="includes/_listaResumida.xhtml"/>
+                            <ui:include src="includes/_listaCompleta.xhtml"/>
+                            <ui:include src="includes/_listaReporte1.xhtml"/>
+                        </p:scrollPanel>
+                    </h:panelGroup>
+                </div>
+            </p:outputPanel>
+        </ui:define>
+    </ui:composition>
+</html>
+

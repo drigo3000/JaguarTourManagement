@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:hotel="http://xmlns.jcp.org/jsf/composite/ezcomp/hotel"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:fieldset legend="Información Personal">
+        <p:panelGrid columns="2" layout="grid"
+                     columnClasses="text-right width30p, width70p text-left"
+                     styleClass="ui-panelgrid-blank">
+            <p:outputLabel value="Visitante:" for="nombreCliente" />
+            <p:inputText id="nombreCliente"
+                         required='true'
+                         requiredMessage='Campo Nombre Cliente requerido'
+                         value="#{reservationEditController.reservacion.nombreCliente}"
+                         title="NombreCliente">
+                <p:ajax process="@this"/>
+            </p:inputText>
+
+            <p:outputLabel value="Hotel:" for="hotel" />
+            <hotel:hotelAutocomplete id="hotel"
+                                     required="true"
+                                     requiredMessage="Campo hotel requerido"
+                                     value="#{reservationEditController.reservacion.hotel}">
+                <p:ajax event="itemSelect"
+                        update="@(.infoServicioPanel) @(.participantesPanel)"
+                        immediate="true"
+                        process="@this"
+                        listener="#{reservationEditController.hotelChanged}"/>
+            </hotel:hotelAutocomplete>
+            <p:outputLabel value="Habitación:" for="habitacion" />
+            <p:inputText id="habitacion"
+                         value="#{reservationEditController.reservacion.habitacion}" title="Habitacion">
+                <p:ajax process="@this"/>
+            </p:inputText>
+            <p:outputLabel value="No Cupon:" for="noCupon" />
+            <h:panelGroup>
+                <p:inputText id="noCupon"
+                             required="false"
+                             requiredMessage="Campo Cupón requerido"
+                             value="#{reservationEditController.reservacion.noCupon}"
+                             title="NoCupon">
+                    <p:ajax process="@this"/>
+                </p:inputText>
+                <p:message id="noCuponMessage" for="noCupon"/>
+            </h:panelGroup>
+            <p:outputLabel value="Lenguaje:" for="idioma" />
+            <p:selectOneMenu id="idioma"
+                             required='true'
+                             editable="true"
+                             requiredMessage='Campo Lenguaje Requerido'
+                             value="#{reservationEditController.reservacion.idioma}"
+                             title="Lenguaje">
+                <f:selectItem itemLabel="Seleccionar Uno" itemValue="#{null}"
+                              noSelectionOption="true"/>
+                <f:selectItem itemLabel="Inglés" itemValue="Inglés"/>
+                <f:selectItem itemLabel="Español" itemValue="Español"/>
+                <f:selectItem itemLabel="Francés" itemValue="Francés"/>
+                <f:selectItem itemLabel="Alemán" itemValue="Alemán"/>
+                <f:selectItem itemLabel="Ruso" itemValue="Ruso"/>
+                <p:ajax process="@this"/>
+            </p:selectOneMenu>
+            <p:outputLabel value="Turno:"
+                           rendered='#{not empty reservationEditController.reservacion.fechaOperacion and not empty reservationEditController.reservacion.hotel}'
+                           for="pickup" />
+            <p:selectOneMenu id="pickup"
+                             rendered='#{not empty reservationEditController.reservacion.fechaOperacion and not empty reservationEditController.reservacion.hotel}'
+                             required='true'
+                             requiredMessage='Horario de Pick up requerido'
+                             value="#{reservationEditController.reservacion.horario}"
+                             converter="#{horarioTurnoTourConverter}"
+                             var="h"
+                             title="Pickup">
+                <f:selectItem itemLabel="Seleccionar Uno..." itemValue="#{null}" noSelectionOption="true"/>
+                <f:selectItems value="#{reservationEditController.horarios}"
+                               itemLabel="#{reservationEditController.getHorarioPorFecha(horario,reservationEditController.reservacion.fechaOperacion)}"
+                               itemValue="#{horario}"
+                               var="horario"/>
+                <p:column>
+                    <h:outputText value='#{h.turno.name}'/>
+                </p:column>
+                <p:column styleClass='column30'>
+                    <h:outputText value='#{reservationEditController.getHorarioPorFecha(h,reservationEditController.reservacion.fechaOperacion)}'/>
+                </p:column>
+                <p:ajax process="@this"
+                        event="itemSelect"
+                        update='@(.participantesPanel)'
+                        listener="#{reservationEditController.turnoChangedEvent}"/>
+            </p:selectOneMenu>
+            <p:outputLabel value="Meeting Point:" for="meetingPoint" />
+            <p:inputText id="meetingPoint"
+                         value="#{reservationEditController.reservacion.meetingPoint}"
+                         title="MeetingPoint">
+                <p:ajax process="@this"/>
+            </p:inputText>
+        </p:panelGrid>
+    </p:fieldset>
+
+</html>

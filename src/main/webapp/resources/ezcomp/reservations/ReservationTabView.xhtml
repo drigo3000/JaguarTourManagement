@@ -1,0 +1,539 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="reservation"
+                      class="com.swevolution.cucurumbe.model.entities.Reservation"
+                      required="true"/>
+        <cc:attribute name="viewOnly"
+                      type="java.lang.Boolean"
+                      displayName="viewOnly"
+                      required="false" default="false"/>
+        <cc:attribute name="isNew"
+                      type="java.lang.Boolean"
+                      displayName="isNew"
+                      required="true"/>
+        <cc:attribute name="saveButtonListener" required="false"
+                      method-signature="void listener()" />
+        <cc:attribute name="openRepresentativeDiaglog" required="false"
+                      method-signature="void listener()" />
+        <cc:attribute name="handleRepSelect"
+                      required="true"
+                      method-signature="void handleSelect(org.primefaces.event.SelectEvent)" />
+
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:form>
+            <p:outputPanel>
+                <p:toolbar>
+                    <f:facet name='left'>
+                        #{cc.attrs.reservation.claveConfirmacion}
+                    </f:facet>
+                    <f:facet name="right">
+                        <p:commandButton value="Guardar"
+                                         actionListener="#{cc.attrs.saveButtonListener}"
+                                         update="@form growl">
+                            <p:confirm header="¿Guardar Cambios?"
+                                       message="¿Guardiar cambios en base de datos?"/>
+                        </p:commandButton>
+                        <p:menuButton value="Opciones">
+                            <p:menuitem value="Cancelar"/>
+                        </p:menuButton>
+                    </f:facet>
+                </p:toolbar>
+                <div class='ui-fluid'>
+                    <p:tabView>
+                        <p:tab title='Servicio'>
+                            <h3>Infomración des Servicio</h3>
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <h:panelGroup>
+                                    <p:outputLabel value="Excursión:" for="servicio" />
+                                    <h:panelGroup>
+                                        <div class='inputGroupContainer'>
+                                            <div>
+                                                <p:autoComplete id="servicio"
+                                                                disabled="#{cc.attrs.viewOnly}"
+                                                                required='true'
+                                                                requiredMessage='Servicio Requerido'
+                                                                value="#{cc.attrs.reservation.servicio}"
+                                                                converter="#{tourConverter}"
+                                                                title="Servicio"
+                                                                var="tourItem"
+                                                                minQueryLength="3"
+                                                                itemLabel="#{tourItem.name}"
+                                                                itemValue="#{tourItem}"
+                                                                completeMethod="#{tourListManager.filterTour}"/>
+                                            </div>
+                                            <div>
+                                                <p:commandButton icon='fa fa-search'
+                                                                 disabled="#{cc.attrs.viewOnly}"
+                                                                 immediate="true"
+                                                                 actionListener="#{reservationCreateController.openServicioSearchDialog}">
+                                                    <p:ajax event="dialogReturn"
+                                                            listener="#{reservationCreateController.handleServicioFromDialog}"
+                                                            update="servicio"/>
+                                                </p:commandButton>
+                                            </div>
+                                        </div>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                                <p:outputLabel value="Fecha Operación:" for="fechaOperacion" />
+                                <p:calendar style="width:100%"
+                                            disabled='#{cc.attrs.viewOnly}'
+                                            required="true"
+                                            requiredMessage="Campo Fecha Operación requerido"
+                                            converter="#{localDateTimeConverter}"
+                                            pattern="dd/MM/yyyy"
+                                            id="fechaOperacion"
+                                            value="#{cc.attrs.reservation.fechaOperacion}"
+                                            title="FechaOperacion" />
+                                <p:outputLabel value="Representante:" for="representante" />
+                                <h:panelGroup>
+                                    <div class='inputGroupContainer'>
+                                        <div>
+                                            <p:autoComplete id="representante"
+                                                            required="true"
+                                                            requiredMessage="Campo Representante requerido"
+                                                            disabled="#{cc.attrs.viewOnly}"
+                                                            value="#{cc.attrs.reservation.representante}"
+                                                            converter="#{representativeConverter}"
+                                                            title="Representante"
+                                                            var="representanteItem"
+                                                            forceSelection="true"
+                                                            minQueryLength="3"
+                                                            itemLabel="#{representanteItem.name}"
+                                                            itemValue="#{representanteItem}"
+                                                            completeMethod="#{representativeListManager.filterRepresentative}">
+                                                <p:column>
+                                                    <h:outputText value='#{representanteItem.name}'/>
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputText value='#{representanteItem.agencia.name}'/>
+                                                </p:column>
+                                                <p:ajax event="itemSelect"
+                                                        disabled="#{cc.attrs.viewOnly}"
+                                                        update="nombreAgencia"
+                                                        immediate="true"
+                                                        process="@this"
+                                                        listener="#{reservationCreateController.repChanged}"/>
+                                            </p:autoComplete>
+                                        </div>
+                                        <div>
+                                            <p:commandButton icon='fa fa-search'
+                                                             disabled="#{cc.attrs.viewOnly}"
+                                                             immediate="true"
+                                                             actionListener="#{cc.attrs.openRepresentativeDiaglog}">
+                                                <p:ajax event="dialogReturn"
+                                                        listener="#{cc.attrs.handleRepSelect}"
+                                                        update="nombreAgencia representante"/>
+                                            </p:commandButton>
+                                        </div>
+                                    </div>
+                                </h:panelGroup>
+                                <p:outputLabel value="Agencia:" for="nombreAgencia" />
+                                <h:panelGroup>
+                                    <div class='inputGroupContainer'>
+                                        <div>
+                                            <p:autoComplete id="nombreAgencia"
+                                                            required="true"
+                                                            requiredMessage="Campo Agencia requerido"
+                                                            disabled="#{cc.attrs.viewOnly}"
+                                                            value="#{cc.attrs.reservation.agencia}"
+                                                            converter="#{agencyConverter}"
+                                                            title="Agencia"
+                                                            var="agenciaItem"
+                                                            minQueryLength="3"
+                                                            itemLabel="#{agenciaItem.name}"
+                                                            itemValue="#{agenciaItem}"
+                                                            completeMethod="#{agencyListManager.filterAgency}"/>
+                                        </div>
+                                        <div>
+                                            <p:commandButton icon='fa fa-search'
+                                                             disabled="#{cc.attrs.viewOnly}"
+                                                             immediate="true"
+                                                             actionListener="#{reservationCreateController.openAgencySearchDialog}">
+                                                <p:ajax event="dialogReturn"
+                                                        listener="#{reservationCreateController.handleAgencyFromDialog}"
+                                                        update="nombreAgencia"/>
+                                            </p:commandButton>
+                                        </div>
+                                    </div>
+                                </h:panelGroup>
+                                <p:outputLabel value="No Cupon:" for="noCupon" />
+                                <h:panelGroup>
+                                    <p:inputText id="noCupon"
+                                                 disabled="#{cc.attrs.viewOnly}"
+                                                 required="true"
+                                                 requiredMessage="Campo Cupón requerido"
+                                                 validator="#{cuponValidator.validate}"
+                                                 value="#{cc.attrs.reservation.noCupon}"
+                                                 title="NoCupon">
+                                        <p:ajax event="change" process="@this" update="noCuponMessage growl"/>
+                                    </p:inputText>
+                                    <p:message id="noCuponMessage" for="noCupon"/>
+                                </h:panelGroup>
+
+
+                            </p:panelGrid>
+
+                        </p:tab>
+                        <p:tab title='Participantes'>
+                            <p:panelGrid columns="3"
+                                         layout="grid"
+                                         columnClasses="col50, col25, col25"
+                                         styleClass="ui-panelgrid-blank">
+
+                                <h:panelGroup id="participanteInfoPanel">
+
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                        <h5>Información Personal</h5>
+                                        <p:outputLabel value="Visitante:" for="nombreCliente" />
+                                        <p:inputText id="nombreCliente"
+                                                     required='true'
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     requiredMessage='Campo Nombre Cliente requerido'
+                                                     value="#{cc.attrs.reservation.nombreCliente}"
+                                                     title="NombreCliente" />
+                                        <h:panelGroup>
+                                            <p:outputLabel value="Hotel:" for="hotel" />
+                                            <div class='inputGroupContainer'>
+
+                                                <div>
+                                                    <p:autoComplete id="hotel"
+                                                                    disabled="#{cc.attrs.viewOnly}"
+                                                                    required="true"
+                                                                    requiredMessage="Campo Hotel requerido"
+                                                                    value="#{cc.attrs.reservation.hotel}"
+                                                                    converter="#{hotelConverter}"
+                                                                    title="Hotel"
+                                                                    var="hotelItem"
+                                                                    minQueryLength="3"
+                                                                    itemLabel="#{hotelItem.name}"
+                                                                    itemValue="#{hotelItem}"
+                                                                    forceSelection="true"
+                                                                    completeMethod="#{hotelListController.filterHotels}">
+                                                        <p:column>
+                                                            <h:outputText value='#{hotelItem.name}'/>
+                                                        </p:column>
+                                                        <p:column>
+                                                            <h:outputText value='#{hotelItem.operation}'/>
+                                                        </p:column>
+                                                    </p:autoComplete>
+                                                </div>
+                                                <div>
+                                                    <p:commandButton icon='fa fa-search'
+                                                                     immediate="true"
+                                                                     disabled="#{cc.attrs.viewOnly}"
+                                                                     actionListener="#{reservationCreateController.openHotelSearchDialog}">
+                                                        <p:ajax event="dialogReturn"
+                                                                listener="#{reservationCreateController.handleHotelFromDialog}"
+                                                                update="hotel"/>
+                                                    </p:commandButton>
+                                                </div>
+                                            </div>
+                                        </h:panelGroup>
+                                        <p:outputLabel value="Habitación:" for="habitacion" />
+                                        <p:inputText id="habitacion"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.habitacion}" title="Habitacion" />
+
+                                        <p:outputLabel value="Idioma:" for="idioma" />
+                                        <p:selectOneMenu id="idioma"
+                                                         required='true'
+                                                         disabled="#{cc.attrs.viewOnly}"
+                                                         requiredMessage='Campo Idioma Requerido'
+                                                         value="#{cc.attrs.reservation.idioma}"
+                                                         title="Idioma">
+                                            <f:selectItem itemLabel="Seleccionar Uno" itemValue="#{null}"
+                                                          noSelectionOption="true"/>
+                                            <f:selectItem itemLabel="Inglés" itemValue="Inglés"/>
+                                            <f:selectItem itemLabel="Español" itemValue="Español"/>
+                                            <f:selectItem itemLabel="Francés" itemValue="Francés"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Pickup:"
+                                                       for="pickup" />
+                                        <p:inputText id="pickup"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.pickup}" title="Pickup" />
+                                        <p:outputLabel value="Meeting Point:" for="meetingPoint" />
+                                        <p:inputText id="meetingPoint"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.meetingPoint}" title="MeetingPoint" />
+                                    </p:panelGrid>
+                                </h:panelGroup>
+                                <h:panelGroup id="numerosParticipantesPanel">
+
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                        <h5>Participantes Reserva</h5>
+                                        <p:outputLabel value="Adulto:" for="adulto" />
+                                        <p:inputText id="adulto"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.adulto}" title="Adulto" />
+                                        <p:outputLabel value="Nino:" for="nino" />
+                                        <p:inputText id="nino"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.nino}" title="Nino" />
+                                        <p:outputLabel value="Infante:" for="infante" />
+                                        <p:inputText id="infante"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.infante}" title="Infante" />
+                                        <p:outputLabel value="Buceo Adulto:" for="buceoAdulto" />
+                                        <p:inputText id="buceoAdulto"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.buceoAdultos}" title="Buceo Adultos" />
+                                        <p:outputLabel value="Buceo Niños" for="buceoNinos" />
+                                        <p:inputText id="buceoNinos"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.buceoNinos}" title="Buceo Niños" />
+                                    </p:panelGrid>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                        <h3>Participantes Reales</h3>
+                                        <p:outputLabel value="Adulto:" for="adultosReales" />
+                                        <p:inputText id="adultosReales"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.adultosReales}" title="Adulto" />
+                                        <p:outputLabel value="Nino:" for="ninosReales" />
+                                        <p:inputText id="ninosReales"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.ninosReales}" title="Nino" />
+                                        <p:outputLabel value="Infante:" for="infantesReales" />
+                                        <p:inputText id="infantesReales"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.infantesReales}" title="Infante" />
+                                        <p:outputLabel value="Buceo Adulto:" for="buceoAdulto" />
+                                        <p:inputText id="buceoAdultoReales"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.buceoAdultosReales}" title="Buceo Adultos" />
+                                        <p:outputLabel value="Buceo Niños:" for="buceoNinos" />
+                                        <p:inputText id="buceoNinosReales"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.buceoNinosReales}" title="Buceo Niños" />
+                                    </p:panelGrid>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                        </p:tab>
+                        <p:tab title='Observaciones'>
+                            <h3>Contables</h3>
+                            <p:panelGrid columns="6" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="Color:" for="color" />
+                                <p:selectOneMenu id="color"
+                                                 disabled="#{cc.attrs.viewOnly}"
+                                                 value="#{cc.attrs.reservation.color}">
+                                    <f:selectItem itemLabel="Seleccionar Uno..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItem itemLabel='FACTURABLE' itemValue='FACTURABLE'/>
+                                    <f:selectItem itemLabel='FAM TRIP' itemValue='FAM TRIP'/>
+                                    <f:selectItem itemLabel='DIRECTOS' itemValue='DIRECTOS'/>
+                                    <f:selectItem itemLabel='CORTESIAS' itemValue='CORTESIAS'/>
+                                    <f:selectItem itemLabel='INCENTIVOS' itemValue='INCENTIVOS'/>
+                                    <f:selectItem itemLabel='NOW SHOW' itemValue='NO SHOW'/>
+                                    <f:selectItem itemLabel='CUPONES PENDIENTES' itemValue='CUPONES PENDIENTES'/>
+                                    <f:selectItem itemLabel='CUPONES CANCELADOS' itemValue='CUPONES CANCELADOS'/>
+                                    <f:selectItem itemLabel='CUPONES DEVUELTOS' itemValue='CUPONES'/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Sucursales:" for="sucursales" />
+                                <p:selectOneMenu id="sucursales"
+                                                 disabled="#{cc.attrs.viewOnly}"
+                                                 value="#{cc.attrs.reservation.sucursales}" >
+                                    <f:selectItem itemLabel="Seleccionar Uno..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItem itemLabel='CUCURUMBE' itemValue='CUCURUMBE'/>
+                                    <f:selectItem itemLabel='CATAMARAN' itemValue='CATAMARAN'/>
+                                    <f:selectItem itemLabel='TANKAH' itemValue='TANKAH'/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Lugar de Reserva:" for="lugarReserva" />
+                                <p:selectOneMenu id="lugarReserva"
+                                                 disabled="#{cc.attrs.viewOnly}"
+                                                 value="#{cc.attrs.reservation.lugarReserva}">
+                                    <f:selectItem itemLabel="Seleccionar Uno..." itemValue="#{null}" noSelectionOption="true"/>
+                                    <f:selectItem itemLabel='CZM' itemValue='COZUMEL'/>
+                                    <f:selectItem itemLabel='RVM' itemValue='RIVIERA MAYA'/>
+                                    <f:selectItem itemLabel='CUN' itemValue='CANCUN'/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value='No Show'/>
+                                <p:selectBooleanCheckbox value="#{cc.attrs.reservation.noShow}"/>
+                                <p:outputLabel value='Pendiente Seguimiento'/>
+                                <p:selectBooleanCheckbox value="#{cc.attrs.reservation.cuponPendiente}"/>
+                                <p:outputLabel value='Cancelado'/>
+                                <p:selectBooleanCheckbox value="#{cc.attrs.reservation.cuponCancelado}"/>
+                                <p:outputLabel value='Cancelado'/>
+                                <p:selectBooleanCheckbox value="#{cc.attrs.reservation.cuponDevuelto}"/>
+                            </p:panelGrid>
+                            <h5>Excursión</h5>
+                            <p:panelGrid columns="6" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="Automático:" for="aut" />
+                                <p:inputText id="aut"
+                                             disabled="#{cc.attrs.viewOnly}"
+                                             value="#{cc.attrs.reservation.aut}" title="Aut" />
+                                <p:outputLabel value="Estandar:" for="est" />
+                                <p:inputText id="est"
+                                             disabled="#{cc.attrs.viewOnly}"
+                                             value="#{cc.attrs.reservation.est}" title="Est" />
+                                <p:outputLabel value="Comida:" for="comida" />
+                                <p:inputText id="comida"
+                                             disabled="#{cc.attrs.viewOnly}"
+                                             value="#{cc.attrs.reservation.comida}" title="Comida" />
+                                <p:outputLabel value="No Jeep:" for="noJeep" />
+                                <p:inputText id="noJeep"
+                                             disabled="#{cc.attrs.viewOnly}"
+                                             value="#{cc.attrs.reservation.noJeep}" title="NoJeep" />
+
+                                <p:outputLabel value="Quién Autoriza:" for="quienAutoriza" />
+                                <p:inputText id="quienAutoriza"
+                                             disabled="#{cc.attrs.viewOnly}"
+                                             value="#{cc.attrs.reservation.quienAutoriza}" title="QuienAutoriza" />
+                            </p:panelGrid>
+                            <h3>Notas</h3>
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <p:outputLabel value="Observaciones Operativas:" for="observacionesOperativas" />
+                                <p:inputTextarea id="observacionesOperativas"
+                                                 disabled="#{cc.attrs.viewOnly}"
+                                                 value="#{cc.attrs.reservation.observacionesOperativas}" title="ObservacionesOperativas" />
+                                <p:outputLabel value="Observaciones Contables:" for="observacionesContables" />
+                                <p:inputTextarea id="observacionesContables"
+                                                 disabled="#{cc.attrs.viewOnly}"
+                                                 value="#{cc.attrs.reservation.observacionesContables}" title="ObservacionesContables" />
+                                <p:outputLabel value="Observaciones Generales:" for="observacionesGenerales" />
+                                <p:inputTextarea id="observacionesGenerales"
+                                                 disabled="#{cc.attrs.viewOnly}"
+                                                 value="#{cc.attrs.reservation.observacionesGenerales}" title="ObservacionesGenerales" />
+
+                            </p:panelGrid>
+                        </p:tab>
+                        <p:tab title="Contabilidad">
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+                                <h:panelGroup>
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                        <h5>DOLAR</h5>
+                                        <p:outputLabel value="Pronostico USD:" for="pronosticoUSD" />
+                                        <p:inputText id="pronosticoUSD"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.pronosticoUSD}" title="Pronostico USD">
+                                            <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                                        </p:inputText>
+                                        <p:outputLabel value="Real USD:" for="realUSD" />
+                                        <p:inputText id="realUSD"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.realUSD}" title="Real USD">
+                                            <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                                        </p:inputText>
+                                        <p:outputLabel value="Real T/C USD:" for="realTCUSD" />
+                                        <p:inputText id="realTCUSD"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.realTCUSD}" title="Real T/C USD">
+                                            <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                                        </p:inputText>
+                                        <p:outputLabel value="DTV USD:" for="dtvUSD" />
+                                        <p:inputText id="dtvUSD"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.dtvUSD}" title="DTV USD">
+                                            <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                                        </p:inputText>
+                                        <p:outputLabel value="Total Cash USD:" for="totalCashUSD" />
+                                        <h:outputText id="totalCashUSD" value="#{cc.attrs.reservation.totalCashUSD}" title="TOTAL CASH USD">
+                                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                        </h:outputText>
+                                    </p:panelGrid>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                        <h5>PESOS</h5>
+                                        <p:outputLabel value="Pronostico MXN:" for="pronosticoMXN" />
+                                        <p:inputText id="pronosticoMXN"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.pronosticoMXN}" title="Pronostico MXN">
+                                            <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                                        </p:inputText>
+                                        <p:outputLabel value="Real MXN:" for="realMXN" />
+                                        <p:inputText id="realMXN"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.realMXN}" title="Real MXN">
+                                            <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                                        </p:inputText>
+                                        <p:outputLabel value="Real T/C MXN:" for="realTCMXN" />
+                                        <p:inputText id="realTCMXN"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.realTCMXN}" title="Real T/C MXN">
+                                            <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                                        </p:inputText>
+                                        <p:outputLabel value="DTV MXN:" for="dtvMXN" />
+                                        <p:inputText id="dtvMXN"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.dtvMXN}" title="DTV MXN">
+                                            <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                                        </p:inputText>
+                                        <p:outputLabel value="Total Cash MXN:" for="totalCashMXN" />
+                                        <h:outputText id="totalCashMXN" value="#{cc.attrs.reservation.totalCashMXN}" title="TOTAL CASH MXN">
+                                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                        </h:outputText>
+                                        <p:outputLabel value="Diferencia Pesos:" for="diferenciaPesos" />
+                                        <h:outputText id="diferenciaPesos" value="#{cc.attrs.reservation.diferenciaPesos}" title="DIFERENCIA PESOS">
+                                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                        </h:outputText>
+                                    </p:panelGrid>
+                                </h:panelGroup>
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+                                <h:panelGroup>
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                        <h5>FACTURACIÓN USD</h5>
+                                        <p:outputLabel value="Facturación USD:" for="facturacionUSD" />
+                                        <p:inputText id="facturacionUSD"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.facturacionUSD}" title="FACTURACION USD">
+                                            <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                                        </p:inputText>
+                                        <p:outputLabel value="Total General USD:" for="totalGeneralUSD" />
+                                        <h:outputText id="totalGeneralUSD"
+                                                      value="#{cc.attrs.reservation.totalGeneralUSD}" title="TOTAL GENERAL USD">
+                                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                        </h:outputText>
+                                    </p:panelGrid>
+
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                        <h5>FACTURACIÓN MXN</h5>
+                                        <p:outputLabel value="Facturación MXN:" for="facturacionMXN" />
+                                        <p:inputText id="facturacionMXN"
+                                                     disabled="#{cc.attrs.viewOnly}"
+                                                     value="#{cc.attrs.reservation.facturacionMXN}" title="FACTURACION MXN">
+                                            <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                                        </p:inputText>
+                                        <p:outputLabel value="Total General MXN:" for="totalGeneralMXN" />
+                                        <h:outputText id="totalGeneralMXN"
+                                                      value="#{cc.attrs.reservation.totalGeneralMXN}" title="TOTAL GENERAL MXN">
+                                            <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                        </h:outputText>
+                                    </p:panelGrid>
+                                </h:panelGroup>
+                            </p:panelGrid>
+                        </p:tab>
+                    </p:tabView>
+
+                </div>
+            </p:outputPanel>
+            <p:confirmDialog global="true"
+                             showEffect="fade"
+                             hideEffect="fade">
+                <p:commandButton value="Si"
+                                 type="button"
+                                 styleClass="ui-confirmdialog-yes"
+                                 icon="ui-icon-check" />
+                <p:commandButton value="No" type="button"
+                                 styleClass="ui-confirmdialog-no"
+                                 icon="ui-icon-close" />
+            </p:confirmDialog>
+        </h:form>
+    </cc:implementation>
+</html>

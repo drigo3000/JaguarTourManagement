@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:outputPanel id="contabilidadPanel" class="tabPanel">
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+            <p:outputLabel value="Moneda"/>
+            <p:selectBooleanButton onLabel="MXN"
+                                   styleClass='defaultButton'
+                                   offLabel="USD"
+                                   value="#{reservationEditController.reservacion.facturadoPesos}"/>
+        </p:panelGrid>
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+            <h:panelGroup>
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                    <h5>DOLAR</h5>
+                    <p:outputLabel value="Pronostico USD:" for="pronosticoUSD" />
+                    <p:inputText id="pronosticoUSD"
+
+                                 value="#{reservationEditController.reservacion.pronosticoUSD}" title="Pronostico USD">
+                        <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                    </p:inputText>
+                    <p:outputLabel value="Real USD:" for="realUSD" />
+                    <p:inputText id="realUSD"
+
+                                 value="#{reservationEditController.reservacion.realUSD}" title="Real USD">
+                        <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                    </p:inputText>
+                    <p:outputLabel value="Real T/C USD:" for="realTCUSD" />
+                    <p:inputText id="realTCUSD"
+
+                                 value="#{reservationEditController.reservacion.realTCUSD}" title="Real T/C USD">
+                        <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                    </p:inputText>
+                    <p:outputLabel value="DTV USD:" for="dtvUSD" />
+                    <p:inputText id="dtvUSD"
+
+                                 value="#{reservationEditController.reservacion.dtvUSD}" title="DTV USD">
+                        <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                    </p:inputText>
+                    <p:outputLabel value="Comisiones Rep USD:" for="comisionesUSD" />
+                    <p:inputText id="comisionesUSD"
+                                 value="#{reservationEditController.reservacion.comisionesRepUSD}"
+                                 title="Comisiones Rep USD">
+                        <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                    </p:inputText>
+                    <p:outputLabel value="Total Cash USD:" for="totalCashUSD" />
+                    <h:outputText id="totalCashUSD" value="#{reservationEditController.reservacion.totalCashUSD}" title="TOTAL CASH USD">
+                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                    </h:outputText>
+                </p:panelGrid>
+            </h:panelGroup>
+            <h:panelGroup>
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                    <h5>PESOS</h5>
+                    <p:outputLabel value="Pronostico MXN:" for="pronosticoMXN" />
+                    <p:inputText id="pronosticoMXN"
+
+                                 value="#{reservationEditController.reservacion.pronosticoMXN}" title="Pronostico MXN">
+                        <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                    </p:inputText>
+                    <p:outputLabel value="Real MXN:" for="realMXN" />
+                    <p:inputText id="realMXN"
+
+                                 value="#{reservationEditController.reservacion.realMXN}" title="Real MXN">
+                        <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                    </p:inputText>
+                    <p:outputLabel value="Real T/C MXN:" for="realTCMXN" />
+                    <p:inputText id="realTCMXN"
+
+                                 value="#{reservationEditController.reservacion.realTCMXN}" title="Real T/C MXN">
+                        <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                    </p:inputText>
+                    <p:outputLabel value="DTV MXN:" for="dtvMXN" />
+                    <p:inputText id="dtvMXN"
+
+                                 value="#{reservationEditController.reservacion.dtvMXN}" title="DTV MXN">
+                        <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                    </p:inputText>
+                    <p:outputLabel value="Otros Ingresos MXN:" for="otrosIngresosMXN" />
+                    <p:inputText id="otrosIngresosMXN"
+                                 value="#{reservationEditController.reservacion.otrosIngresosMXN}" title="DTV MXN">
+                        <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                    </p:inputText>
+                    <p:outputLabel value="Total Cash MXN:" for="totalCashMXN" />
+                    <h:outputText id="totalCashMXN" value="#{reservationEditController.reservacion.totalCashMXN}" title="TOTAL CASH MXN">
+                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                    </h:outputText>
+                    <p:outputLabel value="Diferencia Pesos:" for="diferenciaPesos" />
+                    <h:outputText id="diferenciaPesos" value="#{reservationEditController.reservacion.diferenciaPesos}" title="DIFERENCIA PESOS">
+                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                    </h:outputText>
+                </p:panelGrid>
+            </h:panelGroup>
+        </p:panelGrid>
+
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+            <h:panelGroup>
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                    <h5>FACTURACIÓN USD</h5>
+                    <p:outputLabel value="Facturación USD:" for="facturacionUSD" />
+                    <p:inputText id="facturacionUSD"
+
+                                 value="#{reservationEditController.reservacion.facturacionUSD}" title="FACTURACION USD">
+                        <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                    </p:inputText>
+                    <p:outputLabel value="Total General USD:" for="totalGeneralUSD" />
+                    <h:outputText id="totalGeneralUSD"
+                                  value="#{reservationEditController.reservacion.totalGeneralUSD}" title="TOTAL GENERAL USD">
+                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                    </h:outputText>
+                </p:panelGrid>
+
+            </h:panelGroup>
+            <h:panelGroup>
+                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                    <h5>FACTURACIÓN MXN</h5>
+                    <p:outputLabel value="Facturación MXN:" for="facturacionMXN" />
+                    <p:inputText id="facturacionMXN"
+
+                                 value="#{reservationEditController.reservacion.facturacionMXN}" title="FACTURACION MXN">
+                        <p:ajax event="change" process="@this" update="totalCashUSD totalCashMXN diferenciaPesos totalGeneralUSD totalGeneralMXN "/>
+                    </p:inputText>
+                    <p:outputLabel value="Total General MXN:" for="totalGeneralMXN" />
+                    <h:outputText id="totalGeneralMXN"
+                                  value="#{reservationEditController.reservacion.totalGeneralMXN}" title="TOTAL GENERAL MXN">
+                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                    </h:outputText>
+                </p:panelGrid>
+            </h:panelGroup>
+        </p:panelGrid>
+    </p:outputPanel>
+
+</html>

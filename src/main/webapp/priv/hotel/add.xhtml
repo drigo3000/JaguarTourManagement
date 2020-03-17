@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:hotel='http://xmlns.jcp.org/jsf/composite/ezcomp/hotel'
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Hoteles" outcome="/priv/hotel/list" />
+                    <p:menuitem value="Agregar" outcome="/priv/hotel/add" />
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="content">
+
+            <div class="card">
+                <h5>Registro Hotel</h5>
+                <h:form>
+                    <p:outputPanel id="inputPanel">
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                            <p:outputLabel value="Nombre:" for="name" />
+                            <p:inputText  id="name" value="#{hotelCreateController.hotel.name}" title="Name" required="true" requiredMessage="The Name field is required."/>
+                            <p:outputLabel value="Lugar de Pickup" for="lugarPickup" />
+                            <p:inputText  id="lugarPickup"
+                                          value="#{hotelCreateController.hotel.lugarPickup}"
+                                          title="Lugar de Pickup"
+                                          required="false"
+                                          requiredMessage="Lugar de Pickup"/>
+                            <p:outputLabel value="Zona:" for="operation" />
+                            <p:selectOneMenu id="operation"
+                                             required='true'
+                                             requiredMessage='Lugar de Operación Requerido'
+                                             value="#{hotelCreateController.hotel.operation}"
+                                             title="Operation">
+                                <f:selectItem itemLabel="Seleccionar uno..."
+                                              noSelectionOption="true"
+                                              itemValue="#{null}"/>
+                                <f:selectItem itemValue="RVM" itemLabel="Riviera Maya"/>
+                                <f:selectItem itemValue="CUN" itemLabel="Cancún"/>
+                                <f:selectItem itemValue="CZM" itemLabel="Cozumel"/>
+                            </p:selectOneMenu >
+                            <p:outputLabel value="Sub Zona:" for="suboperation" />
+                            <p:inputText value="#{hotelCreateController.hotel.subOperation}"
+                                         placeholder="Playacar, Sur, Norte ..."
+                                         id="suboperation"/>
+                            <p:outputLabel value="Notas:" for="notes" />
+                            <p:inputTextarea rows="4" cols="30" id="notes" value="#{hotelCreateController.hotel.notes}" title="Notes" />
+
+                            <p:commandButton value="Guardar"
+                                             icon="fa fa-save"
+                                             styleClass="defaultButton"
+                                             actionListener="#{hotelCreateController.create}"
+                                             update="inputPanel growl">
+                                <p:confirm header="Confirmar"
+                                           message="¿Agregar a base de datos? "
+                                           icon="fas fa-exclamation-triangle"/>
+                            </p:commandButton>
+
+                        </p:panelGrid>
+                    </p:outputPanel>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </h:form>
+            </div>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

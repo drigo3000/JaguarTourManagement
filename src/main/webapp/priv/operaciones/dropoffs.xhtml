@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/WEB-INF/includes/morpheus/template_search_horizontal.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Reservaciones" outcome="/priv/reservations/list" />
+                    <p:menuitem value="Asignar Unidades" outcome="/priv/operaciones/dropoffs"/>
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="searchform">
+            <p:panel header="Búsqueda">
+
+                <p:panelGrid columns="1" layout="grid"
+                             styleClass="ui-panelgrid-blank grid-pad" style="margin-top:10px">
+                    <p:outputLabel value="REPORTE"/>
+                    <p:selectOneMenu value="#{operacionesReservationFilterController.view}" panelStyleClass="hideDisabled">
+                        <f:selectItem itemLabel="Asignar" itemValue="2"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="RANGO"/>
+                    <p:calendar value="#{reservationFilterOptionsController.from}"
+                                pattern="dd/MM/yyyy"
+                                converter="#{localDateConverter}"/>
+                    <p:outputLabel value="ZONA:" for="lugarReserva" />
+                    <p:selectCheckboxMenu id="lugarReserva"
+                                          label="ZONA"
+                                          value="#{reservationFilterOptionsController.lugarReserva}">
+                        <f:selectItem itemLabel='CZM' itemValue='CZM'/>
+                        <f:selectItem itemLabel='RVM' itemValue='RVM'/>
+                        <f:selectItem itemLabel='CUN' itemValue='CUN'/>
+                    </p:selectCheckboxMenu>
+                    <p:outputLabel value="ESTATUS"/>
+                    <p:selectCheckboxMenu id="estatus"
+                                          label="ESTATUS"
+                                          value="#{reservationFilterOptionsController.statuses}">
+                        <f:selectItem itemLabel='NOW SHOW' itemValue='NO SHOW'/>
+                        <f:selectItem itemLabel='CUPONES PENDIENTES' itemValue='CUPONES PENDIENTES'/>
+                        <f:selectItem itemLabel='CUPONES CANCELADOS' itemValue='CUPONES CANCELADOS'/>
+                        <f:selectItem itemLabel='CUPONES DEVUELTOS' itemValue='CUPONES DEVUELTOS'/>
+                    </p:selectCheckboxMenu>
+                    <p:outputLabel value="SERVICIO"/>
+                    <p:autoComplete id="servicio"
+                                    immediate='true'
+                                    value="#{reservationFilterOptionsController.servicio}"
+                                    converter="#{tourConverter}"
+                                    title="Servicio"
+                                    var="tourItem"
+                                    placeholder="TODOS"
+                                    minQueryLength="3"
+                                    itemLabel="#{tourItem.name}"
+                                    itemValue="#{tourItem}"
+                                    completeMethod="#{operacionesReservationFilterController.filterTour}"/>
+                    <p:outputLabel value="GRUPO"/>
+                    <p:autoComplete id="grupo"
+                                    placeholder="TODOS"
+                                    immediate='true'
+                                    value="#{reservationFilterOptionsController.grupo}"
+                                    title="Servicio"
+                                    completeMethod="#{tourListManager.getGrupos}"/>
+                    <p:outputLabel value="AGENCIA"/>
+                    <p:autoComplete id="nombreAgencia"
+                                    value="#{reservationFilterOptionsController.agencia}"
+                                    converter="#{agencyConverter}"
+                                    title="Agencia"
+                                    var="agenciaItem"
+                                    placeholder="TODOS"
+                                    minQueryLength="3"
+                                    itemLabel="#{agenciaItem.name}"
+                                    itemValue="#{agenciaItem}"
+                                    completeMethod="#{operacionesReservationFilterController.filterAgency}"/>
+                    <p:outputLabel value="HOTEL"/>
+                    <p:autoComplete id="hotel"
+                                    value="#{reservationFilterOptionsController.hotel}"
+                                    converter="#{hotelConverter}"
+                                    title="Hotel"
+                                    var="hotelItem"
+                                    immediate="true"
+                                    placeholder="TODOS"
+                                    minQueryLength="3"
+                                    itemLabel="#{hotelItem.name}"
+                                    itemValue="#{hotelItem}"
+                                    completeMethod="#{hotelListController.filterHotels}"/>
+                    <p:commandButton id="searchButton"
+                                     icon="fa fa-search"
+                                     value="Búscar"
+                                     update="dataTableOutputPanel asignarUnidadPanel growl"
+                                     actionListener="#{operacionesReservationFilterController.search}"/>
+                </p:panelGrid>
+            </p:panel>
+            <p:defaultCommand target="searchButton"/>
+        </ui:define>
+
+        <!-- netos -->
+        <ui:define name="searchresults">
+            <p:outputPanel id="asignarUnidadPanel">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-5">
+                        <h:panelGroup>
+                            <div class="card" style='height:295px;'>
+                                <h5>Asignar Unidad y Operador</h5>
+                                <p:panelGrid columns="2"
+                                             columnClasses="labelColumn, inputColumn"
+                                             layout="grid" class="ui-noborder">
+                                    <p:outputLabel value="Unidad"/>
+                                    <p:inputText value="#{asignacionUnidadController.unidad}"
+                                                 placeholder="Ejemplo: TR17"/>
+                                    <p:outputLabel value="Operador"/>
+                                    <p:inputText value="#{asignacionUnidadController.operador}"
+                                                 placeholder="Ejemplo: Juan Dominguez"/>
+                                    <p:outputLabel value="Tarjeta"/>
+                                    <p:inputText value="#{asignacionUnidadController.tarjeta}"
+                                                 placeholder="Ejemplo: Tigre"/>
+                                    <p:outputLabel value="Drop off"/>
+                                    <p:inputMask value="#{asignacionUnidadController.dropoff}"
+                                                 mask="99:99"
+                                                 placeholder="Ejemplo: 07:30"/>
+                                    <h:panelGroup/>
+                                    <p:commandButton value="Asignar"
+                                                     icon="fa fa-save"
+                                                     styleClass="defaultButton"
+                                                     actionListener="#{asignacionUnidadController.setDropoffs}"
+                                                     update="dataTableOutputPanel asignarUnidadPanel growl"/>
+                                </p:panelGrid>
+                            </div>
+                        </h:panelGroup></div>
+                    <div class="ui-g-12 ui-md-7">
+                        <div class="card">
+                            <h5>Pax por Unidad</h5>
+                            <p:scrollPanel style="height: 120px;" mode="native">
+                                <p:dataTable value="#{listaPaxPorUnidadRetornoController.listaPaxPorUnidad}"
+                                             var="unidad">
+                                    <p:column headerText="Unidad" styleClass="column50 centerAligned">
+                                        <h:outputText value="#{unidad.unidad}"/>
+                                    </p:column>
+                                    <p:column headerText="Tarjeta" styleClass="column80 centerAligned">
+                                        <h:outputText value="#{unidad.tarjeta}"/>
+                                    </p:column>
+                                    <p:column headerText="Operador"  styleClass="column50 centerAligned">
+                                        <h:outputText value="#{unidad.operador}"/>
+                                    </p:column>
+                                    <p:column headerText="Pax"  styleClass="column15 centerAligned">
+                                        <h:outputText value="#{unidad.pax}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:scrollPanel>
+
+                            <h3>Reservas Pendientes Por Asignar: #{listaPaxPorUnidadRetornoController.reservasPendientes}</h3>
+                        </div>
+                    </div>
+                </div>
+
+
+            </p:outputPanel>
+            <p:outputPanel id="dataTableOutputPanel">
+                <h:panelGroup rendered="#{not empty operacionesReservationFilterController.reservations}">
+
+                    <div class="card">
+                        <h5>Lista General de Reservas</h5>
+                        <h:panelGroup rendered='#{operacionesReservationFilterController.view eq 2}'>
+                            <p:scrollPanel mode="native">
+                                <p:dataTable
+                                    id="listaOperacionesTabla"
+                                    draggableColumns="true"
+                                    draggableRows="true"
+                                    rowStyleClass="#{not empty item.unidadRetorno ? 'reservaAsignada': '' }"
+                                    selectionMode="multiple"
+                                    selection="#{operacionesReservationFilterController.selectedReservations}"
+                                    rowKey="#{item.id}"
+                                    scrollable="true"
+                                    value="#{operacionesReservationFilterController.reservations}"
+                                    var="item">
+                                    <p:column styleClass='column100 print50pt' headerText="Servicio">
+                                        <h:outputText value='#{item.servicio.name}'/>
+                                    </p:column>
+                                    <p:column styleClass='column15 print3pt centerAligned' headerText="A">
+                                        <h:outputText value='#{item.adulto}'/>
+                                        <f:facet name="footer">
+                                            <h:outputText value="#{operacionesReservationFilterController.adultos}"/>
+                                        </f:facet>
+                                    </p:column>
+                                    <p:column styleClass='column15 print3pt centerAligned' headerText="N">
+                                        <h:outputText value='#{item.nino}'/>
+                                        <f:facet name="footer">
+                                            <h:outputText value="#{operacionesReservationFilterController.ninos}"/>
+                                        </f:facet>
+                                    </p:column>
+                                    <p:column styleClass='column15 print3pt centerAligned' headerText="I">
+                                        <h:outputText value='#{item.infante}'/>
+                                        <f:facet name="footer">
+                                            <h:outputText value="#{operacionesReservationFilterController.infantes}"/>
+                                        </f:facet>
+                                    </p:column>
+                                    <p:column styleClass='column20 print10pt centerAligned' headerText="Total">
+                                        <h:outputText value='#{item.totalPax}'/>
+                                        <f:facet name="footer">
+                                            <h:outputText value="#{operacionesReservationFilterController.totalPax}"/>
+                                        </f:facet>
+                                    </p:column>
+                                    <p:column styleClass='column150 print100pt' headerText="Hotel">
+                                        <h:outputText value='#{item.hotel.name}'/>
+                                    </p:column>
+                                    <p:column styleClass='column50 print20pt' headerText="Idioma">
+                                        <h:outputText value='#{item.idioma}'/>
+                                    </p:column>
+                                    <p:column styleClass='column50 print20pt' headerText="Pickup">
+                                        <h:outputText value='#{item.dropoff}'/>
+                                    </p:column>
+                                    <p:column style='width:100% !important;' headerText="Notas">
+                                        <h:outputText value="#{item.observacionesOperativas}"/>
+                                    </p:column>
+                                    <p:column styleClass='column50 print20pt centerAligned' headerText="Unidad Pickup">
+                                        <h:outputText value="#{item.unidad}"/><br/>
+                                        <h:outputText value="#{item.operador}"/>
+                                    </p:column>
+                                    <p:column styleClass='column50 print20pt centerAligned' headerText="Tarjeta">
+                                        <h:outputText value="#{item.tarjeta}"/>
+                                    </p:column>
+                                    <p:column styleClass='column50 print20pt centerAligned' headerText="Unidad Regreso">
+                                        <h:outputText value="#{item.unidadRetorno}"/><br/>
+                                        <h:outputText value="#{item.operadorRetorno}"/>
+                                    </p:column>
+                                </p:dataTable>
+                                <div class="text-center">
+                                    <p:commandButton icon="fa fa-copy"
+                                                     onclick="copyToClipboard(document.getElementById('searchform:listaOperacionesTabla'))"
+                                                     class="defaultButton"/>
+                                    &nbsp;
+                                    <p:commandButton type="button"
+                                                     class="defaultButton"
+                                                     icon="fa fa-print">
+                                        <p:printer target="listaOperacionesTabla" />
+                                    </p:commandButton>
+                                </div>
+
+                            </p:scrollPanel>
+                        </h:panelGroup>
+                    </div>
+
+                    <div class="card">
+                        <h5>Reservas Asginadas</h5>
+                        <h:panelGroup id='asignadasPanel'>
+                            <p:repeat value="#{operacionesReservationFilterController.mapaReservasDropoffs.keySet()}"
+                                      var="unidad">
+                                <p:dataTable value="#{operacionesReservationFilterController.mapaReservasDropoffs.get(unidad)}"
+                                             var="asignada">
+                                    <p:column styleClass='column80 print60pt' headerText="Servicio">
+                                        <h:outputText value='#{asignada.servicio.name}'/>
+                                    </p:column>
+                                    <p:column  styleClass='column80 print30pt' headerText="Guia">
+                                        <h:outputText value='#{asignada.guia}'/>
+                                    </p:column>
+                                    <p:column styleClass='column15 centerAligned print3pt' headerText="A">
+                                        <h:outputText value='#{asignada.adulto}'/>
+                                    </p:column>
+                                    <p:column styleClass='column15 centerAligned print3pt' headerText="N">
+                                        <h:outputText value='#{asignada.nino}'/>
+                                    </p:column>
+                                    <p:column styleClass='column15 centerAligned print3pt' headerText="I">
+                                        <h:outputText value='#{asignada.infante}'/>
+                                    </p:column>
+                                    <p:column style="width:100% !important" styleClass='print50pt' headerText="Nombre">
+                                        <h:outputText value='#{asignada.nombreCliente}'/>
+                                    </p:column>
+                                    <p:column styleClass='column100 print70pt' headerText="Hotel">
+                                        <h:outputText value='#{asignada.hotel.name}'/>
+                                    </p:column>
+                                    <p:column styleClass='column30 centerAligned print10pt' headerText="Hab.">
+                                        <h:outputText value='#{asignada.habitacion}'/>
+                                    </p:column>
+                                    <p:column styleClass='column40 centerAligned print10pt' headerText="Pickup">
+                                        <h:outputText value='#{asignada.dropoff}'/>
+                                    </p:column>
+                                    <p:column rowspan="#{operacionesReservationFilterController.mapaReservasDropoffs.get(unidad).size()}" styleClass='column50 centerAligned print10pt' headerText="Pax">
+                                        <h:outputText value="#{operacionesReservationFilterController.getPax(operacionesReservationFilterController.mapaReservasDropoffs.get(unidad))}"/>
+                                    </p:column>
+                                    <p:column rowspan="#{operacionesReservationFilterController.mapaReservasDropoffs.get(unidad).size()}" styleClass='column50 centerAligned print10pt' headerText="Tarjeta">
+                                        <h:outputText value="#{asignada.tarjeta}"/>
+                                    </p:column>
+                                    <p:column rowspan="#{operacionesReservationFilterController.mapaReservasDropoffs.get(unidad).size()}" styleClass='column50 centerAligned print10pt' headerText="Unidad">
+                                        <h:outputText value="#{unidad}"/> - <h:outputText value="#{asignada.operador}"/>
+                                    </p:column>
+
+                                </p:dataTable>
+                                <p:spacer height="35px"/>
+                            </p:repeat>
+                        </h:panelGroup>
+                        <div class="text-center">
+                            <p:commandButton icon="fa fa-copy"
+                                             onclick="copyToClipboard(document.getElementById('searchform:asignadasPanel'))"
+                                             class="defaultButton"/>
+                            &nbsp;
+                            <p:commandButton type="button"
+                                             class="defaultButton"
+                                             icon="fa fa-print">
+                                <p:printer target="asignadasPanel" />
+                            </p:commandButton>
+                        </div>
+
+                    </div>
+                </h:panelGroup>
+
+
+
+            </p:outputPanel>
+        </ui:define>
+        <ui:define name="scripts">
+        </ui:define>
+    </ui:composition>
+</html>
+

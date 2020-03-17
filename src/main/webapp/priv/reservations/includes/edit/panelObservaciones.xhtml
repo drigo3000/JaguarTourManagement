@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui">
+    <p:fieldset legend="Observaciones">
+        <p:panelGrid columns="1" columnClasses="text-right,text-left,text-right,text-left" layout="grid" styleClass="ui-panelgrid-blank">
+
+            <p:outputLabel value="Observaciones Operativas:" for="observacionesOperativas" />
+            <p:inputTextarea id="observacionesOperativas"
+                             value="#{reservationEditController.reservacion.observacionesOperativas}" title="ObservacionesOperativas" />
+            <p:outputLabel value="Observaciones Contables:"
+
+                           for="observacionesContables" />
+            <p:inputTextarea id="observacionesContables"
+
+                             value="#{reservationEditController.reservacion.observacionesContables}" title="ObservacionesContables" />
+            <p:outputLabel value="Observaciones Generales:"
+
+                           for="observacionesGenerales" />
+            <p:inputTextarea id="observacionesGenerales"
+
+                             value="#{reservationEditController.reservacion.observacionesGenerales}" title="ObservacionesGenerales" />
+
+        </p:panelGrid>
+    </p:fieldset>
+</html>

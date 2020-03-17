@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ho="http://xmlns.jcp.org/jsf/composite/ezcomp/hotel"
+      xmlns:hotel='http://xmlns.jcp.org/jsf/composite/ezcomp/hotel'
+      xmlns:res="http://xmlns.jcp.org/jsf/composite/ezcomp/reservations"
+      xmlns:tour="http://xmlns.jcp.org/jsf/composite/ezcomp/tour"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <div class="ui-g">
+        <div class="ui-g-12 ui-lg-6">
+            <ho:horariosPorHotel/>
+        </div>
+        <div class="ui-g-12 ui-lg-6">
+            <res:paxPorTurnoFecha/>
+        </div>
+
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <tour:descriptivoTour/>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <div class='card'>
+                <h5>RESERVAS DEL RANGO DE FECHAS</h5>
+                <p:dataTable value="#{dashboardReservationsController.reservaciones}"
+                             paginator="true"
+                             paginatorAlwaysVisible="true"
+                             rows="10"
+                             rowsPerPageTemplate="10"
+                             var="reservacion">
+                    <f:facet name='header'>
+                        Reservas
+                    </f:facet>
+                    <p:column styleClass="column80 centerAligned">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha"/>
+                        </f:facet>
+                        <h:outputText value="#{reservacion.fechaOperacion.dayOfMonth}-#{reservacion.fechaOperacion.monthValue}-#{reservacion.fechaOperacion.year}"/>
+                    </p:column>
+                    <p:column styleClass="column100 centerAligned">
+                        <f:facet name="header">
+                            <h:outputText value="Grupo"/>
+                        </f:facet>
+                        <h:outputText value="#{reservacion.servicio.grupo}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Servicio"/>
+                        </f:facet>
+                        <h:outputText value="#{reservacion.servicio.name}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Hotel"/>
+                        </f:facet>
+                        <h:outputText value="#{reservacion.hotel.name}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nombre"/>
+                        </f:facet>
+                        <h:outputText value="#{reservacion.nombreCliente}"/>
+                    </p:column>
+                    <p:column styleClass="column40 centerAligned">
+                        <f:facet name="header">
+                            <h:outputText value="Pax"/>
+                        </f:facet>
+                        <h:outputText value="#{reservacion.adulto}.#{reservacion.nino}.#{reservacion.infante}"/>
+                        <h:outputText rendered="#{reservacion.adultoCortesia gt 0}" value=" (#{reservacion.adultoCortesia})"/>
+                    </p:column>
+                    <p:column styleClass="mediumColumn centerAligned">
+                        <f:facet name="header">
+                            <h:outputText value="Confirma"/>
+                        </f:facet>
+                        <h:outputText value="#{reservacion.claveConfirmacion}"/>
+                    </p:column>
+                    <f:facet name="footer">
+                        No. Reservas: #{dashboardReservationsController.reservaciones.size()}
+                    </f:facet>
+                </p:dataTable>
+            </div>
+        </div>
+
+    </div>
+
+    <h:panelGroup rendered="false">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class='card'>
+                    <h5>RESERVAS DEL RANGO DE FECHAS</h5>
+                    <p:dataTable value="#{dashboardReservationsController.reservaciones}"
+                                 paginator="true"
+                                 paginatorAlwaysVisible="true"
+                                 rows="10"
+                                 rowsPerPageTemplate="10"
+                                 var="reservacion">
+                        <f:facet name='header'>
+                            Reservas
+                        </f:facet>
+                        <p:column styleClass="column80 centerAligned">
+                            <f:facet name="header">
+                                <h:outputText value="Fecha"/>
+                            </f:facet>
+                            <h:outputText value="#{reservacion.fechaOperacion.dayOfMonth}-#{reservacion.fechaOperacion.monthValue}-#{reservacion.fechaOperacion.year}"/>
+                        </p:column>
+                        <p:column styleClass="column100 centerAligned">
+                            <f:facet name="header">
+                                <h:outputText value="Grupo"/>
+                            </f:facet>
+                            <h:outputText value="#{reservacion.servicio.grupo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Servicio"/>
+                            </f:facet>
+                            <h:outputText value="#{reservacion.servicio.name}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Hotel"/>
+                            </f:facet>
+                            <h:outputText value="#{reservacion.hotel.name}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nombre"/>
+                            </f:facet>
+                            <h:outputText value="#{reservacion.nombreCliente}"/>
+                        </p:column>
+                        <p:column styleClass="column40 centerAligned">
+                            <f:facet name="header">
+                                <h:outputText value="Pax"/>
+                            </f:facet>
+                            <h:outputText value="#{reservacion.adulto}.#{reservacion.nino}.#{reservacion.infante}"/>
+                            <h:outputText rendered="#{reservacion.adultoCortesia gt 0}" value=" (#{reservacion.adultoCortesia})"/>
+                        </p:column>
+                        <p:column styleClass="mediumColumn centerAligned">
+                            <f:facet name="header">
+                                <h:outputText value="Confirma"/>
+                            </f:facet>
+                            <h:outputText value="#{reservacion.claveConfirmacion}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            No. Reservas: #{dashboardReservationsController.reservaciones.size()}
+                        </f:facet>
+                    </p:dataTable>
+                </div>
+            </div>
+
+        </div>
+    </h:panelGroup>
+
+
+</html>
+

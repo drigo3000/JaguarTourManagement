@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <!-- confirm screen -->
+    <h:panelGroup rendered='#{reservationEditController.displayConfirmMessage and not reservationEditController.displayConfirmation}'>
+        <p:panelGrid columns="2" layout="grid"
+                     columnClasses="labelColumn, inputColumn"
+                     styleClass="ui-panelgrid-blank">
+            <p:fieldset legend="Información Reserva">
+                <p:panelGrid columns="2" layout="grid"
+                             columnClasses="labelColumn, inputColumn"
+                             styleClass="ui-panelgrid-blank">
+                    <p:outputLabel value="Representante: "/>
+                    <h:outputText value="#{reservationEditController.reservacion.representante.name}"/>
+                    <p:outputLabel value="Agencia: "/>
+                    <h:outputText value="#{reservationEditController.reservacion.agencia.name}"/>
+                    <p:outputLabel value="Tour:"/>
+                    <h:outputText value="#{reservationEditController.reservacion.servicio.name}"/>
+                    <p:outputLabel value="Promo:"/>
+                    <h:outputText value="#{reservationEditController.reservacion.nacionalidad}"/>
+                    <p:outputLabel value="Transportación:"/>
+                    <h:panelGroup rendered="#{reservationEditController.reservacion.conTransportacion}">
+                        <i class="fas fa-check"></i>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{not reservationEditController.reservacion.conTransportacion}">
+                        <i class="fas fa-times"></i>
+                    </h:panelGroup>
+                    <p:outputLabel value="Vehículo:"/>
+                    <h:outputText value="#{reservationEditController.reservacion.tipoVehiculo}"/>
+                    <p:outputLabel value="Fecha Servicio:"/>
+                    <h:panelGroup>
+                        <h:outputText value="#{reservationsUtilityController.getDay(reservationEditController.reservacion.fechaOperacion)}, "/>
+                        <h:outputText value="#{reservationEditController.reservacion.fechaOperacion.dayOfMonth}"/> -
+                        <h:outputText value="#{localeSelectorManager.getMonth(reservationEditController.reservacion.fechaOperacion)}"/> -
+                        <h:outputText value="#{reservationEditController.reservacion.fechaOperacion.year}"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Cupon:"/>
+                    <h:outputText value="#{reservationEditController.reservacion.noCupon}"/>
+                    <p:outputLabel value="Nombre:"/>
+                    <h:outputText value="#{reservationEditController.reservacion.nombreCliente}"/>
+                    <p:outputLabel value="Pax:"/>
+                    <h:panelGroup>
+                        <h:outputText value="#{reservationEditController.reservacion.adulto}"/>.
+                        <h:outputText value="#{reservationEditController.reservacion.nino}"/>.
+                        <h:outputText value="#{reservationEditController.reservacion.infante}"/>
+                    </h:panelGroup>
+                    <p:outputLabel rendered="#{reservationEditController.reservacion.adultoCortesia gt 0}" value="Incentivo: "/>
+                    <h:panelGroup rendered="#{reservationEditController.reservacion.adultoCortesia gt 0}">
+                        <h:outputText value="#{reservationEditController.reservacion.adultoCortesia}"/>
+                    </h:panelGroup>
+                    <p:outputLabel rendered="#{reservationEditController.reservacion.adultoCortesia gt 0}" value="Referencia Incentivo: "/>
+                    <h:panelGroup rendered="#{reservationEditController.reservacion.adultoCortesia gt 0}">
+                        <h:outputText value="#{reservationEditController.reservacion.referenciaCortesia}"/>
+                    </h:panelGroup>
+                    <p:outputLabel rendered="#{(reservationEditController.reservacion.buceoAdultos + reservationEditController.reservacion.buceoNinos) gt 0}" value="Buceo:"/>
+                    <h:panelGroup rendered="#{(reservationEditController.reservacion.buceoAdultos + reservationEditController.reservacion.buceoNinos) gt 0}">
+                        <h:outputText value="#{reservationEditController.reservacion.buceoAdultos}"/>.
+                        <h:outputText value="#{reservationEditController.reservacion.buceoNinos}"/>
+                    </h:panelGroup>
+                    <p:outputLabel rendered="#{(reservationEditController.reservacion.buceoAdultos + reservationEditController.reservacion.buceoNinos) gt 0}" value="Tipo Buceo"/>
+                    <h:panelGroup rendered="#{(reservationEditController.reservacion.buceoAdultos + reservationEditController.reservacion.buceoNinos) gt 0}">
+                        <h:outputText value="#{reservationEditController.reservacion.tipoBuceo}"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Hotel:"/>
+                    <h:outputText value="#{reservationEditController.reservacion.hotel.name}"/>
+                    <p:outputLabel value="Habitación:"/>
+                    <h:outputText value="#{reservationEditController.reservacion.habitacion}"/>
+                    <p:outputLabel value="Pickup:"/>
+                    <h:outputText value="#{reservationEditController.reservacion.pickup}"/>
+                    <p:outputLabel value="Meeting Point:"/>
+                    <h:outputText value="#{reservationEditController.reservacion.meetingPoint}"/>
+                    <p:outputLabel value="Idioma:"/>
+                    <h:outputText value="#{reservationEditController.reservacion.idioma}"/>
+                </p:panelGrid>
+            </p:fieldset>
+            <p:fieldset legend="Observaciones">
+                <p:panelGrid columns="1" layout="grid"
+                             styleClass="ui-panelgrid-blank">
+                    <p:outputLabel value="Operativas"/>
+                    <h:outputText value='#{reservationEditController.reservacion.observacionesOperativas}'/>
+                    <p:outputLabel value="Contables"/>
+                    <h:outputText value='#{reservationEditController.reservacion.observacionesContables}'/>
+                    <p:outputLabel value="Generales"/>
+                    <h:outputText value='#{reservationEditController.reservacion.observacionesGenerales}'/>
+                </p:panelGrid>
+
+            </p:fieldset>
+        </p:panelGrid>
+
+
+        <div class='text-center'>
+            <p:commandButton value="Modificar"
+                             styleClass='defaultButton important orange-btn verifyButton'
+                             icon='fa fa-edit'
+                             update="@(.tourCreatePanel) growl"
+                             actionListener="#{reservationEditController.modify()}"/>
+            <p:commandButton value="Confirmar"
+                             styleClass='defaultButton important verifyButton'
+                             icon='fa fa-save'
+                             update="@(.tourCreatePanel) growl"
+                             actionListener="#{reservationEditController.edit()}">
+                <p:confirm header="Confirmar"
+                           message="Guardar en base de datos?"/>
+            </p:commandButton>
+        </div>
+
+    </h:panelGroup>
+    <h:panelGroup rendered='#{reservationEditController.displayConfirmation and not reservationEditController.displayConfirmMessage}'>
+        <div class='text-center'>
+            <h1>#{reservationEditController.reservacion.claveConfirmacion}</h1>
+            <p:commandButton value="Editar"
+                             styleClass='defaultButton important verifyButton green-btn'
+                             icon='fa fa-edit'
+                             update='@(.tourCreatePanel) growl'
+                             actionListener='#{reservationEditController.reset()}'/>
+        </div>
+    </h:panelGroup>
+
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Agencias" outcome="/priv/agency/list" />
+                    <p:menuitem value="Agregar" outcome="/priv/agency/add" />
+                </p:breadCrumb>
+            </h:form>
+
+        </ui:define>
+        <ui:define name="content">
+            <h:form>
+                <p:outputPanel id="inputPanel">
+                    <div class="card">
+
+                        <h5>Registro Agencia</h5>
+
+                        <p:panelGrid columns="1"
+                                     layout='grid'
+                                     styleClass="fullwidth ui-noborder">
+                            <p:outputLabel for="name" value="Nombre:"/>
+                            <p:inputText id="name"
+                                         validator='#{agencytNameValidator.validateAdd}'
+                                         required="true"
+                                         requiredMessage="Name field required"
+                                         value="#{agencyCreateManager.agency.name}" styleClass="fullwidth" />
+                            <p:outputLabel for="description" value="Descripción:"/>
+                            <p:outputLabel for="metaMensual" value="Meta Mensual:"/>
+                            <p:inputNumber id="metaMensual" minValue="0"
+                                           decimalPlaces="0"
+                                           decimalSeparator="."
+                                           thousandSeparator=","
+                                           value="#{agencyCreateManager.agency.metaMensual}"/>
+                            <p:inputTextarea id="description"
+                                             rows="5"
+                                             required="false"
+                                             requiredMessage="Description field required"
+                                             value="#{agencyCreateManager.agency.description}" />
+                            <h:panelGroup styleClass="alignright">
+                                <p:commandButton id="saveButton"
+                                                 styleClass="defaultButton"
+                                                 actionListener="#{agencyCreateManager.create()}"
+                                                 icon="ui-icon ui-icon-disk"
+                                                 value="Save" update="inputPanel growl">
+                                    <p:confirm header="Confirmar"
+                                               message="¿Agregar a base de datos? "
+                                               icon="fas fa-exclamation-triangle"/>
+                                </p:commandButton>
+                            </h:panelGroup>
+                        </p:panelGrid>
+
+                    </div>
+                </p:outputPanel>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

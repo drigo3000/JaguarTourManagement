@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:re="http://xmlns.jcp.org/jsf/composite/ezcomp/reservations"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Reservaciones" outcome="/priv/reservations/list" />
+                    <p:menuitem value="Agregar" outcome="/priv/reservations/add"/>
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="content">
+            <div class="card">
+                <h5>Registro Reserva</h5>
+                <h:form>
+                    <p:confirmDialog global="true"
+                                     showEffect="fade"
+                                     hideEffect="fade">
+                        <p:commandButton value="Si"
+                                         type="button"
+                                         styleClass="ui-confirmdialog-yes"
+                                         icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button"
+                                         styleClass="ui-confirmdialog-no"
+                                         icon="ui-icon-close" />
+                    </p:confirmDialog>
+                    <p:outputPanel styleClass="tourCreatePanel">
+                        <!-- EDIT FORM -->
+                        <h:panelGroup rendered='#{not reservationEditController.displayConfirmMessage and not reservationEditController.displayConfirmation}'>
+
+                            <p:tabView activeIndex="#{reservationEditController.activeTab}">
+                                <p:tab title='Servicio'>
+                                    <p:outputPanel styleClass="infoServicioPanel">
+                                        <p:panelGrid columns="2"
+                                                     layout="grid"
+                                                     styleClass="ui-panelgrid-blank">
+                                            <h:panelGroup>
+                                                <ui:include src="includes/edit/panelInfoServicio.xhtml"/>
+                                            </h:panelGroup>
+
+                                            <h:panelGroup>
+                                                <ui:include src="includes/edit/panelAgencia.xhtml"/>
+                                                <re:paxPorTurnoFecha/>
+                                            </h:panelGroup>
+                                        </p:panelGrid>
+
+
+                                    </p:outputPanel>
+                                </p:tab>
+                                <p:tab title='Participantes'>
+                                    <p:outputPanel styleClass='participantesPanel'>
+                                        <p:panelGrid columns="2"
+                                                     layout="grid"
+                                                     styleClass="ui-panelgrid-blank">
+                                            <h:panelGroup id="participanteInfoPanel">
+                                                <ui:include src="includes/edit/panelInfoPersonal.xhtml"/>
+                                            </h:panelGroup>
+                                            <h:panelGroup id="numerosParticipantesPanel">
+                                                <ui:include src="includes/edit/panelParticipantes.xhtml"/>
+                                                <ui:include src="includes/edit/panelBuceo.xhtml"/>
+
+
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="false">
+                                                <p:fieldset legend="Participantes Reales">
+                                                    <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank">
+                                                        <p:outputLabel value="Adulto:" for="adultosReales" />
+                                                        <p:inputNumber id="adultosReales"
+                                                                       decimalPlaces="0"
+                                                                       minValue="0"
+                                                                       maxValue="999" thousandSeparator=""
+                                                                       value="#{reservationEditController.reservacion.adultosReales}" title="Adulto">
+                                                            <p:ajax process="@this"/>
+                                                        </p:inputNumber>
+                                                        <p:outputLabel value="Nino:" for="ninosReales" />
+                                                        <p:inputNumber id="ninosReales"
+                                                                       decimalPlaces="0"
+                                                                       minValue="0"
+                                                                       maxValue="999" thousandSeparator=""
+                                                                       value="#{reservationEditController.reservacion.ninosReales}" title="Nino">
+                                                            <p:ajax process="@this"/>
+                                                        </p:inputNumber>
+                                                        <p:outputLabel value="Infante:" for="infantesReales" />
+                                                        <p:inputNumber id="infantesReales"
+                                                                       decimalPlaces="0"
+                                                                       minValue="0"
+                                                                       maxValue="999" thousandSeparator=""
+                                                                       value="#{reservationEditController.reservacion.infantesReales}" title="Infante">
+                                                            <p:ajax process="@this"/>
+                                                        </p:inputNumber>
+                                                    </p:panelGrid>
+                                                </p:fieldset>
+                                                <p:fieldset legend="Buceo Reales">
+                                                    <p:panelGrid columns="4" layout="grid"
+                                                                 styleClass="ui-panelgrid-blank">
+                                                        <p:outputLabel value="Adulto:" for="buceoAdulto" />
+                                                        <p:inputNumber id="buceoAdultoReales"
+                                                                       decimalPlaces="0"
+                                                                       minValue="0"
+                                                                       maxValue="999" thousandSeparator=""
+                                                                       value="#{reservationEditController.reservacion.buceoAdultosReales}" title="Buceo Adultos">
+                                                            <p:ajax process="@this"/>
+                                                        </p:inputNumber>
+                                                        <p:outputLabel value="Niños:" for="buceoNinos" />
+                                                        <p:inputNumber id="buceoNinosReales"
+                                                                       decimalPlaces="0"
+                                                                       minValue="0"
+                                                                       maxValue="999" thousandSeparator=""
+                                                                       value="#{reservationEditController.reservacion.buceoNinosReales}" title="Buceo Niños">
+                                                            <p:ajax process="@this"/>
+                                                        </p:inputNumber>
+                                                    </p:panelGrid>
+                                                </p:fieldset>
+
+                                            </h:panelGroup>
+                                        </p:panelGrid>
+                                    </p:outputPanel>
+
+                                </p:tab>
+                                <p:tab title='Observaciones'>
+                                    <p:outputPanel id="observacionesPanel" class="tabPanel">
+                                        <p:panelGrid columns="1"
+                                                     layout="grid"
+                                                     styleClass="ui-panelgrid-blank">
+                                            <h:panelGroup >
+                                                <ui:include src="includes/edit/panelObservaciones.xhtml"/>
+                                            </h:panelGroup>
+                                            <h:panelGroup >
+                                                <ui:include src="includes/edit/panelStatus.xhtml"/>
+                                            </h:panelGroup>
+                                        </p:panelGrid>
+                                    </p:outputPanel>
+
+                                </p:tab>
+                                <p:tab title='Cupones' rendered="false">
+                                    <ui:include src="includes/edit/panelCupones.xhtml"/>
+                                </p:tab>
+                                <p:tab rendered="false"
+                                       title="Contabilidad" >
+                                    <ui:include src="includes/edit/panelContabilidad.xhtml"/>
+                                </p:tab>
+                                <p:tab title="Log">
+                                    <h:outputText escape="false" value='#{reservationEditController.reservacion.log}'/>
+                                </p:tab>
+                            </p:tabView>
+                            <div class='text-center'>
+                                <p:commandButton value="Verificar"
+                                                 styleClass='defaultButton important orange-btn verifyButton'
+                                                 icon='fa fa-check'
+                                                 update="@(.tourCreatePanel) growl"
+                                                 actionListener="#{reservationEditController.validate()}"/>
+                            </div>
+                        </h:panelGroup>
+
+                        <ui:include src="includes/edit/confirmScreen.xhtml"/>
+                    </p:outputPanel>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

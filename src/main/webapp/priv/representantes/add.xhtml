@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Representantes" outcome="/priv/representantes/list" />
+                    <p:menuitem value="Agregar" outcome="/priv/representantes/add" />
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="content">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <h:form>
+                        <div class="card">
+                            <h5>Registro Representante</h5>
+                            <p:outputPanel id="formInputsPanel">
+                                <p:panelGrid columns="1"
+                                             layout='grid'
+                                             styleClass="fullwidth ui-noborder">
+                                    <p:outputLabel for="name" value="Name"/>
+                                    <p:inputText id="name"
+                                                 required="true"
+                                                 requiredMessage="Name field required"
+                                                 value="#{representativeCreateManager.representante.name}" styleClass="fullwidth" />
+                                    <p:outputLabel for="telefono" value="Teléfono"/>
+                                    <p:inputMask id="telefono"
+                                                 mask="(999) 999-9999"
+                                                 value="#{representativeCreateManager.representante.telephone}"
+                                                 title="Telephone" />
+                                    <p:outputLabel value="Agencia:" for="nombreAgencia" />
+                                    <h:panelGroup>
+                                        <div class='inputGroupContainer'>
+                                            <div>
+                                                <p:autoComplete id="nombreAgencia"
+                                                                value="#{representativeCreateManager.representante.agencia}"
+                                                                converter="#{agencyConverter}"
+                                                                title="Agencia"
+                                                                required='true'
+                                                                requiredMessage='Campos agencia requerido'
+                                                                var="agenciaItem"
+                                                                minQueryLength="3"
+                                                                itemLabel="#{agenciaItem.name}"
+                                                                itemValue="#{agenciaItem}"
+                                                                completeMethod="#{agencyListManager.filterAgency}"/>
+                                            </div>
+                                            <div>
+                                                <p:commandButton icon='fa fa-search'
+                                                                 immediate="true"
+                                                                 actionListener="#{representativeCreateManager.openAgencySearchDialog}">
+                                                    <p:ajax event="dialogReturn"
+                                                            listener="#{representativeCreateManager.handleAgencyFromDialog}"
+                                                            update="nombreAgencia"/>
+                                                </p:commandButton>
+                                            </div>
+                                        </div>
+                                    </h:panelGroup>
+                                    <p:outputLabel for="email" value="Email"/>
+                                    <p:inputText id="email"
+                                                 required="false"
+                                                 value="#{representativeCreateManager.representante.email}" />
+                                    <p:outputLabel value="Fecha Nacimiento:" for="fechaNacimiento" />
+                                    <p:calendar style="width:100%"
+                                                navigator="true"
+                                                yearRange="c-70:c+0"
+                                                required="false"
+                                                requiredMessage="Campo Fecha Nacimiento requerido"
+                                                converter="#{localDateTimeConverter}"
+                                                pattern="dd/MM/yyyy"
+                                                id="fechaNacimiento"
+                                                value="#{representativeCreateManager.representante.fechaNacimiento}"
+                                                title="Fecha Nacimiento" />
+                                    <p:commandButton id="editButton"
+                                                     styleClass='defaultButton'
+                                                     actionListener="#{representativeCreateManager.create}"
+                                                     icon="ui-icon ui-icon-disk"
+                                                     value="Save" update="formInputsPanel growl">
+                                        <p:confirm header="Guardar Cambios" message="Confirmar cambios en Base de Datos?"/>
+                                    </p:commandButton>
+
+                                </p:panelGrid>
+                            </p:outputPanel>
+
+
+                        </div>
+                        <p:defaultCommand target="editButton"/>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </h:form>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
+

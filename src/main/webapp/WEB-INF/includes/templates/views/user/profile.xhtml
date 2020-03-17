@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:users="http://xmlns.jcp.org/jsf/composite/ezcomp/users">
+    <h:head>
+
+    </h:head>
+    <ul class="nav nav-tabs navbar-default nav-justified">
+        <h:panelGroup rendered="#{(sessionInfo.userSecurityClearance ge SecurityRoles.REPRESENTATIVE and sessionInfo.userSecurityClearance le SecurityRoles.TEAM_LEADER) or sessionInfo.userSecurityClearance ge SecurityRoles.INDIVIDUAL}">
+            <li>
+                <p:link outcome="/priv/user/performance">
+                    <i class="fas fa-chart-line"></i>Performance
+                    <f:param name="id" value="#{request.getParameter('id')}"/>
+                </p:link>
+            </li>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{(sessionInfo.userSecurityClearance ge SecurityRoles.REPRESENTATIVE and sessionInfo.userSecurityClearance le SecurityRoles.TEAM_LEADER) or sessionInfo.userSecurityClearance ge SecurityRoles.INDIVIDUAL}">
+            <li>
+                <p:link outcome="reports/list">
+                    <i class="fas fa-file-alt"></i>&nbsp;History
+                    <f:param name="id" value="#{userViewController.user.login}"/>
+                </p:link>
+            </li>
+        </h:panelGroup>
+
+        <h:panelGroup rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR}">
+            <li>
+                <p:link outcome="edit"><i class="fas fa-edit"></i>&nbsp;Edit<f:param name="id" value="#{userViewController.user.login}"/></p:link>
+            </li>
+        </h:panelGroup>
+    </ul>
+    <h2 class="text-center"><i class="fas fa-user"></i>&nbsp;#{userViewController.user.name}</h2>
+    <users:UserEditProfile user="#{userViewController.user}"
+                           viewOnly="true"
+                           isNew="false"
+                           saveButtonListener="#{userViewController.edit()}"/>
+
+
+</html>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:general='http://xmlns.jcp.org/jsf/composite/ezcomp/general'
+      xmlns:tour='http://xmlns.jcp.org/jsf/composite/ezcomp/tour'
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <p:fieldset legend="Información servicio">
+        <p:panelGrid columns="2"
+                     layout="grid"
+                     columnClasses="text-right width30p, width70p text-left"
+                     styleClass="ui-panelgrid-blank">
+            <p:outputLabel value="Sucursales:" for="sucursales" />
+            <general:sucursalesSelectOneMenu id='sucursales'
+                                             value='#{reservationEditController.reservacion.sucursales}'
+                                             required="true">
+                <p:ajax event="itemSelect" process="@this"/>
+            </general:sucursalesSelectOneMenu>
+            <p:outputLabel value="Excursión:" for="servicio" />
+            <tour:tourAutocomplete id="servicio"
+                                   required="true"
+                                   requiredMessage="Campo servicio requerido"
+                                   value="#{reservationEditController.reservacion.servicio}">
+                <p:ajax event="itemSelect"
+                        update="@(.infoServicioPanel) @(.participantesPanel)"
+                        immediate="true"
+                        process="@this"
+                        listener="#{reservationEditController.servicioChanged}"/>
+            </tour:tourAutocomplete>
+            <p:outputLabel value="Promo:"
+                           rendered='#{not empty reservationEditController.reservacion.servicio}'
+                           for="nacionalidad" />
+            <general:promoNacionalidadSelectOneMenu id='nacionalidad'
+                                                    rendered='#{not empty reservationEditController.reservacion.servicio}'
+                                                    value='#{reservationEditController.reservacion.nacionalidad}'>
+                <p:ajax event="itemSelect" process="@this"/>
+            </general:promoNacionalidadSelectOneMenu>
+            <p:outputLabel id="transportacionLabel"
+                           rendered='#{not empty reservationEditController.reservacion.servicio}'
+                           value="Transportación:"
+                           for="transportacion" />
+            <p:selectOneMenu id="transportacion"
+                             rendered='#{not empty reservationEditController.reservacion.servicio}'
+                             value="#{reservationEditController.reservacion.conTransportacion}">
+                <f:selectItem itemValue="#{null}" itemLabel="Seleccionar Uno..." noSelectionOption="true"/>
+                <f:selectItem itemLabel="Con Transportación" itemValue="#{true}"/>
+                <f:selectItem itemLabel="Sin Transportación" itemValue="#{false}"/>
+                <p:ajax process="@this"/>
+            </p:selectOneMenu>
+
+            <p:outputLabel id="tipoVehiculoLabel"
+                           rendered='#{not empty reservationEditController.reservacion.servicio and reservationEditController.reservacion.servicio.manejaVehiculo}'
+                           value="Tipo Vehiculo:" for="tipoVehiculo" />
+            <p:selectOneMenu id="tipoVehiculo"
+                             rendered='#{not empty reservationEditController.reservacion.servicio and reservationEditController.reservacion.servicio.manejaVehiculo}'
+                             value="#{reservationEditController.reservacion.tipoVehiculo}">
+                <f:selectItem itemLabel="N/A" itemValue="N/A"/>
+                <f:selectItem itemLabel="Jeep" itemValue="Jeep"/>
+                <f:selectItem itemValue="Buggy" itemLabel="Buggy"/>
+                <p:ajax event="change"
+                        update="@(.reservasPorVehiculoPanel) @(.notasVehiculoPanel)"
+                        process="@this"
+                        listener="#{reservationEditController.tipoVehiculoChanged}"/>
+            </p:selectOneMenu>
+        </p:panelGrid>
+        <p:outputPanel styleClass='notasVehiculoPanel'>
+            <p:panelGrid  columns="4"
+                          columnClasses="fourColumnLabel30, fourColumnInput23, fourColumnLabel23, fourColumnInput23"
+                          layout="grid" styleClass="ui-panelgrid-blank">
+                <p:outputLabel value="Automático:"
+                               for="aut"
+                               rendered="#{reservationEditController.reservacion.tipoVehiculo ne 'N/A'}"/>
+                <p:selectBooleanButton id="aut"
+                                       rendered="#{reservationEditController.reservacion.tipoVehiculo ne 'N/A'}"
+                                       onLabel="Si"
+                                       offLabel="No"
+                                       value="#{reservationEditController.reservacion.aut}" title="Aut">
+                    <p:ajax process="@this"/>
+                </p:selectBooleanButton>
+                <p:outputLabel value="Estandar:"
+                               rendered="#{reservationEditController.reservacion.tipoVehiculo ne 'N/A'}"
+                               for="est" />
+                <p:selectBooleanButton id="est"
+                                       onLabel="Si"
+                                       offLabel="No"
+                                       rendered="#{reservationEditController.reservacion.tipoVehiculo ne 'N/A'}"
+                                       value="#{reservationEditController.reservacion.est}" title="Est">
+                    <p:ajax process="@this"/>
+                </p:selectBooleanButton>
+                <p:outputLabel value="Comida:" for="comida"  rendered="false"/>
+                <p:inputText id="comida"
+                             rendered="false"
+                             value="#{reservationEditController.reservacion.comida}" title="Comida">
+                    <p:ajax process="@this"/>
+                </p:inputText>
+                <p:outputLabel value="No Jeep:"
+                               rendered="false"
+                               for="noJeep" />
+                <p:inputText id="noJeep"
+                             rendered="false"
+                             value="#{reservationEditController.reservacion.noJeep}" title="NoJeep">
+                    <p:ajax process="@this"/>
+                </p:inputText>
+
+                <p:outputLabel value="Quién Reserva:" for="quienReserva" />
+                <p:inputText id="quienReserva"
+                             value="#{reservationEditController.reservacion.quienGeneraReserva}"
+                             title="Quien Reserva">
+                    <p:ajax process="@this"/>
+                </p:inputText>
+                <p:outputLabel value="Quién Autoriza:" for="quienAutoriza" />
+                <p:inputText id="quienAutoriza"
+                             value="#{reservationEditController.reservacion.quienAutoriza}" title="QuienAutoriza">
+                    <p:ajax process="@this"/>
+                </p:inputText>
+            </p:panelGrid>
+        </p:outputPanel>
+
+
+        <p:panelGrid columns="2" columnClasses="text-right width30p, width70p text-left" layout="grid" styleClass="ui-panelgrid-blank">
+            <p:outputLabel value="Fecha:" for="fechaOperacion" />
+            <general:localDateSelect id="fechaOperacion" value="#{reservationEditController.reservacion.fechaOperacion}"
+                                     minDate="#{reservationsUtilityController.getMinDate()}">
+                <p:ajax event='dateSelect'
+                        listener="#{reservationEditController.dateChanged}"
+                        process="@this"
+                        update="@(.reservasPorVehiculoPanel) @(.participantesPanel)"/>
+            </general:localDateSelect>
+            <p:outputLabel value="Pax en #{reservationEditController.reservacion.tipoVehiculo}" rendered="#{reservationEditController.reservacion.tipoVehiculo ne 'N/A'}"/>
+            <p:inputText value="#{reservationEditController.paxPorTipoVehiculo}"
+                         disabled="true"
+                         rendered="#{reservationEditController.reservacion.tipoVehiculo ne 'N/A' and not emptyreservationEditController.reservacion.fechaOperacion}"/>
+            <h:panelGroup rendered="#{not empty reservationEditController.reservacion.fechaOperacion and not empty reservationEditController.reservacion.servicio}"/>
+            <h:panelGroup rendered="#{not empty reservationEditController.reservacion.fechaOperacion and not empty reservationEditController.reservacion.servicio}">
+                <p:dataTable value="#{reservationGroupTotals.tours}"
+                             var="item">
+                    <f:facet name="header">
+                        Reservas Grupo: #{reservationEditController.reservacion.servicio.grupo}
+                    </f:facet>
+                    <p:column headerText="Tour">
+                        <h:outputText value="#{item.key.name}"/>
+                    </p:column>
+                    <p:column headerText="Pax" styleClass="column30 centerAligned">
+                        <h:outputText value="#{item.value}"/>
+                        <f:facet name="footer">
+                            <h:outputText value="#{reservationGroupTotals.totalAdultos}.#{reservationGroupTotals.totalNinos}.#{reservationGroupTotals.totalInfantes}"/>
+                        </f:facet>
+                    </p:column>
+                </p:dataTable>
+            </h:panelGroup>
+        </p:panelGrid>
+    </p:fieldset>
+
+</html>

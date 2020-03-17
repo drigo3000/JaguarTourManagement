@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="title">Buscar Agencia</ui:define>
+        <ui:define name="maincontainer">
+            <h:form>
+                <div class='ui-g ui-fluid'>
+                    <div class='ui-g-12'>
+                        <div class='card'>
+                            <p:panelGrid columns="1" layout="grid"
+                                         styleClass="ui-panelgrid-blank grid-pad"
+                                         style="margin-top:10px">
+                                <p:outputLabel value="Búscar"/>
+                                <p:inputText value="#{agencyListManager.name}"
+                                             placeholder="Ingresar Nombre"/>
+                                <p:outputLabel value="Limite"/>
+                                <p:selectOneMenu value="#{agencyListManager.limit}">
+                                    <f:selectItem itemLabel="10" itemValue="10"/>
+                                    <f:selectItem itemLabel="50" itemValue="50"/>
+                                    <f:selectItem itemLabel="100" itemValue="100"/>
+                                    <f:selectItem itemLabel="1000" itemValue="1000"/>
+                                </p:selectOneMenu>
+                                <p:commandButton value="Búscar"
+                                                 actionListener="#{agencyListManager.search}"
+                                                 update='dataTableOutputPanel growl'/>
+                            </p:panelGrid>
+                        </div>
+                        <p:outputPanel id="dataTableOutputPanel">
+                            <p:panel header="Registro Agencias"
+                                     rendered='#{not empty agencyListManager.agencies}'>
+                                <p:dataTable value="#{agencyListManager.agencies}"
+                                             var="item">
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.name}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Destino"/>
+                                        </f:facet>
+                                    </p:column>
+                                    <p:column style="width:40px">
+                                        <p:commandButton icon="fa fa-mouse-pointer"
+                                                         actionListener="#{agencyListManager.selectAgency(item)}"/>
+                                    </p:column>
+                                </p:dataTable>
+
+                            </p:panel>
+                        </p:outputPanel>
+
+                    </div>
+
+
+                </div>
+
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

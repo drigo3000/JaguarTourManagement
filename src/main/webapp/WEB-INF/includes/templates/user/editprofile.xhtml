@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp/users"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <ul class="nav nav-tabs navbar-default nav-justified">
+        <h:panelGroup rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}">
+            <li>
+                <p:link outcome="/priv/user/edit">Edit<f:param name="id" value="#{userViewController.user.login}"/></p:link>
+            </li>
+        </h:panelGroup>
+    </ul>
+    <h1 align="center"><i class="fas fa-user"></i>&nbsp;#{userViewController.user.login} #{userViewController.user.name}</h1>
+    <hr/>
+    <ez:userEditForm user="#{userViewController.user}"
+                     isNew="false"
+                     viewOnly="false"
+                     saveButtonListener="#{userViewController.edit}"/>
+</ui:composition>
+

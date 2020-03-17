@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="value" type="java.time.LocalDate"
+                      displayName="value" required="true"/>
+        <cc:attribute name="required" type="java.lang.Boolean"
+                      displayName="required" required="false" default="false"/>
+        <cc:attribute name="minDate" type="java.time.LocalDate"
+                      displayName="Min Date" required="false"/>
+        <cc:attribute name="requiredMessage" type="java.lang.String"
+                      displayName="requiredMessage" required="false" default="Campo requerido"/>
+        <cc:clientBehavior name="dateSelect" event="dateSelect" targets="#{cc.attrs.id}"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:calendar id="#{cc.attrs.id}" style="width:100%"
+                    mindate="#{cc.attrs.minDate}"
+                    required="#{cc.attrs.required}"
+                    requiredMessage="#{cc.attrs.requiredMessage}"
+                    converter="#{localDateConverter}"
+                    pattern="dd/MM/yyyy"
+                    value="#{cc.attrs.value}"
+                    title="Fecha">
+        </p:calendar>
+    </cc:implementation>
+</html>

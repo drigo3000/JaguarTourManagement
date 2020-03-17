@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/WEB-INF/includes/morpheus/template_search.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="Representantes" outcome="/priv/representantes/list" />
+                    <p:menuitem value="Filtro" outcome="/priv/representantes/list"/>
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="searchform">
+            <p:panel header="Búsqueda">
+                <p:panelGrid columns="2" layout="grid"
+                             columnClasses="width30p text-right, width70p"
+                             styleClass="ui-panelgrid-blank grid-pad"
+                             style="margin-top:10px">
+                    <p:outputLabel value="Nombre"/>
+                    <p:inputText value="#{representativeListManager.name}"/>
+                    <p:outputLabel value="Agencia"/>
+                    <p:autoComplete id="nombreAgencia"
+                                    required="false"
+                                    requiredMessage="Agencia Requerido"
+                                    value="#{representativeListManager.agencia}"
+                                    converter="#{agencyConverter}"
+                                    title="Agencia"
+                                    var="agenciaItem"
+                                    minQueryLength="3"
+                                    itemLabel="#{agenciaItem.name}"
+                                    itemValue="#{agenciaItem}"
+                                    completeMethod="#{agencyListManager.filterAgency}"/>
+                    <p:outputLabel value="Limite"/>
+                    <p:selectOneMenu value="#{representativeListManager.limit}">
+                        <f:selectItem itemLabel="10" itemValue="10"/>
+                        <f:selectItem itemLabel="50" itemValue="50"/>
+                        <f:selectItem itemLabel="100" itemValue="100"/>
+                        <f:selectItem itemLabel="10000" itemValue="10000"/>
+                    </p:selectOneMenu>
+                    <h:panelGroup></h:panelGroup>
+                    <p:commandButton icon="fa fa-search"
+                                     styleClass='defaultButton'
+                                     actionListener="#{representativeListManager.searchWithAgency()}"
+                                     update="dataTableOutputPanel growl"
+                                     value="Buscar"/>
+                </p:panelGrid>
+            </p:panel>
+        </ui:define>
+        <ui:define name="searchresults">
+            <p:outputPanel id="dataTableOutputPanel">
+                <p:panel header="Filtro Representantes"
+                         rendered="#{not empty representativeListManager.agencies}">
+                    <p:dataTable value="#{representativeListManager.agencies}"
+                                 reflow="true"
+                                 var="item">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Name"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+                        <p:column styleClass="mediumColumn">
+                            <f:facet name="header">
+                                <h:outputText value="Agencia"/>
+                            </f:facet>
+                            <h:outputText value="#{item.agencia.name}"/>
+                        </p:column>
+                        <p:column styleClass="column120">
+                            <f:facet name="header">
+                                <h:outputText value="Tel"/>
+                            </f:facet>
+                            <h:outputText value="#{item.telephone}"/>
+                        </p:column>
+                        <p:column style="width:40px;"
+                                  headerText="Whats"
+                                  exportable="false">
+                            <p:button href="https://api.whatsapp.com/send?phone=52#{item.telephone.replaceAll('[^\\d.]','')}"
+                                      target="_blank"
+                                      rendered="#{not empty item.telephone}"
+                                      icon="fa fa-comments"/>
+                        </p:column>
+                        <p:column styleClass="singleOptionColumn">
+                            <p:link outcome="edit"
+                                    styleClass="ui-button ui-widget ui-state-default ui-corner-all cucuButton" >
+                                <i class="fa fa-mouse-pointer"></i><f:param name="id" value="#{item.id}"/>
+                            </p:link>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+
+            </p:outputPanel>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

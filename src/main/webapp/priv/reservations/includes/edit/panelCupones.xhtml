@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:outputPanel id="cuponesMainPanel" class="cuponesMainPanel tabPanel">
+        <p:fieldset legend="Agregar Cupon" collapsed="true" toggleable="true" title="Agregar cupon a reserva">
+            <p:panelGrid columns="2"
+                         columnClasses="text-right width30p, width70p"
+                         layout="grid"
+                         styleClass="ui-panelgrid-blank">
+                <p:outputLabel value="Servicio Cuponeado"
+                               for="servicioCuponeado"/>
+                <p:autoComplete id="servicioCuponeado"
+                                requiredMessage='Servicio Cuponeado Requerido'
+                                value="#{reservationCuponEntryController.servicioCuponeado}"
+                                converter="#{tourConverter}"
+                                title="Servicio"
+                                var="tourItem"
+                                minQueryLength="2"
+                                itemLabel="#{tourItem.name}"
+                                itemValue="#{tourItem}"
+                                completeMethod="#{tourListManager.filterTour}"/>
+                <p:outputLabel value="Promo:" for="nacionalidadCuponeada" />
+                <p:selectOneMenu id="nacionalidadCuponeada"
+                                 requiredMessage='Campo Promo requerido'
+                                 value="#{reservationCuponEntryController.promo}"
+                                 title="NombreCliente">
+                    <f:selectItem itemLabel='N/A' itemValue='N/A'/>
+                    <f:selectItem itemLabel='MEXICANO' itemValue='MEXICANO'/>
+                    <f:selectItem itemLabel='LATAM' itemValue='LATAM'/>
+                    <f:selectItem itemLabel='CANADIENSE' itemValue='CANADIENSE'/>
+                </p:selectOneMenu>
+                <p:outputLabel id="transportacionLabelCupon"
+                               value="Transportación:" for="transportacionCuponeada" />
+                <p:selectBooleanButton id="transportacionCuponeada"
+                                       styleClass="defaultButton"
+                                       value="#{reservationCuponEntryController.transportationIncluded}"
+                                       onLabel="Si"
+                                       offLabel="No"/>
+                <p:outputLabel id="tipoVehiculoLabelCupon"
+                               value="Tipo Vehiculo:" for="tipoVehiculoCupon" />
+                <p:selectOneMenu id="tipoVehiculoCupon"
+                                 value="#{reservationCuponEntryController.vehicleType}">
+                    <f:selectItem itemLabel="N/A" itemValue="N/A"/>
+                    <f:selectItem itemLabel="Jeep" itemValue="Jeep"/>
+                    <f:selectItem itemValue="Buggy" itemLabel="Buggy"/>
+                </p:selectOneMenu>
+                <p:outputLabel id="buceoCuponLabel"
+                               value="Transportación:" for="buceoCupon" />
+                <p:selectBooleanButton id="buceoCupon"
+                                       styleClass="defaultButton"
+                                       value="#{reservationCuponEntryController.buceo}"
+                                       onLabel="Si"
+                                       offLabel="No"/>
+                <p:commandButton value="Agregar"
+                                 styleClass="defaultButton"
+                                 icon="fa fa-plus"
+                                 actionListener="#{reservationCuponEntryController.addCupon()}"
+                                 update="growl cuponesMainPanel"/>
+            </p:panelGrid>
+        </p:fieldset>
+        <p:scrollPanel mode="native">
+            <p:dataTable id="cuponesTable"
+                         value="#{reservationCuponEntryController.reservationCupons}"
+                         editable="true"
+                         var="cupon">
+                <p:ajax event="rowEdit"
+                        listener="#{reservationCuponEntryController.editCupon}"
+                        update=" growl"/>
+                <p:column headerText="Agencia" styleClass="column120 centerAligned">
+                    <h:outputText value="#{cupon.reservation.agencia.name}"/>
+                </p:column>
+                <p:column headerText="Zona"
+                          styleClass="column30 centerAligned">
+                    <h:outputText value="#{cupon.reservation.hotel.operation}"/>
+                </p:column>
+                <p:column headerText="Servicio" styleClass="column300">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{cupon.tour.name}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:autoComplete
+                                requiredMessage='Servicio Cuponeado Requerido'
+                                value="#{cupon.tour}"
+                                converter="#{tourConverter}"
+                                title="Servicio"
+                                var="tourItem"
+                                minQueryLength="2"
+                                itemLabel="#{tourItem.name}"
+                                itemValue="#{tourItem}"
+                                completeMethod="#{tourListManager.filterTour}"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Promo" styleClass="column80 centerAligned">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{cupon.promo}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu value="#{cupon.promo}"
+                                             title="NombreCliente">
+                                <f:selectItem itemLabel='NA' itemValue='NA'/>
+                                <f:selectItem itemLabel='MEXICANO' itemValue='MEXICANO'/>
+                                <f:selectItem itemLabel='LATAM' itemValue='LATAM'/>
+                                <f:selectItem itemLabel='CANADIENSE' itemValue='CANADIENSE'/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Transfer" styleClass="column80 centerAligned">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{cupon.incluyeTransportacion}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:selectBooleanButton id="transportacionCuponeada"
+                                                   value="#{cupon.incluyeTransportacion}"
+                                                   onLabel="Si"
+                                                   offLabel="No"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Vehiculo" styleClass="column80 centerAligned">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{cupon.tipoVehiculo}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu id="tipoVehiculoCupon"
+                                             value="#{cupon.tipoVehiculo}">
+                                <f:selectItem itemLabel="N/A" itemValue="N/A"/>
+                                <f:selectItem itemLabel="Jeep" itemValue="Jeep"/>
+                                <f:selectItem itemValue="Buggy" itemLabel="Buggy"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="No Cupon" styleClass="column100">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{cupon.noCupon}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{cupon.noCupon}"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Adulto" styleClass="column40 centerAligned">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{cupon.adults}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputNumber value="#{cupon.adults}"
+                                           decimalPlaces="0"
+                                           minValue="0"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="USD"
+                          styleClass="column50">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{cupon.precioAdultoUSD}">
+                                <f:convertNumber type="currency"
+                                                 minFractionDigits="2"
+                                                 maxFractionDigits="2"
+                                                 locale="#{localeSelectorManager.locale}"/>
+                            </h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputNumber value="#{cupon.precioAdultoUSD}"
+                                           decimalPlaces="2"
+                                           symbol="$"
+                                           thousandSeparator=","
+                                           decimalSeparator="."
+                                           minValue="0"/>
+                        </f:facet>
+                    </p:cellEditor>
+
+                </p:column>
+                <p:column headerText="%"
+                          styleClass="column50">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{cupon.comisionAdultoUSD}">
+                                <f:convertNumber type="percent"
+                                                 minFractionDigits="0"
+                                                 maxFractionDigits="0"
+                                                 locale="#{localeSelectorManager.locale}"/>
+                            </h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputNumber value="#{cupon.comisionAdultoUSD}"
+                                           decimalPlaces="2"
+                                           thousandSeparator=","
+                                           decimalSeparator="."
+                                           minValue="0"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Neto"
+                          styleClass="column50">
+                    <h:outputText value="#{cupon.getNetoAdultoUSD()}">
+                        <f:convertNumber type="currency"
+                                         minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         locale="#{localeSelectorManager.locale}"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Total"
+                          styleClass="column50">
+                    <h:outputText value="#{cupon.adults * cupon.getNetoAdultoUSD()}">
+                        <f:convertNumber type="currency"
+                                         minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         locale="#{localeSelectorManager.locale}"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Niño" styleClass="column40 centerAligned">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{cupon.children}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputNumber value="#{cupon.children}"
+                                           decimalPlaces="0"
+                                           minValue="0"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="USD"
+                          styleClass="column50">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{cupon.precioNinoUSD}">
+                                <f:convertNumber type="currency"
+                                                 minFractionDigits="2"
+                                                 maxFractionDigits="2"
+                                                 locale="#{localeSelectorManager.locale}"/>
+                            </h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputNumber value="#{cupon.precioNinoUSD}"
+                                           decimalPlaces="2"
+                                           symbol="$"
+                                           thousandSeparator=","
+                                           decimalSeparator="."
+                                           minValue="0"/>
+                        </f:facet>
+                    </p:cellEditor>
+
+                </p:column>
+                <p:column headerText="%"
+                          styleClass="column50">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{cupon.comisionNinoUSD}">
+                                <f:convertNumber type="percent"
+                                                 minFractionDigits="0"
+                                                 maxFractionDigits="0"
+                                                 locale="#{localeSelectorManager.locale}"/>
+                            </h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputNumber value="#{cupon.comisionNinoUSD}"
+                                           decimalPlaces="2"
+                                           thousandSeparator=","
+                                           decimalSeparator="."
+                                           minValue="0"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Neto"
+                          styleClass="column50">
+                    <h:outputText value="#{cupon.getNetoNinoUSD()}">
+                        <f:convertNumber type="currency"
+                                         minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         locale="#{localeSelectorManager.locale}"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Total"
+                          styleClass="column50">
+                    <h:outputText value="#{cupon.children * cupon.getNetoNinoUSD()}">
+                        <f:convertNumber type="currency"
+                                         minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         locale="#{localeSelectorManager.locale}"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Impuesto"
+                          styleClass="column50">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{cupon.impuestoUSD}">
+                                <f:convertNumber type="currency"
+                                                 minFractionDigits="2"
+                                                 maxFractionDigits="2"
+                                                 locale="#{localeSelectorManager.locale}"/>
+                            </h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputNumber value="#{cupon.impuestoUSD}"
+                                           decimalPlaces="2"
+                                           thousandSeparator=","
+                                           decimalSeparator="."
+                                           minValue="0"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Total"
+                          styleClass="column100 centerAligned">
+                    <h:outputText value="#{cupon.getNetoCuponeado()}">
+                        <f:convertNumber type="currency"
+                                         minFractionDigits="2"
+                                         maxFractionDigits="2"
+                                         locale="#{localeSelectorManager.locale}"/>
+                    </h:outputText>
+                </p:column>
+                <p:column styleClass="column30"
+                          exportable="false">
+                    <p:rowEditor/>
+                </p:column>
+                <p:column styleClass="column30"
+                          exportable="false">
+                    <p:commandButton actionListener="#{reservationCuponEntryController.deleteCupon(cupon)}"
+                                     immediate="true"
+                                     update="cuponesTable growl"
+                                     icon="fa fa-trash">
+                        <p:confirm header="Confirmar"
+                                   message="Borrar de base de datos?"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </p:scrollPanel>
+
+
+    </p:outputPanel>
+
+</html>

@@ -1,0 +1,85 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pa="http://primefaces.org/morpheus">
+    <div class="topbar">
+        <a href="#" id="menu-button">
+            <span class="fa fa-angle-left" />
+        </a>
+        <p:link class="morpheus-logo-link" outcome="/index.xhtml">
+            <p:graphicImage name="images/morpheus-logo-cyan.svg" library="morpheus-layout" styleClass="morpheus-logo" />
+            <span class="morpheus-logo-text">
+                Cucurumbe
+            </span>
+        </p:link>
+
+        <a id="topbar-menu-button" href="#">
+            <i class="fa fa-bars"></i>
+        </a>
+
+        <ul class="topbar-menu"><!--
+            <li>
+                <a href="#">
+                    <i class="topbar-icon fa fa-fw fa-sliders"></i>
+                    <span class="topbar-item-name">Opciones</span>
+                </a>
+                <ul class="animated">
+                    <li role="menuitem">
+                        <a href="#">
+                            <i class="fa fa-fw fa-paint-brush"></i>
+                            <span>Change Theme</span>
+                            <span class="topbar-submenuitem-badge">4</span>
+                        </a>
+                    </li>
+                    <li role="menuitem">
+                        <a href="#">
+                            <i class="fa fa-fw fa-star-o"></i>
+                            <span>Favorites</span>
+                        </a>
+                    </li>
+                    <li role="menuitem">
+                        <a href="#">
+                            <i class="fa fa-fw fa-lock"></i>
+                            <span>Lock Screen</span>
+                            <span class="topbar-submenuitem-badge">2</span>
+                        </a>
+                    </li>
+                    <li role="menuitem">
+                        <a href="#">
+                            <i class="fa fa-fw fa-picture-o"></i>
+                            <span>Wallpaper</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>-->
+            <li class="profile-item">
+                <a href="#" class="topbar-menu">
+                    #{sessionInfo.currentUserLogin}<i class="fa fa-user"></i>
+                    <span class="profile-text">Perfil</span>
+                </a>
+                <ul class="animated">
+                    <li role="menuitem">
+                        <p:link outcome='/priv/user/profile'>
+                            <i class="fa fa-fw fa-user"></i>
+                            <span>Perfil</span>
+                            <f:param name="id" value="#{sessionInfo.currentUserLogin}"/>
+                        </p:link>
+                    </li>
+                    <li role="menuitem">
+                        <h:form>
+                            <p:commandLink action="#{logoutManager.invalidateSession}">
+                                <i class="fas fa-fw fa-sign-out-alt"></i> Salir
+                            </p:commandLink>
+                        </h:form>
+
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+
+</ui:composition>

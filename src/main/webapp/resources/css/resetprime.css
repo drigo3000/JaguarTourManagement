@@ -1,0 +1,164 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : Apr 26, 2018, 3:22:48 PM
+    Author     : Rxkx
+*/
+.ui-datatable .ui-column-filter{
+    width: 100% !important;
+}
+
+.ui-inputfield{
+    box-shadow: none !important;
+}
+
+.p-autocomplete{
+    width: 100% !important;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger{
+    width:25px !important;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger .ui-icon{
+    margin-top: 7px !important;
+}
+
+.ui-inputfield.ui-state-disabled {
+    color: black !important;
+}
+
+.ui-panel{
+    border:none;
+}
+
+.ui-orderlist .ui-orderlist-list{
+    width: 100%;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control{
+    background-color:  #fcfcfc !important;
+}
+
+
+.ui-selectonemenu-label {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 10px;
+    background: none !important;
+}
+
+.dropdown-menu>li>a{
+    padding: 7px !important;
+    min-width: 270px;
+    font-size: 1.25rem;
+}
+
+.ui-datatable .ui-datatable-sticky{
+    position: fixed !important;
+    z-index: 0 !important;
+}
+
+.ui-sticky {
+    top: 0px !important;
+    position: fixed !important;
+}
+
+
+select.form-control{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 10px;
+    font-size: 16px;
+}
+
+input[type="color"],
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"],
+.ui-inputswitch,
+select:focus,
+textarea {
+    font-size: 16px !important;
+}
+
+.ui-tabs a{
+    font-size: 1.1rem !important;
+}
+
+.ui-wizard-step-title{
+    background-color: #ffffff;
+    border:1px solid #e4e0e0;
+    border-top-width: 3px;
+    transition: 0.15s ease-in-out;
+    box-shadow: 8px 7px #f1f1f1;
+    margin-bottom: 15px;
+}
+
+.ui-wizard-step-title.ui-state-default.ui-state-highlight.ui-corner-all{
+    background-color: #001f3f;
+    border-top-color: #FF4136;
+}
+
+.ui-button.ui-widget.ui-state-default.ui-corner-all{
+    background-color: #ffffff;
+    border:1px solid #e4e0e0;
+    border-top-width: 3px;
+    transition: 0.15s ease-in-out;
+    box-shadow: 8px 7px #f1f1f1;
+    margin-bottom: 15px;
+    padding:3px 10px !important;
+}
+
+.ui-inputfield .ui-inputtext{
+    width: 100% !important;
+}
+
+.ui-inputnumber .ui-widget{
+    width:100% !important;
+}
+
+.ui-selectonemenu-filter-container{
+    width: 95% !important;
+}
+
+.noborder .ui-inputfield.ui-widget.ui-state-default.ui-corner-all{
+    border: none !important;
+    width:100% !important;
+    margin-top: -4px;
+}
+.ui-autocomplete{
+    width: 100% !important;
+}
+.ui-autocomplete-input.ui-inputfield.ui-widget.ui-state-default.ui-corner-all{
+    width:100% !important;
+}
+
+.ui-chkbox-box {
+    width:1.5rem !important;
+    height: 1.5rem !important;
+}
+.ui-icon-check {
+    width: 12px;
+    height: 12px;
+}
+
+.ui-datatable thead th{
+    padding-bottom: 15px !important;
+    padding-left: 3px !important;
+}

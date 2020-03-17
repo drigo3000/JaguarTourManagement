@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="AddOns" outcome="/priv/addons/list" />
+                    <p:menuitem value="Agregar" outcome="/priv/addons/add" />
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="content">
+            <h:form>
+                <p:outputPanel styleClass="inputPanel">
+                    <div class="card">
+                        <h5>Registro AddOn</h5>
+                        <p:panelGrid columns="2"
+                                     layout='grid'
+                                     columnClasses="labelColumn, inputColumn"
+                                     styleClass="fullwidth ui-noborder">
+                            <p:outputLabel value="Nombre"/>
+                            <p:inputText required="true"
+                                         requiredMessage="Campo Nombre requerido"
+                                         value="#{addOnCreateController.addon.name}">
+                                <p:ajax process="@this"/>
+                            </p:inputText>
+                            <p:outputLabel value="Descripción"/>
+                            <p:inputTextarea rows='4'
+                                             value="#{addOnCreateController.addon.description}">
+                                <p:ajax process="@this"/>
+                            </p:inputTextarea>
+                            <p:outputLabel value="Incluye"/>
+                            <p:inputTextarea rows='4' value="#{addOnCreateController.addon.incluye}">
+                                <p:ajax process="@this"/>
+                            </p:inputTextarea>
+                            <p:outputLabel value="Precio Venta"/>
+                            <p:inputNumber value="#{addOnCreateController.addon.precioVenta}"
+                                           minValue="0"
+                                           required='true'
+                                           requiredMessage="Campo precio venta requerido"
+                                           thousandSeparator=","
+                                           symbol="$"
+                                           decimalSeparator=".">
+                                <p:ajax process="@this"/>
+                            </p:inputNumber>
+                            <p:outputLabel value="Comisiona en USD"/>
+                            <p:selectBooleanButton offLabel="No"
+                                                   styleClass='defaultButton'
+                                                   onLabel="Si"
+                                                   value="#{addOnCreateController.addon.esquemaComisionUSD}">
+                                <p:ajax process="@this" listener="#{addOnCreateController.resetComission}" update="@(.inputPanel)"/>
+                            </p:selectBooleanButton>
+                            <p:outputLabel rendered="#{addOnCreateController.addon.esquemaComisionUSD}" value="Comisión USD"/>
+                            <p:inputNumber value="#{addOnCreateController.addon.comisionUSD}"
+                                           rendered='#{addOnCreateController.addon.esquemaComisionUSD}'
+                                           minValue="0"
+                                           required='true'
+                                           requiredMessage="Campo comision usd requerido"
+                                           thousandSeparator=","
+                                           symbol="$"
+                                           decimalSeparator=".">
+                                <p:ajax process="@this"/>
+                            </p:inputNumber>
+                            <p:outputLabel value="Comisión MXN" rendered="#{not addOnCreateController.addon.esquemaComisionUSD}"/>
+                            <p:inputNumber value="#{addOnCreateController.addon.comisionPesos}"
+                                           rendered='#{not addOnCreateController.addon.esquemaComisionUSD}'
+                                           minValue="0"
+                                           required='true'
+                                           requiredMessage="Campo comision pesos requerido"
+                                           thousandSeparator=","
+                                           symbol="$"
+                                           decimalSeparator=".">
+                                <p:ajax process="@this"/>
+                            </p:inputNumber>
+                            <h:panelGroup/>
+                            <p:commandButton value='Guardar' icon="fa fa-save"
+                                             styleClass='defaultButton'
+                                             actionListener="#{addOnCreateController.create}"
+                                             update='@(.inputPanel) growl'>
+                                <p:confirm header="Guardar en base de datos"
+                                           message="Guardar en base de datos?"/>
+                            </p:commandButton>
+                        </p:panelGrid>
+                    </div>
+                </p:outputPanel>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

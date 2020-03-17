@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <p:fieldset legend="Concentrado" toggleable="true" collapsed="true">
+            <p:panelGrid columns="6" layout="grid">
+                <f:facet name="header">
+                    GENERAL
+                </f:facet>
+                <p:outputLabel value='Total Reservas'/>
+                <h:outputText value="#{reservationTotalsController.reservasSize}"/>
+                <p:outputLabel value='Total Pax Reservados'/>
+                <h:outputText value="#{reservationTotalsController.totalPax}"/>
+                <p:outputLabel value='Total Pax Cancelados'/>
+                <h:outputText value="#{reservationTotalsController.getTotalPaxCancelados()}"/>
+                <p:outputLabel value='Adultos'/>
+                <h:outputText value="#{reservationTotalsController.adultos}"/>
+                <p:outputLabel value='Niños'/>
+                <h:outputText value="#{reservationTotalsController.ninos}"/>
+                <p:outputLabel value='Infantes'/>
+                <h:outputText value="#{reservationTotalsController.infantes}"/>
+                <p:outputLabel value='Incentivos'/>
+                <h:outputText value="#{reservationTotalsController.cortesias}"/>
+                <p:outputLabel value='Buceo Adultos'/>
+                <h:outputText value="#{reservationTotalsController.buceoAdultos}"/>
+                <p:outputLabel value='Buceo Niños'/>
+                <h:outputText value="#{reservationTotalsController.buceoNinos}"/>
+                <p:outputLabel value='Adultos Cancelados'/>
+                <h:outputText value="#{reservationTotalsController.adultosCancelados}"/>
+                <p:outputLabel value='Niños Cancelados'/>
+                <h:outputText value="#{reservationTotalsController.ninosCancelados}"/>
+                <p:outputLabel value='Infantes Cancelados'/>
+                <h:outputText value="#{reservationTotalsController.infantesCancelados}"/>
+                <p:outputLabel value='Adultos No Show'/>
+                <h:outputText value="#{reservationTotalsController.adultosNoShow}"/>
+                <p:outputLabel value='Niños No Show'/>
+                <h:outputText value="#{reservationTotalsController.ninosNoShow}"/>
+                <p:outputLabel value='Infantes No Show'/>
+                <h:outputText value="#{reservationTotalsController.infantesNoShow}"/>
+            </p:panelGrid>
+            <p:spacer height="15px"/>
+            <p:panelGrid columns="6" layout="grid">
+                <f:facet name="header">
+                    SUCURSALES
+                </f:facet>
+                <p:outputLabel value='Cucurumbe Adultos'/>
+                <h:outputText value="#{reservationTotalsController.cucurumbeAdultos}"/>
+                <p:outputLabel value='Cucurumbe Niños'/>
+                <h:outputText value="#{reservationTotalsController.cucurumbeNinos}"/>
+                <p:outputLabel value='Cucurumbe Infantes'/>
+                <h:outputText value="#{reservationTotalsController.cucurumbeInfantes}"/>
+                <p:outputLabel value='Catamaran Adultos'/>
+                <h:outputText value="#{reservationTotalsController.catamaranAdultos}"/>
+                <p:outputLabel value='Catamaran Niños'/>
+                <h:outputText value="#{reservationTotalsController.catamaranNinos}"/>
+                <p:outputLabel value='Catamaran Infantes'/>
+                <h:outputText value="#{reservationTotalsController.catamaranInfantes}"/>
+                <p:outputLabel value='Online Adultos'/>
+                <h:outputText value="#{reservationTotalsController.onlineAdultos}"/>
+                <p:outputLabel value='Online Niños'/>
+                <h:outputText value="#{reservationTotalsController.onlineNinos}"/>
+                <p:outputLabel value='Online Infantes'/>
+                <h:outputText value="#{reservationTotalsController.onlineInfantes}"/>
+            </p:panelGrid>
+            <p:spacer height="15px"/>
+            <p:panelGrid columns="6" layout="grid">
+                <f:facet name="header">
+                    COLOR
+                </f:facet>
+                <p:outputLabel value='Facturable Adultos'/>
+                <h:outputText value="#{reservationTotalsController.facturableAdultos}"/>
+                <p:outputLabel value='Facturable Niños'/>
+                <h:outputText value="#{reservationTotalsController.facturableNinos}"/>
+                <p:outputLabel value='Facturable Infantes'/>
+                <h:outputText value="#{reservationTotalsController.facturableInfantes}"/>
+                <p:outputLabel value='Directos Adultos'/>
+                <h:outputText value="#{reservationTotalsController.directosAdultos}"/>
+                <p:outputLabel value='Directos Niños'/>
+                <h:outputText value="#{reservationTotalsController.directosNinos}"/>
+                <p:outputLabel value='Directos Infantes'/>
+                <h:outputText value="#{reservationTotalsController.directosInfantes}"/>
+                <p:outputLabel value='Incentivos Adultos'/>
+                <h:outputText value="#{reservationTotalsController.incentivosAdulto}"/>
+                <p:outputLabel value='Incentivos Niños'/>
+                <h:outputText value="#{reservationTotalsController.incentivosNinos}"/>
+                <p:outputLabel value='Incentivos Infantes'/>
+                <h:outputText value="#{reservationTotalsController.incentivosInfantes}"/>
+                <p:outputLabel value='Cortesias Adultos'/>
+                <h:outputText value="#{reservationTotalsController.cortesiasAdulto}"/>
+                <p:outputLabel value='Cortesias Niños'/>
+                <h:outputText value="#{reservationTotalsController.cortesiasNinos}"/>
+                <p:outputLabel value='Cortesias Infantes'/>
+                <h:outputText value="#{reservationTotalsController.cortesiasInfante}"/>
+                <p:outputLabel value='Fam Trip Adultos'/>
+                <h:outputText value="#{reservationTotalsController.famTripAdultos}"/>
+                <p:outputLabel value='Fam Trip Niños'/>
+                <h:outputText value="#{reservationTotalsController.famTripNinos}"/>
+                <p:outputLabel value='Fam Trip Infantes'/>
+                <h:outputText value="#{reservationTotalsController.famTripInfantes}"/>
+            </p:panelGrid>
+        </p:fieldset>
+
+
+
+        <p:spacer height="25px"/>
+    </cc:implementation>
+</html>

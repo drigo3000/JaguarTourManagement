@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="content">
+
+            <div class="card">
+                <h5>#{representativeEditController.representante.name}</h5>
+                <p:outputPanel id='contentPanel'>
+                    <p:tabView id='repTabView'>
+                        <p:tab title="General">
+                            <h:form>
+                                <p:outputPanel styleClass="tourEditPanel">
+                                    <p:panelGrid columns="1"
+                                                 layout='grid'
+                                                 styleClass="fullwidth ui-noborder">
+                                        <p:outputLabel for="name" value="Name"/>
+                                        <p:inputText id="name"
+                                                     required="true"
+                                                     requiredMessage="Name field required"
+                                                     value="#{representativeEditController.representante.name}" styleClass="fullwidth" />
+                                        <p:outputLabel for="telefono" value="Teléfono"/>
+                                        <p:inputMask id="telefono"
+                                                     mask="(999) 999-9999"
+                                                     value="#{representativeEditController.representante.telephone}"
+                                                     title="Telephone" />
+                                        <p:outputLabel value="Agencia:" for="nombreAgencia" />
+                                        <h:panelGroup>
+                                            <div class='inputGroupContainer'>
+                                                <div>
+                                                    <p:autoComplete id="nombreAgencia"
+                                                                    value="#{representativeEditController.representante.agencia}"
+                                                                    converter="#{agencyConverter}"
+                                                                    title="Agencia"
+                                                                    required='true'
+                                                                    requiredMessage='Campos agencia requerido'
+                                                                    var="agenciaItem"
+                                                                    minQueryLength="3"
+                                                                    itemLabel="#{agenciaItem.name}"
+                                                                    itemValue="#{agenciaItem}"
+                                                                    completeMethod="#{agencyListManager.filterAgency}"/>
+                                                </div>
+                                                <div>
+                                                    <p:commandButton icon='fa fa-search'
+                                                                     immediate="true"
+                                                                     actionListener="#{representativeEditController.openAgencySearchDialog}">
+                                                        <p:ajax event="dialogReturn"
+                                                                listener="#{representativeEditController.handleAgencyFromDialog}"
+                                                                update="nombreAgencia"/>
+                                                    </p:commandButton>
+                                                </div>
+                                            </div>
+                                        </h:panelGroup>
+                                        <p:outputLabel for="email" value="Email"/>
+                                        <p:inputText id="email"
+                                                     required="false"
+                                                     value="#{representativeEditController.representante.email}" />
+                                        <p:outputLabel value="Fecha Nacimiento:" for="fechaNacimiento" />
+                                        <p:calendar style="width:100%"
+                                                    required="false"
+                                                    navigator="true"
+                                                    yearRange="c-70:c+0"
+                                                    requiredMessage="Campo Fecha Nacimiento requerido"
+                                                    converter="#{localDateTimeConverter}"
+                                                    pattern="dd/MM/yyyy"
+                                                    id="fechaNacimiento"
+                                                    value="#{representativeEditController.representante.fechaNacimiento}"
+                                                    title="Fecha Nacimiento" />
+                                        <p:outputLabel value="Activo" for="active"/>
+                                        <p:selectBooleanCheckbox id="active" value="#{representativeEditController.representante.active}"/>
+                                    </p:panelGrid>
+                                    <p:commandButton id="editButton"
+                                                     styleClass='defaultButton verifyButton'
+                                                     actionListener="#{representativeEditController.edit}"
+                                                     icon="ui-icon ui-icon-disk"
+                                                     value="Save" update="@(.tourEditPanel) growl">
+                                        <p:confirm header="Guardar Cambios" message="Confirmar cambios en Base de Datos?"/>
+                                    </p:commandButton>
+                                </p:outputPanel>
+
+                                <p:defaultCommand target="editButton"/>
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
+                            </h:form>
+
+                        </p:tab>
+                        <p:tab title="Reservaciones">
+                            <h5>Reservaciones</h5>
+                            <p:dataTable value="#{reservacionesRepController.reservas}" var="item">
+                                <p:column styleClass="column80 centerAligned">
+                                    <f:facet name="header">
+                                        <h:outputText value="Operado"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaOperacion.dayOfMonth}-#{item.fechaOperacion.monthValue}-#{item.fechaOperacion.year}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Servicio"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.servicio.name}"/>
+                                </p:column>
+                                <p:column styleClass="column50 centerAligned">
+                                    <f:facet name="header">
+                                        <h:outputText value="Pax"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.adulto}.#{item.nino}.#{item.infante}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="NombreCliente"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.nombreCliente}"/>
+                                </p:column>
+                                <p:column styleClass="column100 centerAligned">
+                                    <f:facet name="header">
+                                        <h:outputText value="NoCupon"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.noCupon}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Hotel"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.hotel.name}"/>
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </p:tab>
+                    </p:tabView>
+
+                </p:outputPanel>
+            </div>
+
+
+        </ui:define>
+    </ui:composition>
+</html>
