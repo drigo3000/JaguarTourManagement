@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-    <persistence-unit name="CUCURUMBE_PU" transaction-type="JTA">
-        <jta-data-source>java:/jboss/datasources/CucurumbeDS</jta-data-source>
-        <class>com.swevolution.cucurumbe.model.entities.AddOn</class>
-        <class>com.swevolution.cucurumbe.model.entities.VentaAddOn</class>
-        <class>com.swevolution.cucurumbe.model.entities.HorarioTurnoTour</class>
-        <class>com.swevolution.cucurumbe.model.entities.User</class>
-        <class>com.swevolution.cucurumbe.model.entities.ReservationCuponEntry</class>
-        <class>com.swevolution.cucurumbe.model.entities.Reservation</class>
-        <class>com.swevolution.cucurumbe.model.entities.Hotel</class>
-        <class>com.swevolution.cucurumbe.model.entities.IMA</class>
-        <class>com.swevolution.cucurumbe.model.entities.CucurumbeGlobal</class>
-        <class>com.swevolution.cucurumbe.model.entities.Tour</class>
-        <class>com.swevolution.cucurumbe.model.entities.Representante</class>
-        <class>com.swevolution.cucurumbe.model.entities.PromoTour</class>
-        <class>com.swevolution.cucurumbe.model.entities.TurnoTour</class>
-        <class>com.swevolution.cucurumbe.model.entities.EscenarioComercial</class>
-        <class>com.swevolution.cucurumbe.model.entities.VehiculoTour</class>
-        <class>com.swevolution.cucurumbe.model.entities.Adendum</class>
-        <class>com.swevolution.cucurumbe.model.entities.Agency</class>
+    <persistence-unit name="JAGUAR_PU" transaction-type="JTA">
+        <jta-data-source>java:/jboss/datasources/JaguarTourManagementDS</jta-data-source>
+        <class>com.swevolution.jaguartourmanagement.model.entities.PromoTour</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.Representante</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.VentaAddOn</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.Adendum</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.AddOn</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.TurnoTour</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.IMA</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.ReservationCuponEntry</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.HorarioTurnoTour</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.VehiculoTour</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.User</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.Reservation</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.Hotel</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.EscenarioComercial</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.Agency</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.Tour</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.TourItineraryRegistry</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.TourServiceProvider</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.TourPhoto</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.GlobalConfiguration</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>

@@ -17,341 +17,736 @@
             </h:form>
         </ui:define>
         <ui:define name="content">
-            <h1 class="text-center">#{tourEditManager.tour.name}</h1>
-            <p:tabView>
+            <div class='card'>
+                <h5>Editar Tour: #{tourEditManager.tour.name}</h5>
+                <h:form>
+                    <p:outputPanel id="contentPanel">
+                        <p:tabView scrollable="true">
+                            <p:tab>
+                                <f:facet name="title">
+                                    <i class="fas fa-info-circle"></i>&nbsp;General
+                                </f:facet>
+                                <p:outputPanel styleClass="outputPanel informacionGeneralPanel">
+                                    <div class='card'>
+                                        <h5>Información General</h5>
+                                        <p:panelGrid columns="2"
+                                                     columnClasses="labelColumn, inputColumn"
+                                                     layout="grid"
+                                                     class='ui-noborder'>
+                                            <p:outputLabel for="name"
+                                                           value="Nombre"/>
+                                            <p:inputText id="name"
+                                                         required="true"
+                                                         placeholder="Nombre de Tour"
+                                                         maxlength="100"
+                                                         requiredMessage="Campo nombre tour requerido"
+                                                         value="#{tourEditManager.tour.name}"/>
+                                            <p:outputLabel for="shortDesc"
+                                                           value="Descripción corta"/>
+                                            <p:inputTextarea id="shortDesc"
+                                                             rows="2"
+                                                             maxlength="200"
+                                                             required="true"
+                                                             placeholder="Descripción que aparecerá en la búsqueda de tours"
+                                                             requiredMessage="Campo descripción corta requerido"
+                                                             value="#{tourEditManager.tour.shortdescription}"/>
+                                            <p:outputLabel for="description"
+                                                           value="Descripción"/>
+                                            <p:inputTextarea id="description"
+                                                             rows="5"
+                                                             maxlength="490"
+                                                             placeholder="Descripción larga que aparecerá en la vista completa del tour"
+                                                             required="true"
+                                                             requiredMessage="Campo descripción larga requerido"
+                                                             value="#{tourEditManager.tour.description}"/>
+                                            <p:outputLabel for="grupo"
+                                                           value="Nombre"/>
+                                            <p:inputText id="grupo"
+                                                         required="true"
+                                                         placeholder="Grupo"
+                                                         maxlength="100"
+                                                         requiredMessage="Campo grupo tour requerido"
+                                                         value="#{tourEditManager.tour.grupo}"/>
+                                            <p:outputLabel for="inicialesConfirma"
+                                                           value="Iniciales Confirma"/>
+                                            <p:inputText id="inicialesConfirma"
+                                                         required="true"
+                                                         placeholder="Iniciales Confirma"
+                                                         maxlength="100"
+                                                         requiredMessage="Campo iniciales confirma requerido"
+                                                         value="#{tourEditManager.tour.inicialesConfirma}"/>
+                                            <p:outputLabel for="active"
+                                                           value="Activo"/>
+                                            <p:selectBooleanButton id="active"
+                                                                   onLabel="Si"
+                                                                   offLabel="No"
+                                                                   styleClass='defaultButton'
+                                                                   value="#{tourEditManager.tour.active}">
+                                                <p:ajax process="@this"/>
+                                            </p:selectBooleanButton>
+                                            <p:outputLabel for="topTour"
+                                                           styleClass="control-label col-sm-4"
+                                                           value="Top Tour"/>
+                                            <p:selectBooleanButton id="topTour"
+                                                                   onLabel="Si"
+                                                                   offLabel="No"
+                                                                   styleClass='defaultButton'
+                                                                   value="#{tourEditManager.tour.topTour}"/>
+                                            <p:outputLabel for="providerSelect"
+                                                           value="Proveedor"/>
+                                            <p:inputText id='providerSelect'/>
+                                        </p:panelGrid>
+                                    </div>
+                                </p:outputPanel>
 
-                <p:tab title="Servicio">
-                    <h:form>
-                        <div class="card">
-                            <h5>Editar Servicio</h5>
-                            <p:outputPanel id='generalInputPanel'>
-                                <p:fieldset legend="Información General">
-                                    <p:panelGrid columns="1"
-                                                 layout='grid'
-                                                 styleClass="fullwidth ui-noborder">
-                                        <p:outputLabel for="name" value="Name"/>
-                                        <p:inputText id="name"
-                                                     disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
-                                                     validator="#{tourNameValidator.validateEdit}"
-                                                     required="true"
-                                                     requiredMessage="Name field required"
-                                                     value="#{tourEditManager.tour.name}" styleClass="fullwidth" />
-                                        <p:outputLabel for="grupo"
-                                                       value="Grupo:"/>
-                                        <p:inputText id="grupo"
-                                                     disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
-                                                     required="true"
-                                                     requiredMessage="Campo Grupo Requerido"
-                                                     value="#{tourEditManager.tour.grupo}" />
 
-                                        <p:outputLabel for="iniciales" value="Iniciales Confirma:"/>
-                                        <p:inputText id="iniciales"
-                                                     disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
-                                                     required="true"
-                                                     validator="#{tourInitialsValidator.validateInicialesEdit}"
-                                                     requiredMessage="Iniciales campo requerido"
-                                                     value="#{tourEditManager.tour.inicialesConfirma}"/>
-                                        <p:outputLabel for="description" value="Description"/>
-                                        <p:editor id="description"
-                                                  disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
-                                                  required="false"
-                                                  requiredMessage="Description field required"
-                                                  value="#{tourEditManager.tour.description}" />
-                                        <p:outputLabel for="buceo" value="Buceo"/>
-                                        <p:selectBooleanButton id="buceo"
-                                                               disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
-                                                               styleClass='defaultButton'
-                                                               offLabel="No" onLabel="Si"
-                                                               value='#{tourEditManager.tour.buceo}'/>
-                                        <p:outputLabel for="manejaVehiculo" value="Maneja Vehiculo"/>
-                                        <p:selectBooleanButton id="manejaVehiculo"
-                                                               disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
-                                                               styleClass='defaultButton'
-                                                               offLabel="No" onLabel="Si"
-                                                               value='#{tourEditManager.tour.manejaVehiculo}'/>
-                                        <p:outputLabel value="Activo" for="active"/>
-                                        <p:selectBooleanButton id='active'
-                                                               disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
-                                                               styleClass='defaultButton'
-                                                               value="#{tourEditManager.tour.active}"
-                                                               offLabel="No" onLabel="Si"/>
-                                    </p:panelGrid>
-                                </p:fieldset>
+                            </p:tab>
+                            <p:tab>
+                                <f:facet name="title">
+                                    <i class="fas fa-dollar-sign"></i>&nbsp;Precios
+                                </f:facet>
+                                <p:outputPanel styleClass="outputPanel preciosPanel">
+                                    <div class='card'>
+                                        <h5>Precios</h5>
+                                        <p:fieldset legend="General">
+                                            <p:panelGrid columns="2"
+                                                         columnClasses="labelColumn, inputColumn"
+                                                         class='ui-noborder'
+                                                         layout="grid">
+                                                <p:outputLabel for="adultprice"
+                                                               value="Precio Adulto"/>
+                                                <p:inputNumber id="adultprice"
+                                                               decimalSeparator="."
+                                                               thousandSeparator=","
+                                                               decimalPlaces="2"
+                                                               required="true"
+                                                               placeholder="Precio Adulto"
+                                                               requiredMessage="Campo precio adulto requerido"
+                                                               emptyValue="$"
+                                                               symbol="$"
+                                                               value="#{tourEditManager.tour.adultPrice}"
+                                                               minValue="0">
+                                                    <p:ajax process="@this"/>
+                                                </p:inputNumber>
+                                                <p:outputLabel for="childprice"
+                                                               value="Precio Niño"/>
+                                                <p:inputNumber id="childprice"
+                                                               decimalPlaces="2"
+                                                               decimalSeparator="."
+                                                               thousandSeparator=","
+                                                               required="true"
+                                                               placeholder="Precio Niño"
+                                                               requiredMessage="Campo precio niño requerido"
+                                                               emptyValue="$"
+                                                               symbol="$"
+                                                               value="#{tourEditManager.tour.childPrice}"
+                                                               minValue="0"/>
+                                                <p:outputLabel for="childDescription"
+                                                               value="Descripción niño"/>
+                                                <p:inputText id="childDescription"
+                                                             required="true"
 
-                                <p:fieldset legend="Costos">
-                                    <p:panelGrid columns="4" layout="grid" class="ui-noborder">
-                                        <p:outputLabel for="costoUnitarioAdulto" value="Costo Unitario Adulto RVM/CUN"/>
-                                        <p:inputNumber id="costoUnitarioAdulto"
-                                                       disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
-                                                       decimalPlaces="2" decimalSeparator="."
-                                                       required="true"
-                                                       requiredMessage="Costo Unitario Adulto requerido"
-                                                       minValue="0.00"
-                                                       symbol="$"
-                                                       thousandSeparator=","
-                                                       value="#{tourEditManager.tour.costoUnitarioAdulto}"/>
-                                        <p:outputLabel for="costoUnitarioNino" value="Costo Unitario Niño  RVM/CUN"/>
-                                        <p:inputNumber id="costoUnitarioNino" decimalPlaces="2" decimalSeparator="."
-                                                       required="true"
-                                                       disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
-                                                       requiredMessage="Costo Unitario Nino requerido"
-                                                       minValue="0.00"
-                                                       symbol="$"
-                                                       thousandSeparator=","
-                                                       value="#{tourEditManager.tour.costoUnitarioNino}"/>
-                                        <p:outputLabel for="costoUnitarioAdultoCZM" value="Costo Unitario Adulto CZM"/>
-                                        <p:inputNumber id="costoUnitarioAdultoCZM" decimalPlaces="2" decimalSeparator="."
-                                                       required="true"
-                                                       disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
-                                                       requiredMessage="Costo Unitario Adulto CZM requerido"
-                                                       minValue="0.00"
-                                                       symbol="$"
-                                                       thousandSeparator=","
-                                                       value="#{tourEditManager.tour.costoUnitarioAdultoCZM}"/>
-                                        <p:outputLabel for="costoUnitarioNinoCZM" value="Costo Unitario Niño  CZM"/>
-                                        <p:inputNumber id="costoUnitarioNinoCZM" decimalPlaces="2" decimalSeparator="."
-                                                       required="true"
-                                                       disabled="#{sessionInfo.userSecurityClearance lt SecurityRoles.WEBADMIN}"
-                                                       requiredMessage="Costo Unitario Nino CZM requerido"
-                                                       minValue="0.00"
-                                                       symbol="$"
-                                                       thousandSeparator=","
-                                                       value="#{tourEditManager.tour.costoUnitarioNinoCZM}"/>
-                                    </p:panelGrid>
-                                </p:fieldset>
-                                <div class='text-center important'>
-                                    <p:commandButton id="saveButton"
-                                                     rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}"
-                                                     styleClass='defaultButton'
-                                                     actionListener="#{tourEditManager.edit()}"
-                                                     icon="ui-icon ui-icon-disk"
-                                                     value="Guardar" update="generalInputPanel growl">
-                                        <p:confirm header="Confirmar"
-                                                   message="¿Editar información Servicio? "
-                                                   icon="fas fa-exclamation-triangle"/>
-                                    </p:commandButton>
-                                </div>
-                            </p:outputPanel>
-                        </div>
+                                                             placeholder="Describe lo que es un niño"
+                                                             requiredMessage="Campo descripción niño"
+                                                             value="#{tourEditManager.tour.childrenDescription}"/>
+                                                <p:outputLabel for="infantprice"
+                                                               value="Precio Infante"/>
+                                                <p:inputNumber id="infantprice"
+                                                               decimalPlaces="2"
+                                                               decimalSeparator="."
+                                                               thousandSeparator=","
+                                                               required="true"
+                                                               emptyValue="$"
+                                                               symbol="$"
+                                                               placeholder="Precio infante"
+                                                               requiredMessage="Campo precio infante requerido"
+                                                               value="#{tourEditManager.tour.infantPrice}"
+                                                               minValue="0"/>
+                                                <p:outputLabel for="infantDescription"
+                                                               value="Descripción Infante"/>
+                                                <p:inputText id="infantDescription"
+                                                             required="true"
+
+                                                             placeholder="Descripción de infante"
+                                                             requiredMessage="Campo descripción de infante requerido"
+                                                             value="#{tourEditManager.tour.infantsDescription}"/>
+                                                <p:outputLabel for="transfer"
+                                                               value="Transportación Incluida"/>
+                                                <p:selectBooleanButton id="transfer"
+                                                                       styleClass="defaultButton"
+                                                                       onLabel="Si"
+                                                                       offLabel="No"
+                                                                       value="#{tourEditManager.tour.isTransportationIncluded}"/>
+                                                <p:outputLabel for="transfernotes"
+                                                               value="Notas de transportación"/>
+                                                <p:inputTextarea id="transfernotes"
+                                                                 maxlength="300"
+                                                                 rows="5"
+                                                                 required="false"
+                                                                 requiredMessage="Campo notas transportación requires"
+                                                                 placeholder="Notas importantes de la transportación"
+                                                                 value="#{tourEditManager.tour.transportationNotes}"/>
+                                                <p:outputLabel for="childrenAllowed"
+                                                               value="Niños pueden hacer actividad?"/>
+                                                <p:selectBooleanButton id="childrenAllowed"
+                                                                       onLabel="Si"
+                                                                       styleClass='defaultButton'
+                                                                       offLabel="No"
+                                                                       value="#{tourEditManager.tour.childrenAllowed}"/>
+                                                <p:outputLabel for="infantsAllowed"
+                                                               value="Infantes pueden hacer la actividad?"/>
+                                                <p:selectBooleanButton id="infantsAllowed"
+                                                                       styleClass='defaultButton'
+                                                                       onLabel="Si"
+                                                                       offLabel="No"
+                                                                       value="#{tourEditManager.tour.infantsAllowed}"/>
+                                            </p:panelGrid>
+                                        </p:fieldset>
+
+
+                                        <p:fieldset legend="Operación">
+                                            <p:panelGrid columns="2"
+                                                         columnClasses="labelColumn, inputColumn"
+                                                         layout="grid"
+                                                         class='ui-noborder'>
+                                                <p:outputLabel for="publicDiscount"
+                                                               value="Descuento al público"/>
+                                                <p:inputNumber id="publicDiscount"
+                                                               decimalPlaces="2"
+                                                               decimalSeparator="."
+                                                               thousandSeparator=","
+                                                               required="true"
+                                                               emptyValue="%"
+                                                               symbolPosition="s"
+                                                               symbol="%"
+                                                               value="#{tourEditManager.tour.publicDiscount}"
+                                                               minValue="0"/>
+                                                <p:outputLabel for="operationalprice"
+                                                               value="Costo operacion adulto"/>
+                                                <p:inputNumber id="operationalprice"
+                                                               decimalPlaces="2"
+                                                               decimalSeparator="."
+                                                               thousandSeparator=","
+                                                               required="true"
+                                                               emptyValue="$"
+                                                               symbol="$"
+                                                               value="#{tourEditManager.tour.operationalCost}"
+                                                               minValue="0"/>
+                                                <p:outputLabel for="minSalePrice"
+                                                               value="Precio mínimo a la venta adulto"/>
+                                                <p:inputNumber id="minSalePrice"
+                                                               decimalPlaces="2"
+                                                               decimalSeparator="."
+                                                               thousandSeparator=","
+                                                               required="true"
+                                                               emptyValue="$"
+                                                               symbol="$"
+                                                               value="#{tourEditManager.tour.minSalePrice}"
+                                                               minValue="0"/>
+                                                <p:outputLabel for="operationalpriceChild"
+                                                               value="Costo operación niño"/>
+                                                <p:inputNumber id="operationalpriceChild"
+                                                               decimalPlaces="2"
+                                                               decimalSeparator="."
+                                                               thousandSeparator=","
+                                                               required="true"
+                                                               emptyValue="$"
+                                                               symbol="$"
+                                                               value="#{tourEditManager.tour.operationalCostChild}"
+                                                               minValue="0"/>
+                                                <p:outputLabel for="minSalePriceChild"
+                                                               value="Precio mínimo venta niño"/>
+                                                <p:inputNumber id="minSalePriceChild"
+                                                               decimalPlaces="2"
+                                                               decimalSeparator="."
+                                                               thousandSeparator=","
+                                                               required="true"
+                                                               emptyValue="$"
+                                                               symbol="$"
+                                                               value="#{tourEditManager.tour.minSalePriceChild}"
+                                                               minValue="0"/>
+                                                <p:outputLabel for="operationalpriceInfant"
+                                                               value="Costo operación infante"/>
+                                                <p:inputNumber id="operationalpriceInfant"
+                                                               decimalPlaces="2"
+                                                               decimalSeparator="."
+                                                               thousandSeparator=","
+                                                               required="true"
+                                                               emptyValue="$"
+                                                               symbol="$"
+                                                               value="#{tourEditManager.tour.operationalCostInfant}"
+                                                               minValue="0"/>
+                                                <p:outputLabel for="minSalePriceInfant"
+                                                               value="Precio mínimo venta infante"/>
+                                                <p:inputNumber id="minSalePriceInfant"
+                                                               decimalPlaces="2"
+                                                               decimalSeparator="."
+                                                               thousandSeparator=","
+                                                               required="true"
+                                                               emptyValue="$"
+                                                               symbol="$"
+                                                               value="#{tourEditManager.tour.minSalePriceInfant}"
+                                                               minValue="0"/>
+                                            </p:panelGrid>
+                                        </p:fieldset>
+                                        <p:fieldset legend="Representantes">
+                                            <p:panelGrid columnClasses="labelColumn, inputColumn"
+                                                         class='ui-noborder'
+                                                         layout="grid"
+                                                         columns='2'>
+                                                <p:outputLabel for="maxDiscount"
+                                                               value="Descuento máximo"/>
+                                                <p:inputNumber id="maxDiscount"
+                                                               decimalPlaces="2"
+                                                               decimalSeparator="."
+                                                               thousandSeparator=","
+                                                               required="true"
+                                                               emptyValue="%"
+                                                               symbolPosition="s"
+                                                               symbol="%"
+                                                               value="#{tourEditManager.tour.maxDiscountAllowed}"
+                                                               minValue="0"/>
+                                                <p:outputLabel for="repCommission"
+                                                               value="Comisión representante"/>
+                                                <p:inputNumber id="repCommission"
+                                                               decimalPlaces="2"
+                                                               decimalSeparator="."
+                                                               thousandSeparator=","
+                                                               required="true"
+                                                               emptyValue="%"
+                                                               symbolPosition="s"
+                                                               symbol="%"
+                                                               value="#{tourEditManager.tour.repCommissionFullPrice}"
+                                                               minValue="0"/>
+                                                <p:outputLabel for="repCommissionDiscount"
+                                                               value="Comisión representante con descuento"/>
+                                                <p:inputNumber id="repCommissionDiscount"
+                                                               decimalPlaces="2"
+                                                               decimalSeparator="."
+                                                               thousandSeparator=","
+                                                               required="true"
+                                                               emptyValue="%"
+                                                               symbolPosition="s"
+                                                               symbol="%"
+                                                               value="#{tourEditManager.tour.repCommissionDiscount}"
+                                                               minValue="0"/>
+                                            </p:panelGrid>
+
+                                        </p:fieldset>
+                                    </div>
+                                </p:outputPanel>
+
+
+
+                            </p:tab>
+                            <p:tab>
+                                <f:facet name="title">
+                                    <i class="fas fa-file-alt"></i>&nbsp;Detalles
+                                </f:facet>
+                                <p:outputPanel styleClass="outputPanel detallesPanel">
+                                    <div class='card'>
+                                        <h5>Detalles</h5>
+                                        <p:panelGrid columns="2"
+                                                     columnClasses="labelColumn, inputColumn"
+                                                     layout="grid"
+                                                     class='ui-noborder'>
+                                            <p:outputLabel for="itinerary"
+                                                           value="Itinerario"/>
+                                            <p:inputTextarea id="itinerary"
+                                                             rows="5"
+                                                             maxlength="490"
+                                                             placeholder="Itinerario tour"
+                                                             required="false"
+                                                             requiredMessage="Campo itinerario requerido"
+                                                             value="#{tourEditManager.tour.itinerary}"/>
+                                            <p:outputLabel for="includes"
+                                                           value="Qué incluye"/>
+                                            <p:inputTextarea id="includes"
+                                                             rows="5"
+                                                             placeholder="Lo que incluye el tour"
+                                                             maxlength="490"
+                                                             required="false"
+                                                             requiredMessage="Campo incluye requerido"
+                                                             value="#{tourEditManager.tour.includes}" />
+                                            <p:outputLabel for="excludes"
+                                                           value="Excluye"/>
+                                            <p:inputTextarea id="excludes"
+                                                             rows="5"
+                                                             placeholder="Excluye"
+                                                             maxlength="490"
+                                                             required="false"
+                                                             requiredMessage="Campo excluye requerido"
+                                                             value="#{tourEditManager.tour.excludes}"/>
+                                            <p:outputLabel for="recommendations"
+                                                           value="Recomendaciones"/>
+                                            <p:inputTextarea id="recommendations"
+                                                             rows="5"
+                                                             placeholder="Recomendaciones para el tour"
+                                                             required="false"
+                                                             maxlength="490"
+                                                             requiredMessage="Campo recomendaciones requerido"
+                                                             value="#{tourEditManager.tour.recommendations}"/>
+                                            <p:outputLabel for="regulations"
+                                                           value="Regulaciones"/>
+                                            <p:inputTextarea id="regulations"
+                                                             rows="5"
+                                                             placeholder="Regulaciones"
+                                                             maxlength="490"
+                                                             required="false"
+                                                             requiredMessage="Campo regulaciones requerido"
+                                                             value="#{tourEditManager.tour.regulations}"/>
+                                            <p:outputLabel id="restrictionsLabel" for="restrictions"
+                                                           value="Restricciones"/>
+                                            <p:inputTextarea id="restrictions"
+                                                             rows="5"
+                                                             placeholder="Restricciones"
+                                                             required="false"
+                                                             maxlength="490"
+                                                             requiredMessage="Campo restricciones"
+                                                             value="#{tourEditManager.tour.restrictions}" />
+                                        </p:panelGrid>
+                                    </div>
+                                </p:outputPanel>
+                            </p:tab>
+                            <p:tab>
+                                <f:facet name="title">
+                                    <i class="fas fa-language"></i>&nbsp;Lenguaje
+                                </f:facet>
+                                <p:outputPanel styleClass='outputPanel lenguajePanel'>
+                                    <div class='card'>
+                                        <h5>Lenguaje</h5>
+                                        <p:panelGrid columns="2"
+                                                     columnClasses="labelColumn, inputColumn"
+                                                     layout="grid"
+                                                     class='ui-noborder'>
+                                            <p:outputLabel for="descriptionLangSelect"
+                                                           value="Lenguaje de la descripción del tour"/>
+                                            <p:selectOneMenu id="descriptionLangSelect"
+                                                             value="#{tourEditManager.tour.descriptionLang}"
+                                                             required="true"
+                                                             requiredMessage="Campo lenguaje descripción requerido"
+                                                             >
+                                                <f:selectItem itemLabel="Seleccionar uno..." itemValue="#{null}"/>
+                                                <f:selectItems value="#{localeSelectorManager.availableLanguages}"/>
+                                            </p:selectOneMenu>
+                                            <p:outputLabel for="langSelect"
+                                                           value="Lenguaje en que se opera el tour"/>
+                                            <p:selectOneMenu id="langSelect"
+                                                             value="#{tourEditManager.tour.lang}"
+                                                             required="true"
+                                                             requiredMessage="Campo lenguaje del tour requerido"
+                                                             >
+                                                <f:selectItem itemLabel="Seleccionar una opción..." itemValue="#{null}"/>
+                                                <f:selectItems value="#{localeSelectorManager.availableLanguages}"/>
+                                            </p:selectOneMenu>
+                                            <p:outputLabel for="latitude"
+                                                           value="Latitud"/>
+                                            <p:inputText id="latitude"
+                                                         value="#{tourEditManager.tour.latitude}"
+                                                         required="false"
+                                                         placeholder="Latitud"
+                                                         requiredMessage="Campo latitud requerido"/>
+                                            <p:outputLabel for="longitude"
+                                                           value="Longitud"/>
+                                            <p:inputText id="longitude"
+                                                         value="#{tourEditManager.tour.longitude}"
+                                                         placeholder="Longitud"
+                                                         requiredMessage="Campo logitud requerido"
+                                                         required="false"/>
+                                        </p:panelGrid>
+                                    </div>
+                                </p:outputPanel>
+
+
+
+                            </p:tab>
+                            <p:tab>
+                                <f:facet name="title">
+                                    <i class="fas fa-search"></i>&nbsp;Búsqueda
+                                </f:facet>
+                                <p:outputPanel styleClass="outputPanel busquedaPanel">
+                                    <div class='card'>
+                                        <h5>Opciones de Búsqueda</h5>
+                                        <p:panelGrid columns="2"
+                                                     columnClasses="labelColumn, inputColumn"
+                                                     layout="grid"
+                                                     class='ui-noborder'>
+                                            <p:outputLabel for="tourScale"
+                                                           value="Escala"/>
+                                            <p:inputText id="tourScale"
+                                                         value="#{tourEditManager.tour.tourScale}"
+                                                         required="true"/>
+                                            <p:outputLabel for="keywords"
+                                                           value="Palabras clave"/>
+                                            <p:inputTextarea id="keywords"
+                                                             rows="5"
+                                                             maxlength="490"
+                                                             required="false"
+                                                             placeholder="Palabras para la búsqueda"
+                                                             requiredMessage="Campo palabras clave requerido"
+                                                             value="#{tourEditManager.tour.searchKeywords}"/>
+                                        </p:panelGrid>
+                                        <p:fieldset legend="Clasificación">
+                                            <p:panelGrid columns="4"
+                                                         layout="grid"
+                                                         class='ui-noborder'>
+                                                <p:outputLabel value="Acuático"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.aquatic}'/>
+                                                <p:outputLabel value="Cultural"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.cultural}'/>
+                                                <p:outputLabel value="Arquelógico"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.archeological}'/>
+                                                <p:outputLabel value="Cenotes"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.underground}'/>
+                                                <p:outputLabel value="Vida de noche"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.night}'/>
+                                                <p:outputLabel value="Aventura"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.adventure}'/>
+                                                <p:outputLabel value="City Tour"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.cityTour}'/>
+                                                <p:outputLabel value="Gastronomía"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.gastronomy}'/>
+                                                <p:outputLabel value="Golf"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.golf}'/>
+                                                <p:outputLabel value="Nado con Delfines"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.dolphinSwim}'/>
+                                                <p:outputLabel value="Otras Actividades"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.otherActivities}'/>
+                                                <p:outputLabel value="Parques"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.park}'/>
+                                                <p:outputLabel value="Botes"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.boat}'/>
+                                                <p:outputLabel value="Pesca"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.fishing}'/>
+                                                <p:outputLabel value="Fauna"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.animalTour}'/>
+                                                <p:outputLabel value="Buceo"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.scuba}'/>
+                                                <p:outputLabel value="Snorkel"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.snorkel}'/>
+                                                <p:outputLabel value="ATVs"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.atvs}'/>
+                                                <p:outputLabel value="Paquete"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.packageTour}'/>
+                                                <p:outputLabel value="Cancun"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.cancun}'/>
+                                                <p:outputLabel value="Cozumel"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.cozumel}'/>
+                                                <p:outputLabel value="Isla Mujeres"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.islaMujeres}'/>
+                                                <p:outputLabel value="Yucatan"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.yucatan}'/>
+                                                <p:outputLabel value="Matutino"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.morning}'/>
+                                                <p:outputLabel value="Vespertino"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.afternoon}'/>
+                                                <p:outputLabel value="Dia Completo"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.fullday}'/>
+                                                <p:outputLabel value="Medio Día"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.halfday}'/>
+                                            </p:panelGrid>
+                                        </p:fieldset>
+                                        <p:fieldset legend="Días de Operación">
+                                            <p:panelGrid columns="4"
+                                                         layout="grid"
+                                                         class='ui-noborder'>
+                                                <p:outputLabel value="Lunes"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.monday}'/>
+                                                <p:outputLabel value="Martes"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.tuesday}'/>
+                                                <p:outputLabel value="Miércoles"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.wednesday}'/>
+                                                <p:outputLabel value="Jueves"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.thursday}'/>
+                                                <p:outputLabel value="Viernes"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.friday}'/>
+                                                <p:outputLabel value="Sábado"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.saturday}'/>
+                                                <p:outputLabel value="Domingo"/>
+                                                <p:selectBooleanCheckbox value='#{tourEditManager.tour.sunday}'/>
+                                            </p:panelGrid>
+                                        </p:fieldset>
+                                    </div>
+                                </p:outputPanel>
+
+                            </p:tab>
+                            <p:tab>
+                                <f:facet name="title">
+                                    <i class="fas fa-camera"></i>&nbsp;Galería
+                                </f:facet>
+                                <p:outputPanel styleClass="outputPanel">
+                                    <div class="card">
+                                        <h5>Galería de Fotos</h5>
+                                        <p:panelGrid columnClasses="labelColumn, inputColumn"
+                                                     class="ui-noborder"
+                                                     layout="grid"
+                                                     columns="2">
+                                            <p:outputLabel value="Agregar Foto"/>
+                                            <h:panelGroup>
+                                                <p:fileUpload id="fileUploader"
+                                                              auto="true"
+                                                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                              multiple="true"
+                                                              fileUploadListener="#{photoFileUploadController.upload}"
+                                                              update="photosTable"
+                                                              value="Subir Foto"
+                                                              mode="advanced">
+                                                </p:fileUpload>
+                                                <p:dataTable id="photosTable"
+                                                             value='#{photoFileUploadController.uploadedFiles}'
+                                                             var='file'>
+                                                    <f:facet name="header">
+                                                        Agregar fotos a galería
+                                                    </f:facet>
+                                                    <p:column>
+                                                        <h:outputText value='#{file.fileName}'/>
+                                                    </p:column>
+                                                    <p:column styleClass='column80'>
+                                                        <h:outputText value='#{file.size}'/>
+                                                    </p:column>
+                                                    <p:column styleClass='column40'>
+                                                        <p:commandButton icon='fa fa-trash'
+                                                                         actionListener="#{photoFileUploadController.remove(file)}"
+                                                                         update="photosTable">
+                                                            <p:confirm header="Remover Foto" message="Remover Foto?"/>
+                                                        </p:commandButton>
+                                                    </p:column>
+                                                    <f:facet name='footer'>
+                                                        <p:commandButton icon='fa fa-trash'
+                                                                         styleClass='defaultButton'
+                                                                         rendered='#{not empty photoFileUploadController.uploadedFiles}'
+                                                                         value='Remover todas'
+                                                                         actionListener="#{photoFileUploadController.reset()}"
+                                                                         update="photosTable"/>
+                                                    </f:facet>
+                                                </p:dataTable>
+                                            </h:panelGroup>
+                                        </p:panelGrid>
+                                        <p:fieldset legend="Fotos en Tour">
+                                            <p:dataTable id='fotosEnTour' value='#{tourEditManager.photos}'
+                                                         var="photo">
+                                                <p:column>
+                                                    <h:outputText value='#{photo.tour.name}'/>
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputText value='#{photo.description}'/>
+                                                </p:column>
+                                                <p:column styleClass='column40'>
+                                                    <p:commandButton icon='fa fa-trash'
+                                                                     actionListener="#{tourEditManager.removePhoto(photo)}"
+                                                                     update="fotosEnTour">
+                                                        <p:confirm header="Remover Foto" message="Remover Foto?"/>
+                                                    </p:commandButton>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </p:fieldset>
+                                    </div>
+                                </p:outputPanel>
+
+                            </p:tab>
+                        </p:tabView>
+                    </p:outputPanel>
+                    <div class='card'>
+                        <h5>Opciones</h5>
+                        <p:commandButton styleClass='defaultButton'
+                                         value='Guardar'
+                                         icon='fa fa-save'
+                                         actionListener="#{tourEditManager.edit}"
+                                         update="@(.outputPanel) growl">
+                            <p:confirm header="Edit new" message="Edit new tour?"/>
+                        </p:commandButton>
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         </p:confirmDialog>
-                    </h:form>
-                </p:tab>
-                <p:tab title="Promos" rendered='false'>
-                    <div class='card'>
-                        <h5>Promociones Tour</h5>
-                        <h:form>
-                            <p:outputPanel id='inputPanel'>
-                                <p:panelGrid columns="1"
-                                             layout='grid'
-                                             styleClass="fullwidth ui-noborder">
-                                    <p:outputLabel for="tipoVehiculo" value="Promo"/>
-                                    <p:selectOneMenu id="tipoVehiculo"
-                                                     required="true"
-                                                     requiredMessage="Promo requerido"
-                                                     value="#{promoTourController.promoTour.name}">
-                                        <f:selectItem itemLabel="Seleccionar Uno..." noSelectionOption="true"/>
-                                        <f:selectItem itemLabel="Mexicano" itemValue="Mexicano"/>
-                                        <f:selectItem itemLabel="Canadiense" itemValue="Canadiense"/>
-                                        <f:selectItem itemLabel="LATAM" itemValue="LATAM"/>
-                                    </p:selectOneMenu>
-                                    <p:commandButton value="Guardar"
-                                                     styleClass='defaultButton'
-                                                     actionListener="#{promoTourController.create()}"
-                                                     update="dataTablePanel growl"/>
-                                </p:panelGrid>
-                                <p:outputPanel id='dataTablePanel'>
-                                    <p:dataTable id='tablaPromos'
-                                                 selection="#{promoTourController.selectedPromo}"
-                                                 selectionMode="single"
-                                                 rowKey="#{item.id}"
-                                                 value="#{promoTourController.promosTour}" var="item">
-                                        <p:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="Promos Tour"/>
-                                            </f:facet>
-                                            <h:outputText value="#{item.name}"/>
-                                        </p:column>
-                                    </p:dataTable>
-                                    <p:contextMenu for="tablaPromos">
-                                        <p:menuitem value="Delete"
-                                                    update="tablaPromos growl"
-                                                    immediate="true"
-                                                    actionListener='#{promoTourController.delete(item)}'
-                                                    icon="fa fa-trash">
-                                            <p:confirm header="Confirmar"
-                                                       message="¿Borrar de base de datos? "
-                                                       icon="fas fa-exclamation-triangle"/>
-                                        </p:menuitem>
-                                    </p:contextMenu>
-                                </p:outputPanel>
 
-                            </p:outputPanel>
-                        </h:form>
                     </div>
+                </h:form>
+            </div>
+            <div class='card'>
+                <h5>Opciones de Servicio #{tourEditManager.tour.name}</h5>
+                <p:tabView>
+                    <p:tab title="Horarios">
+                        <ui:include src="includes/horarios/horarios.xhtml"/>
+                    </p:tab>
+                    <p:tab title='IMAs'>
+                        <p:outputPanel class="imasPorAgenciaPanel">
+                            <p:panelGrid columns="2" class="ui-noborder" layout="grid">
+                                <p:fieldset legend="IMA General" collapsed="true"
+                                            toggleable="true">
+                                    <p:outputPanel class="imaGeneralPanel">
+                                        <div class="card">
+                                            <h:form>
+                                                <p:panelGrid columns="2"
+                                                             columnClasses="width30p text-right, width70p"
+                                                             class="ui-noborder" layout="grid">
 
-                </p:tab>
-                <p:tab title="Vehiculos" rendered='false'>
-                    <div class='card'>
-                        <h5>Vehiculos Operados</h5>
-                        <h:form>
-                            <p:outputPanel id='inputPanel'>
-                                <p:panelGrid columns="1"
-                                             layout='grid'
-                                             styleClass="fullwidth ui-noborder">
-                                    <p:outputLabel for="tipoVehiculo" value="Vehiculo"/>
-                                    <p:selectOneMenu id="tipoVehiculo"
-                                                     required="true"
-                                                     requiredMessage="Tipo vehiculo requerido"
-                                                     value="#{vehiculoTourController.vehiculoTour.name}">
-                                        <f:selectItem itemLabel="Seleccionar Uno..." noSelectionOption="true"/>
-                                        <f:selectItem itemLabel="Jeep" itemValue="Jeep"/>
-                                        <f:selectItem itemLabel="Buggy" itemValue="Buggy"/>
-                                    </p:selectOneMenu>
-                                    <p:commandButton value="Guardar"
-                                                     styleClass='defaultButton'
-                                                     actionListener="#{vehiculoTourController.create()}"
-                                                     update="dataTablePanel growl"/>
-                                </p:panelGrid>
-                                <p:outputPanel id='dataTablePanel'>
-                                    <p:dataTable value="#{vehiculoTourController.tiposVehiculo}" var="item">
-                                        <p:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="Tipo Vehiculo"/>
-                                            </f:facet>
-                                            <h:outputText value="#{item.name}"/>
-                                        </p:column>
-                                    </p:dataTable>
-                                </p:outputPanel>
-
-                            </p:outputPanel>
-                        </h:form>
-                    </div>
-
-                </p:tab>
-                <p:tab title="Horarios">
-                    <ui:include src="includes/horarios/horarios.xhtml"/>
-                </p:tab>
-                <p:tab title='IMAs'>
-                    <p:outputPanel class="imasPorAgenciaPanel">
-                        <p:panelGrid columns="2" class="ui-noborder" layout="grid">
-                            <p:fieldset legend="IMA General" collapsed="true"
-                                        toggleable="true">
-                                <p:outputPanel class="imaGeneralPanel">
+                                                    <p:outputLabel value="IMA USD:" for="imaUSD"/>
+                                                    <p:inputNumber id="imaUSD" decimalPlaces="2" decimalSeparator="."
+                                                                   required="true"
+                                                                   requiredMessage="Precio Adulto requerido"
+                                                                   minValue="0.00"
+                                                                   symbol="$"
+                                                                   thousandSeparator=","
+                                                                   value="#{tourEditManager.tour.imaAdultoUSD}"/>
+                                                    <p:outputLabel value="IMA Niño USD:" for="imaNinoUSD"/>
+                                                    <p:inputNumber id="imaNinoUSD" decimalPlaces="2" decimalSeparator="."
+                                                                   required="true"
+                                                                   requiredMessage="Precio Adulto requerido"
+                                                                   minValue="0.00"
+                                                                   symbol="$"
+                                                                   thousandSeparator=","
+                                                                   value="#{tourEditManager.tour.imaNinoUSD}"/>
+                                                    <h:panelGroup></h:panelGroup>
+                                                    <p:commandButton value="Guardar" icon="fa fa-save"
+                                                                     styleClass="defaultButton"
+                                                                     actionListener="#{tourEditManager.edit}"
+                                                                     update="@(.imaGeneralPanel) growl"/>
+                                                </p:panelGrid>
+                                            </h:form>
+                                        </div>
+                                    </p:outputPanel>
+                                </p:fieldset>
+                                <p:fieldset legend="Crear Nuevo IMA para Agencia" collapsed="true"
+                                            toggleable="true">
                                     <div class="card">
                                         <h:form>
-                                            <p:panelGrid columns="2"
-                                                         columnClasses="width30p text-right, width70p"
-                                                         class="ui-noborder" layout="grid">
+                                            <p:outputPanel styleClass="newImaPanel">
+                                                <p:panelGrid columns="2"
+                                                             columnClasses="width30p text-right, width70p"
+                                                             class="ui-noborder" layout="grid">
+                                                    <p:outputLabel value="Agencia:" for="agencia"/>
+                                                    <agency:agencyAutocomplete id='agencia' value="#{iMAController.agencia}">
+                                                        <p:ajax event="itemSelect" process="@this"/>
+                                                    </agency:agencyAutocomplete>
+                                                    <p:outputLabel value="IMA USD:" for="imaUSD"/>
+                                                    <p:inputNumber id="imaUSD" decimalPlaces="2" decimalSeparator="."
+                                                                   required="true"
+                                                                   requiredMessage="Precio Adulto requerido"
+                                                                   minValue="0.00"
+                                                                   symbol="$"
+                                                                   thousandSeparator=","
+                                                                   value="#{iMAController.imaAdultoUSD}"/>
+                                                    <p:outputLabel value="IMA Niño USD:" for="imaNinoUSD"/>
+                                                    <p:inputNumber id="imaNinoUSD" decimalPlaces="2" decimalSeparator="."
+                                                                   required="true"
+                                                                   requiredMessage="Precio Adulto requerido"
+                                                                   minValue="0.00"
+                                                                   symbol="$"
+                                                                   thousandSeparator=","
+                                                                   value="#{iMAController.imaNinoUSD}"/>
+                                                    <h:panelGroup></h:panelGroup>
+                                                    <p:commandButton value="Guardar" icon="fa fa-save"
+                                                                     styleClass="defaultButton"
+                                                                     actionListener="#{iMAController.crearNuevo}"
+                                                                     update="@(.imasTablePanel) @(.newImaPanel) growl"/>
+                                                </p:panelGrid>
+                                            </p:outputPanel>
 
-                                                <p:outputLabel value="IMA USD:" for="imaUSD"/>
-                                                <p:inputNumber id="imaUSD" decimalPlaces="2" decimalSeparator="."
-                                                               required="true"
-                                                               requiredMessage="Precio Adulto requerido"
-                                                               minValue="0.00"
-                                                               symbol="$"
-                                                               thousandSeparator=","
-                                                               value="#{tourEditManager.tour.imaAdultoUSD}"/>
-                                                <p:outputLabel value="IMA Niño USD:" for="imaNinoUSD"/>
-                                                <p:inputNumber id="imaNinoUSD" decimalPlaces="2" decimalSeparator="."
-                                                               required="true"
-                                                               requiredMessage="Precio Adulto requerido"
-                                                               minValue="0.00"
-                                                               symbol="$"
-                                                               thousandSeparator=","
-                                                               value="#{tourEditManager.tour.imaNinoUSD}"/>
-
-
-
-                                                <p:outputLabel value="IMA USD CZM:" for="imaUSDCZM"/>
-                                                <p:inputNumber id="imaUSDCZM" decimalPlaces="2" decimalSeparator="."
-                                                               required="true"
-                                                               requiredMessage="Precio Adulto requerido"
-                                                               minValue="0.00"
-                                                               symbol="$"
-                                                               thousandSeparator=","
-                                                               value="#{tourEditManager.tour.imaAdultoCZM}"/>
-                                                <p:outputLabel value="IMA Niño USD CZM:" for="imaNinoUSD"/>
-                                                <p:inputNumber id="imaNinoCZM" decimalPlaces="2" decimalSeparator="."
-                                                               required="true"
-                                                               requiredMessage="Precio Adulto requerido"
-                                                               minValue="0.00"
-                                                               symbol="$"
-                                                               thousandSeparator=","
-                                                               value="#{tourEditManager.tour.imaNinoCZM}"/>
-
-
-
-                                                <h:panelGroup></h:panelGroup>
-                                                <p:commandButton value="Guardar" icon="fa fa-save"
-                                                                 styleClass="defaultButton"
-                                                                 actionListener="#{tourEditManager.edit}"
-                                                                 update="@(.imaGeneralPanel) growl"/>
-                                            </p:panelGrid>
                                         </h:form>
                                     </div>
-                                </p:outputPanel>
-                            </p:fieldset>
-                            <p:fieldset legend="Crear Nuevo IMA para Agencia" collapsed="true"
-                                        toggleable="true">
-                                <div class="card">
-                                    <h:form>
-                                        <p:outputPanel styleClass="newImaPanel">
-                                            <p:panelGrid columns="2"
-                                                         columnClasses="width30p text-right, width70p"
-                                                         class="ui-noborder" layout="grid">
-                                                <p:outputLabel value="Agencia:" for="agencia"/>
-                                                <agency:agencyAutocomplete id='agencia' value="#{iMAController.agencia}">
-                                                    <p:ajax event="itemSelect" process="@this"/>
-                                                </agency:agencyAutocomplete>
-                                                <p:outputLabel value="IMA USD:" for="imaUSD"/>
-                                                <p:inputNumber id="imaUSD" decimalPlaces="2" decimalSeparator="."
-                                                               required="true"
-                                                               requiredMessage="Precio Adulto requerido"
-                                                               minValue="0.00"
-                                                               symbol="$"
-                                                               thousandSeparator=","
-                                                               value="#{iMAController.imaAdultoUSD}"/>
-                                                <p:outputLabel value="IMA Niño USD:" for="imaNinoUSD"/>
-                                                <p:inputNumber id="imaNinoUSD" decimalPlaces="2" decimalSeparator="."
-                                                               required="true"
-                                                               requiredMessage="Precio Adulto requerido"
-                                                               minValue="0.00"
-                                                               symbol="$"
-                                                               thousandSeparator=","
-                                                               value="#{iMAController.imaNinoUSD}"/>
 
-                                                <p:outputLabel value="IMA USD CZM:" for="imaUSDCZM"/>
-                                                <p:inputNumber id="imaUSDCZM" decimalPlaces="2" decimalSeparator="."
-                                                               required="true"
-                                                               requiredMessage="Precio Adulto requerido"
-                                                               minValue="0.00"
-                                                               symbol="$"
-                                                               thousandSeparator=","
-                                                               value="#{iMAController.imaAdultoCZM}"/>
-                                                <p:outputLabel value="IMA Niño USD CZM:" for="imaNinoUSDCZM"/>
-                                                <p:inputNumber id="imaNinoUSDCZM" decimalPlaces="2" decimalSeparator="."
-                                                               required="true"
-                                                               requiredMessage="Precio Adulto requerido"
-                                                               minValue="0.00"
-                                                               symbol="$"
-                                                               thousandSeparator=","
-                                                               value="#{iMAController.imaNinoCZM}"/>
-
-                                                <h:panelGroup></h:panelGroup>
-                                                <p:commandButton value="Guardar" icon="fa fa-save"
-                                                                 styleClass="defaultButton"
-                                                                 actionListener="#{iMAController.crearNuevo}"
-                                                                 update="@(.imasTablePanel) @(.newImaPanel) growl"/>
-                                            </p:panelGrid>
-                                        </p:outputPanel>
-
-                                    </h:form>
-                                </div>
-
-                            </p:fieldset>
+                                </p:fieldset>
 
 
 
@@ -360,424 +755,68 @@
 
 
 
-                        </p:panelGrid>
+                            </p:panelGrid>
 
-                        <div class="card">
-                            <h5>IMAs por Agencia</h5>
-                            <h:form>
-                                <p:outputPanel class="imasTablePanel">
-                                    <p:dataTable id="imasTable"
-                                                 editable="true"
-                                                 selection="#{iMAController.selectedIMA}"
-                                                 selectionMode="single"
-                                                 rowKey="#{ima.id}"
-                                                 value="#{iMAController.imas}"
-                                                 var="ima">
-                                        <p:ajax event="rowEdit" listener="#{iMAController.rowEdit}" update="imasTable growl"/>
-                                        <p:column headerText="Agencia">
-                                            <p:cellEditor>
-                                                <f:facet name="output">
-                                                    <h:outputText value="#{ima.agencia.name}"/>
-                                                </f:facet>
-                                                <f:facet name="input">
-                                                    <p:autoComplete id="agencia"
-                                                                    required="true"
-                                                                    requiredMessage="Agencia Requerido"
-                                                                    value="#{ima.agencia}"
-                                                                    converter="#{agencyConverter}"
-                                                                    title="Agencia"
-                                                                    var="agenciaItem"
-                                                                    minQueryLength="3"
-                                                                    itemLabel="#{agenciaItem.name}"
-                                                                    itemValue="#{agenciaItem}"
-                                                                    completeMethod="#{agencyListManager.filterAgency}"/>
-                                                </f:facet>
-                                            </p:cellEditor>
-
-                                        </p:column>
-                                        <p:column headerText="USD Adulto RVM/CZM" styleClass="centerAligned">
-                                            <p:cellEditor>
-                                                <f:facet name="output">
-                                                    <h:outputText value="#{ima.imaAdultoUSD}">
-                                                        <f:convertNumber type="currency"
-                                                                         locale="#{localeSelectorManager.locale}"
-                                                                         currencySymbol="$"
-                                                                         maxFractionDigits="2"
-                                                                         minFractionDigits="2"/>
-                                                    </h:outputText>
-                                                </f:facet>
-                                                <f:facet name="input">
-                                                    <p:inputNumber decimalPlaces="2" decimalSeparator="."
-                                                                   required="true"
-                                                                   requiredMessage="Precio Adulto requerido"
-                                                                   minValue="0.00"
-                                                                   symbol="$"
-                                                                   thousandSeparator=","
-                                                                   value="#{ima.imaAdultoUSD}"/>
-                                                </f:facet>
-                                            </p:cellEditor>
-
-                                        </p:column>
-                                        <p:column headerText="USD Niño RVM/CZM" styleClass="centerAligned">
-                                            <p:cellEditor>
-                                                <f:facet name="output">
-                                                    <h:outputText value="#{ima.imaNinoUSD}">
-                                                        <f:convertNumber type="currency"
-                                                                         locale="#{localeSelectorManager.locale}"
-                                                                         currencySymbol="$"
-                                                                         maxFractionDigits="2"
-                                                                         minFractionDigits="2"/>
-                                                    </h:outputText>
-                                                </f:facet>
-                                                <f:facet name="input">
-                                                    <p:inputNumber decimalPlaces="2" decimalSeparator="."
-                                                                   required="true"
-                                                                   requiredMessage="Precio Adulto requerido"
-                                                                   minValue="0.00"
-                                                                   symbol="$"
-                                                                   thousandSeparator=","
-                                                                   value="#{ima.imaNinoUSD}"/>
-                                                </f:facet>
-                                            </p:cellEditor>
-                                        </p:column>
-
-
-
-                                        <p:column headerText="USD Adulto CZM" styleClass="centerAligned">
-                                            <p:cellEditor>
-                                                <f:facet name="output">
-                                                    <h:outputText value="#{ima.imaAdultoCZM}">
-                                                        <f:convertNumber type="currency"
-                                                                         locale="#{localeSelectorManager.locale}"
-                                                                         currencySymbol="$"
-                                                                         maxFractionDigits="2"
-                                                                         minFractionDigits="2"/>
-                                                    </h:outputText>
-                                                </f:facet>
-                                                <f:facet name="input">
-                                                    <p:inputNumber decimalPlaces="2" decimalSeparator="."
-                                                                   required="true"
-                                                                   requiredMessage="Precio Adulto requerido"
-                                                                   minValue="0.00"
-                                                                   symbol="$"
-                                                                   thousandSeparator=","
-                                                                   value="#{ima.imaAdultoCZM}"/>
-                                                </f:facet>
-                                            </p:cellEditor>
-
-                                        </p:column>
-                                        <p:column headerText="USD Niño CZM" styleClass="centerAligned">
-                                            <p:cellEditor>
-                                                <f:facet name="output">
-                                                    <h:outputText value="#{ima.imaNinoCZM}">
-                                                        <f:convertNumber type="currency"
-                                                                         locale="#{localeSelectorManager.locale}"
-                                                                         currencySymbol="$"
-                                                                         maxFractionDigits="2"
-                                                                         minFractionDigits="2"/>
-                                                    </h:outputText>
-                                                </f:facet>
-                                                <f:facet name="input">
-                                                    <p:inputNumber decimalPlaces="2" decimalSeparator="."
-                                                                   required="true"
-                                                                   requiredMessage="Precio Adulto requerido"
-                                                                   minValue="0.00"
-                                                                   symbol="$"
-                                                                   thousandSeparator=","
-                                                                   value="#{ima.imaNinoCZM}"/>
-                                                </f:facet>
-                                            </p:cellEditor>
-                                        </p:column>
-
-                                        <p:column styleClass="column30 centerAligned">
-                                            <p:rowEditor/>
-                                        </p:column>
-                                    </p:dataTable>
-                                    <p:contextMenu for="imasTable">
-                                        <p:menuitem value="Delete"
-                                                    update="@(.imasTablePanel) growl"
-                                                    icon="fa fa-trash"
-                                                    actionListener="#{iMAController.deleteSelectedIMA}">
-                                            <p:confirm header="Confirmar"
-                                                       message="¿Borrar de base de datos? "
-                                                       icon="fas fa-exclamation-triangle"/>
-                                        </p:menuitem>
-                                    </p:contextMenu>
-                                </p:outputPanel>
-
-                            </h:form>
-                        </div>
-
-                    </p:outputPanel>
-                </p:tab>
-                <p:tab title="Tarifas">
-
-                    <p:accordionPanel activeIndex="-1">
-                        <p:tab title="Tarifas">
-                            <p:fieldset legend="Agregar Tarifa Neta" collapsed="true"
-                                        toggleable="true">
-                                <h:form>
-                                    <div class="card">
-                                        <h5>Información Tarifa</h5>
-                                        <p:outputPanel id='newAdendumPanel'
-                                                       class="newAdendumPanel">
-                                            <p:panelGrid columns="4"
-                                                         columnClasses='text-right, text-left,text-right, text-left,text-right, text-left'
-                                                         class="ui-noborder" layout="grid">
-                                                <p:outputLabel value="Agencia:" for="agencia" />
-                                                <p:autoComplete id="agencia"
-                                                                required="true"
-                                                                requiredMessage="Agencia Requerido"
-                                                                value="#{tourAdendumsController.agencia}"
-                                                                converter="#{agencyConverter}"
-                                                                title="Agencia"
-                                                                var="agenciaItem"
-                                                                minQueryLength="3"
-                                                                itemLabel="#{agenciaItem.name}"
-                                                                itemValue="#{agenciaItem}"
-                                                                completeMethod="#{agencyListManager.filterAgency}"/>
-                                                <p:outputLabel value="Zona:" for="zona" />
-                                                <p:selectOneMenu id="zona"
-                                                                 required='true'
-                                                                 requiredMessage='Lugar de Operación Requerido'
-                                                                 value="#{tourAdendumsController.zona}"
-                                                                 title="Operation">
-                                                    <f:selectItem itemLabel="Seleccionar uno..."
-                                                                  noSelectionOption="true"
-                                                                  itemValue="#{null}"/>
-                                                    <f:selectItem itemValue="RVM" itemLabel="Riviera Maya"/>
-                                                    <f:selectItem itemValue="CUN" itemLabel="Cancún"/>
-                                                    <f:selectItem itemValue="CZM" itemLabel="Cozumel"/>
-                                                </p:selectOneMenu >
-                                                <p:outputLabel value="Promo:" for="promo" />
-                                                <p:selectOneMenu id="promo"
-                                                                 required='true'
-                                                                 converter="#{promoTourConverter}"
-                                                                 requiredMessage='Campo Promo requerido'
-                                                                 value="#{tourAdendumsController.promo}"
-                                                                 title="NombreCliente">
-                                                    <f:selectItem itemLabel="Seleccionar Uno..."
-                                                                  noSelectionOption="true"/>
-                                                    <f:selectItems value='#{promoTourController.promosTour}'
-                                                                   var='promo'
-                                                                   itemLabel="#{promo.name}"
-                                                                   itemValue='#{promo}'/>
-                                                    <p:ajax process="@this"/>
-                                                </p:selectOneMenu>
-                                                <p:outputLabel value="Transfer:" for="transfer" />
-                                                <p:selectBooleanButton id="transfer"
-                                                                       styleClass='defaultButton'
-                                                                       offLabel="No" onLabel="Si"
-                                                                       value='#{tourAdendumsController.transportacion}'/>
-                                                <p:outputLabel value="Tipo Vehiculo:" for="tipoVehiculo" />
-                                                <p:selectOneMenu id="tipoVehiculo"
-                                                                 converter="#{vehiculoTourConverter}"
-                                                                 value="#{tourAdendumsController.tipoVehiculo}"
-                                                                 title="TipoVehiculo">
-                                                    <f:selectItem itemLabel="Seleccionar Uno..."
-                                                                  noSelectionOption="true"/>
-                                                    <f:selectItems value='#{vehiculoTourController.tiposVehiculo}'
-                                                                   var='vehiculo'
-                                                                   itemLabel="#{vehiculo.name}"
-                                                                   itemValue='#{vehiculo}'/>
-                                                </p:selectOneMenu>
-                                                <p:outputLabel value="Buceo" for="scuba" />
-                                                <p:selectBooleanButton id="scuba"
-                                                                       styleClass='defaultButton'
-                                                                       offLabel="No" onLabel="Si"
-                                                                       value='#{tourAdendumsController.buceo}'/>
-                                                <p:outputLabel value="Precio Adulto USD:" for="precioAdultoUSD" />
-                                                <p:inputNumber id="precioAdultoUSD"
-                                                               decimalPlaces="2"
-                                                               decimalSeparator="."
-                                                               required="true"
-                                                               requiredMessage="Precio Adulto requerido"
-                                                               minValue="0.00"
-                                                               symbol="$"
-                                                               thousandSeparator=","
-                                                               value="#{tourAdendumsController.precioAdultoUSD}"/>
-
-                                                <p:outputLabel value="Comision USD:" for="comisionAdultoUSD" />
-                                                <p:inputNumber id='comisionAdultoUSD'
-                                                               decimalPlaces="2"
-                                                               decimalSeparator="."
-                                                               required="true"
-                                                               requiredMessage="Porcentaje comision requerido"
-                                                               minValue="0.00"
-                                                               thousandSeparator=","
-                                                               value="#{tourAdendumsController.comisionUSD}"/>
-                                                <p:outputLabel value="Precio Nino USD:" for="precioNinoUSD" />
-                                                <p:inputNumber id="precioNinoUSD"
-                                                               decimalPlaces="2"
-                                                               decimalSeparator="."
-                                                               required="true"
-                                                               requiredMessage="Precio Adulto requerido"
-                                                               minValue="0.00"
-                                                               symbol="$"
-                                                               thousandSeparator=","
-                                                               value="#{tourAdendumsController.precioNinoUSD}"/>
-                                                <p:outputLabel value="Impuesto USD:" for="impuestoUSD" />
-                                                <p:inputNumber id="impuestoUSD"
-                                                               decimalPlaces="2"
-                                                               decimalSeparator="."
-                                                               required="true"
-                                                               requiredMessage="Precio Adulto requerido"
-                                                               minValue="0.00"
-                                                               symbol="$"
-                                                               thousandSeparator=","
-                                                               value="#{tourAdendumsController.impuestoUSD}"/>
-                                            </p:panelGrid>
-                                            <p:commandButton value="Agregar"
-                                                             styleClass='defaultButton'
-                                                             icon='fa fa-save'
-                                                             update='@(.tablaAdendums) @(.newAdendumPanel) growl'
-                                                             actionListener="#{tourAdendumsController.createNewAdendum()}"/>
-                                        </p:outputPanel>
-                                    </div>
-                                </h:form>
-                            </p:fieldset>
                             <div class="card">
-                                <h5>Tarifas</h5>
-
-                                <p:outputPanel id="tablaAdendumsOutputPanel" class='tablaAdendumsOutputPanel'>
-                                    <h:form>
-                                        <p:dataTable value="#{tourAdendumsController.adendums}"
-                                                     id="tablaAdendums"
-                                                     styleClass="tablaAdendums"
-                                                     selectionMode="single"
+                                <h5>IMAs por Agencia</h5>
+                                <h:form>
+                                    <p:outputPanel class="imasTablePanel">
+                                        <p:dataTable id="imasTable"
                                                      editable="true"
-                                                     selection="#{tourAdendumsController.selectedAdendum}"
-                                                     rowKey="#{adendum.id}"
-                                                     var="adendum">
-                                            <p:ajax event="rowEdit"
-                                                    listener="#{tourAdendumsController.rowEdit}"
-                                                    update="tablaAdendums growl"/>
-                                            <f:facet name="header">
-                                                Adendums
-                                            </f:facet>
-                                            <p:column headerText="Agencia" styleClass='column80 centerAligned'>
-                                                <h:outputText value="#{adendum.agencia.name}"/>
-                                            </p:column>
-                                            <p:column headerText="Tipo" styleClass='column80 centerAligned'>
-                                                <h:outputText value="#{adendum.promo}"/>
-                                            </p:column>
-                                            <p:column headerText="Zona" styleClass='column50 centerAligned'>
-                                                <h:outputText value="#{adendum.zona}"/>
-                                            </p:column>
-                                            <p:column headerText="Tour">
-                                                <h:outputText value="#{adendum.tour.name}"/>
-                                            </p:column>
-                                            <p:column headerText="Transfer" styleClass='column40 centerAligned'>
-                                                <h:panelGroup rendered="#{adendum.incluyeTransportacion}">
-                                                    <i class="fas fa-check"></i>
-                                                </h:panelGroup>
-                                            </p:column>
-                                            <p:column styleClass='column80 centerAligned'>
-                                                <h:outputText value='#{adendum.tipoVehiculo}'/>
-                                            </p:column>
-                                            <p:column headerText="Buceo" styleClass='column40 centerAligned'>
-                                                <h:panelGroup rendered="#{adendum.buceo}">
-                                                    <i class="fas fa-check"></i>
-                                                </h:panelGroup>
-                                            </p:column>
-                                            <p:column headerText="TP ADULTO" styleClass='column70 centerAligned'>
+                                                     selection="#{iMAController.selectedIMA}"
+                                                     selectionMode="single"
+                                                     rowKey="#{ima.id}"
+                                                     value="#{iMAController.imas}"
+                                                     var="ima">
+                                            <p:ajax event="rowEdit" listener="#{iMAController.rowEdit}" update="imasTable growl"/>
+                                            <p:column headerText="Agencia">
                                                 <p:cellEditor>
                                                     <f:facet name="output">
-                                                        <h:outputText value="#{adendum.precioAdultoUSD}">
+                                                        <h:outputText value="#{ima.agencia.name}"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:autoComplete id="agencia"
+                                                                        required="true"
+                                                                        requiredMessage="Agencia Requerido"
+                                                                        value="#{ima.agencia}"
+                                                                        converter="#{agencyConverter}"
+                                                                        title="Agencia"
+                                                                        var="agenciaItem"
+                                                                        minQueryLength="3"
+                                                                        itemLabel="#{agenciaItem.name}"
+                                                                        itemValue="#{agenciaItem}"
+                                                                        completeMethod="#{agencyListManager.filterAgency}"/>
+                                                    </f:facet>
+                                                </p:cellEditor>
+
+                                            </p:column>
+                                            <p:column headerText="USD Adulto RVM/CZM" styleClass="centerAligned">
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <h:outputText value="#{ima.imaAdultoUSD}">
                                                             <f:convertNumber type="currency"
                                                                              locale="#{localeSelectorManager.locale}"
                                                                              currencySymbol="$"
                                                                              maxFractionDigits="2"
                                                                              minFractionDigits="2"/>
-
                                                         </h:outputText>
                                                     </f:facet>
                                                     <f:facet name="input">
-                                                        <p:inputNumber decimalPlaces="2"
-                                                                       decimalSeparator="."
+                                                        <p:inputNumber decimalPlaces="2" decimalSeparator="."
                                                                        required="true"
                                                                        requiredMessage="Precio Adulto requerido"
                                                                        minValue="0.00"
                                                                        symbol="$"
                                                                        thousandSeparator=","
-                                                                       value="#{adendum.precioAdultoUSD}"/>
+                                                                       value="#{ima.imaAdultoUSD}"/>
                                                     </f:facet>
                                                 </p:cellEditor>
 
                                             </p:column>
-                                            <p:column headerText="TP NIÑO" styleClass='column70 centerAligned'>
+                                            <p:column headerText="USD Niño RVM/CZM" styleClass="centerAligned">
                                                 <p:cellEditor>
                                                     <f:facet name="output">
-                                                        <h:outputText value="#{adendum.precioNinoUSD}">
-                                                            <f:convertNumber type="currency"
-                                                                             locale="#{localeSelectorManager.locale}"
-                                                                             currencySymbol="$"
-                                                                             maxFractionDigits="2"
-                                                                             minFractionDigits="2"/>
-
-                                                        </h:outputText>
-                                                    </f:facet>
-                                                    <f:facet name="input">
-                                                        <p:inputNumber decimalPlaces="2"
-                                                                       decimalSeparator="."
-                                                                       required="true"
-                                                                       requiredMessage="Precio Niño requerido"
-                                                                       minValue="0.00"
-                                                                       symbol="$"
-                                                                       thousandSeparator=","
-                                                                       value="#{adendum.precioNinoUSD}"/>
-                                                    </f:facet>
-                                                </p:cellEditor>
-
-                                            </p:column>
-                                            <p:column headerText="TN ADULTO" styleClass='column70 centerAligned'>
-                                                <h:outputText value="#{adendum.netoAdultoUSD}">
-                                                    <f:convertNumber type="currency"
-                                                                     locale="#{localeSelectorManager.locale}"
-                                                                     currencySymbol="$"
-                                                                     maxFractionDigits="2"
-                                                                     minFractionDigits="2"/>
-
-                                                </h:outputText>
-
-                                            </p:column>
-                                            <p:column headerText="TN NIÑO" styleClass='column70 centerAligned'>
-                                                <h:outputText value="#{adendum.netoNinoUSD}">
-                                                    <f:convertNumber type="currency"
-                                                                     locale="#{localeSelectorManager.locale}"
-                                                                     currencySymbol="$"
-                                                                     maxFractionDigits="2"
-                                                                     minFractionDigits="2"/>
-
-                                                </h:outputText>
-                                            </p:column>
-                                            <p:column headerText="%"  styleClass='column70 centerAligned'>
-                                                <p:cellEditor>
-                                                    <f:facet name="output">
-                                                        <h:outputText value="#{adendum.comisionAdultoUSD}">
-                                                            <f:convertNumber type="percent"
-                                                                             locale="#{localeSelectorManager.locale}"
-                                                                             maxFractionDigits="0"
-                                                                             minFractionDigits="0"/>
-                                                        </h:outputText>
-                                                    </f:facet>
-                                                    <f:facet name="input">
-                                                        <p:inputNumber decimalPlaces="2"
-                                                                       decimalSeparator="."
-                                                                       required="true"
-                                                                       requiredMessage="Porcentaje comision requerido"
-                                                                       minValue="0.00"
-                                                                       thousandSeparator=","
-                                                                       value="#{adendum.comisionAdultoUSD}"/>
-                                                    </f:facet>
-                                                </p:cellEditor>
-
-                                            </p:column>
-                                            <p:column headerText="Impuesto"
-                                                      styleClass='column70 centerAligned'>
-                                                <p:cellEditor>
-                                                    <f:facet name="output">
-                                                        <h:outputText value="#{adendum.impuestoUSD}">
+                                                        <h:outputText value="#{ima.imaNinoUSD}">
                                                             <f:convertNumber type="currency"
                                                                              locale="#{localeSelectorManager.locale}"
                                                                              currencySymbol="$"
@@ -786,63 +825,91 @@
                                                         </h:outputText>
                                                     </f:facet>
                                                     <f:facet name="input">
-                                                        <p:inputNumber decimalPlaces="2"
-                                                                       decimalSeparator="."
+                                                        <p:inputNumber decimalPlaces="2" decimalSeparator="."
                                                                        required="true"
-                                                                       requiredMessage="Impuesto USD"
+                                                                       requiredMessage="Precio Adulto requerido"
                                                                        minValue="0.00"
                                                                        symbol="$"
                                                                        thousandSeparator=","
-                                                                       value="#{adendum.impuestoUSD}"/>
+                                                                       value="#{ima.imaNinoUSD}"/>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+
+
+
+                                            <p:column headerText="USD Adulto CZM" styleClass="centerAligned">
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <h:outputText value="#{ima.imaAdultoCZM}">
+                                                            <f:convertNumber type="currency"
+                                                                             locale="#{localeSelectorManager.locale}"
+                                                                             currencySymbol="$"
+                                                                             maxFractionDigits="2"
+                                                                             minFractionDigits="2"/>
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputNumber decimalPlaces="2" decimalSeparator="."
+                                                                       required="true"
+                                                                       requiredMessage="Precio Adulto requerido"
+                                                                       minValue="0.00"
+                                                                       symbol="$"
+                                                                       thousandSeparator=","
+                                                                       value="#{ima.imaAdultoCZM}"/>
                                                     </f:facet>
                                                 </p:cellEditor>
 
                                             </p:column>
-                                            <p:column styleClass="column30"
-                                                      exportable="false">
+                                            <p:column headerText="USD Niño CZM" styleClass="centerAligned">
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <h:outputText value="#{ima.imaNinoCZM}">
+                                                            <f:convertNumber type="currency"
+                                                                             locale="#{localeSelectorManager.locale}"
+                                                                             currencySymbol="$"
+                                                                             maxFractionDigits="2"
+                                                                             minFractionDigits="2"/>
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputNumber decimalPlaces="2" decimalSeparator="."
+                                                                       required="true"
+                                                                       requiredMessage="Precio Adulto requerido"
+                                                                       minValue="0.00"
+                                                                       symbol="$"
+                                                                       thousandSeparator=","
+                                                                       value="#{ima.imaNinoCZM}"/>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+
+                                            <p:column styleClass="column30 centerAligned">
                                                 <p:rowEditor/>
                                             </p:column>
-                                            <p:column styleClass="column40"
-                                                      rendered="false">
-                                                <p:commandButton icon="fa fa-trash"
-                                                                 immediate="true"
-                                                                 styleClass="optionsButton"
-                                                                 update="@(.tablaAdendumsOutputPanel) growl"
-                                                                 actionListener="#{tourAdendumsController.deleteAdendum(adendum)}">
-                                                    <p:confirm header="Confirmar"
-                                                               message="¿Borrar de base de datos? "
-                                                               icon="fas fa-exclamation-triangle"/>
-                                                </p:commandButton>
-                                            </p:column>
                                         </p:dataTable>
-                                        <p:contextMenu for="tablaAdendums">
+                                        <p:contextMenu for="imasTable">
                                             <p:menuitem value="Delete"
-                                                        update="tablaAdendums growl"
+                                                        update="@(.imasTablePanel) growl"
                                                         icon="fa fa-trash"
-                                                        actionListener="#{tourAdendumsController.deleteSelectedAdendum}">
+                                                        actionListener="#{iMAController.deleteSelectedIMA}">
                                                 <p:confirm header="Confirmar"
                                                            message="¿Borrar de base de datos? "
                                                            icon="fas fa-exclamation-triangle"/>
                                             </p:menuitem>
                                         </p:contextMenu>
-                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                                        </p:confirmDialog>
-                                    </h:form>
+                                    </p:outputPanel>
 
-                                </p:outputPanel>
+                                </h:form>
                             </div>
-                        </p:tab>
 
-                    </p:accordionPanel>
+                        </p:outputPanel>
+                    </p:tab>
+
+                </p:tabView>
+            </div>
 
 
-
-
-
-                </p:tab>
-            </p:tabView>
 
 
         </ui:define>

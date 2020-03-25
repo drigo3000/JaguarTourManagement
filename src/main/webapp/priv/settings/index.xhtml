@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
         <ui:define name="breadcrumbs">
             <h:form>
@@ -17,42 +18,209 @@
             <div class="card">
                 <h5>Editar Preferencias Globales</h5>
                 <h:form>
-                    <p:outputPanel id="inputPanel"></p:outputPanel>
-                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
-                        <p:outputLabel value='Tipo de Cambio' for="tipoDeCambio"/>
-                        <p:inputNumber id='tipoDeCambio' decimalPlaces="2" decimalSeparator="."
-                                       required="true"
-                                       requiredMessage="Tipo de Cambio requerido"
-                                       minValue="0.00"
-                                       symbol="$"
-                                       thousandSeparator=","
-                                       value="#{cucurumbeGlobalController.cg.tipoDeCambio}"/>
-                        <p:inputNumber id='maxJeep'
-                                       decimalPlaces="0"
-                                       decimalSeparator="."
-                                       required="true"
-                                       requiredMessage="Max Jeep requerido"
-                                       minValue="0"
-                                       thousandSeparator=","
-                                       value="#{cucurumbeGlobalController.cg.maxJeep}"/>
-                        <p:inputNumber id='maxBuggy'
-                                       decimalPlaces="0"
-                                       decimalSeparator="."
-                                       required="true"
-                                       requiredMessage="Max Jeep requerido"
-                                       minValue="0"
-                                       thousandSeparator=","
-                                       value="#{cucurumbeGlobalController.cg.maxBuggy}"/>
-                        <p:commandButton value="Guardar"
-                                         icon="ui-icon ui-icon-disk"
-                                         styleClass="defaultButton"
-                                         update='inputPanel growl'
-                                         actionListener="#{cucurumbeGlobalController.save}">
-                            <p:confirm header="Confirmar"
-                                       message="¿Guardar cambios a configuración general? "
-                                       icon="fas fa-exclamation-triangle"/>
-                        </p:commandButton>
-                    </p:panelGrid>
+                    <p:outputPanel styleClass="outputPanel">
+                        <p:fieldset legend="General">
+                            <p:panelGrid columns="2"
+                                         layout="grid"
+                                         columnClasses="labelColumn, inputColumn"
+                                         class='ui-noborder'>
+                                <p:outputLabel value='Nombre de Empresa'/>
+                                <p:inputText id="enterpriseName"
+                                             styleClass="form-control"
+                                             value="#{globalConfigController.cg.enterpriseName}"
+                                             title="EnterpriseName" />
+                                <p:outputLabel value="Nombre empresa corto:"
+                                               for="enterpriseNameShort" />
+                                <p:inputText id="enterpriseNameShort"
+                                             value="#{globalConfigController.cg.enterpriseNameShort}"
+                                             title="Nombre empresa corto" />
+                                <p:outputLabel value="Nombre empresa sufijo:"
+                                               for="enterpriseNameTrail" />
+                                <p:inputText id="enterpriseNameTrail"
+                                             value="#{globalConfigController.cg.enterpriseNameTrail}"
+                                             title="Nombre empresa sufijo" />
+                                <p:outputLabel value='Tipo de Cambio' for="tipoDeCambio"/>
+                                <p:inputNumber id='tipoDeCambio' decimalPlaces="2" decimalSeparator="."
+                                               required="true"
+                                               requiredMessage="Tipo de Cambio requerido"
+                                               minValue="0.00"
+                                               symbol="$"
+                                               thousandSeparator=","
+                                               value="#{globalConfigController.cg.tipoDeCambio}"/>
+                                <p:outputLabel value="Límite de búsqueda web:"
+                                               for="searchLimit" />
+                                <p:inputText id="searchLimit"
+                                             value="#{globalConfigController.cg.searchLimit}"
+                                             title="SearchLimit" />
+                                <p:outputLabel value="Descuento Global:"
+                                               for="globalDiscount" />
+                                <p:inputNumber id="globalDiscount"
+                                               decimalPlaces="2"
+                                               decimalSeparator="."
+                                               thousandSeparator=","
+                                               minValue="0.00"
+                                               symbol="%"
+                                               symbolPosition="s"
+                                               value="#{globalConfigController.cg.globalDiscount}"
+                                               title="GlobalDiscount" />
+                                <p:outputLabel value="Descripción empresa:"
+                                               for="description" />
+                                <p:inputTextarea id="description"
+                                                 rows="5"
+                                                 value="#{globalConfigController.cg.description}"
+                                                 title="Description" />
+                            </p:panelGrid>
+                        </p:fieldset>
+
+                        <p:fieldset legend="Contacto">
+                            <p:panelGrid columns="2"
+                                         layout="grid"
+                                         columnClasses="labelColumn, inputColumn"
+                                         class='ui-noborder'>
+                                <p:outputLabel value="Correo admin:"
+                                               for="adminEmailAccount" />
+                                <p:inputText id="adminEmailAccount"
+                                             value="#{globalConfigController.cg.adminEmailAccount}"
+                                             title="AdminEmailAccount" />
+                                <p:outputLabel value="Correo de contacto:"
+                                               for="contactEmailAccount" />
+                                <p:inputText id="contactEmailAccount"
+                                             value="#{globalConfigController.cg.contactEmailAccount}"
+                                             title="ContactEmailAccount" />
+                                <p:outputLabel value="Teléfono de contacto:"
+                                               for="contactPhone" />
+                                <p:inputText id="contactPhone"
+                                             value="#{globalConfigController.cg.contactPhone}"
+                                             title="ContactPhone" />
+                                <h:panelGroup/>
+                            </p:panelGrid>
+                        </p:fieldset>
+
+                        <p:fieldset legend="Recursos">
+                            <p:panelGrid columns="2"
+                                         layout="grid"
+                                         columnClasses="labelColumn, inputColumn"
+                                         class='ui-noborder'>
+                                <p:outputLabel value="Protocolo:"
+                                               for="protocol" />
+                                <p:inputText id="protocol"
+                                             styleClass="form-control"
+                                             value="#{globalConfigController.cg.http}" title="Protocol" />
+                                <p:outputLabel value="Nombre del servidor:"
+                                               for="serverName" />
+                                <p:inputText id="serverName"
+                                             value="#{globalConfigController.cg.serverName}"
+                                             title="Server Name" />
+                                <p:outputLabel value="Camino a recursos web"
+                                               for="webresources" />
+                                <p:inputText id="webresources"
+                                             value="#{globalConfigController.cg.pathToWebResources}"
+                                             title="web resources" />
+                                <p:outputLabel value="Camino a recursos:"
+                                               for="pathToResources" />
+                                <p:inputText id="pathToResources"
+                                             value="#{globalConfigController.cg.pathToResources}"
+                                             title="PathToResources" />
+                            </p:panelGrid>
+                        </p:fieldset>
+
+                        <p:fieldset legend="Paypal">
+                            <p:panelGrid columns="2"
+                                         layout="grid"
+                                         columnClasses="labelColumn, inputColumn"
+                                         class='ui-noborder'>
+                                <p:outputLabel value="Paypal Sandbox ID:"
+                                               for="paypalSandboxID" />
+                                <p:inputText id="paypalSandboxID"
+                                             styleClass="form-control"
+                                             value="#{globalConfigController.cg.paypalSandboxID}"
+                                             title="PaypalSandboxID" />
+                                <p:outputLabel value="Paypal Sandbox Account:"
+                                               for="paypalSandboxAccount" />
+                                <p:inputText id="paypalSandboxAccount"
+                                             value="#{globalConfigController.cg.paypalSandboxAccount}"
+                                             title="PaypalSandboxAccount" />
+                                <p:outputLabel value="Paypal Live ID:"
+                                               for="paypalLiveID" />
+                                <p:inputText id="paypalLiveID"
+                                             value="#{globalConfigController.cg.paypalLiveID}"
+                                             title="PaypalLiveID" />
+                                <p:outputLabel value="Paypal Live Account:"
+                                               for="paypalLiveAccount" />
+                                <p:inputText id="paypalLiveAccount"
+                                             value="#{globalConfigController.cg.paypalLiveAccount}"
+                                             title="PaypalLiveAccount" />
+                                <p:outputLabel value="Paypal Mode:"
+                                               for="paypalMode" />
+                                <p:selectOneMenu id="paypalMode"
+                                                 value="#{globalConfigController.cg.paypalMode}"
+                                                 title="PaypalMode" >
+                                    <f:selectItem itemLabel="SANDBOX" itemValue="sandbox"/>
+                                    <f:selectItem itemLabel="LIVE" itemValue="production"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                        </p:fieldset>
+
+                        <p:fieldset legend="Redes Sociales">
+                            <p:panelGrid columns="2"
+                                         layout="grid"
+                                         columnClasses="labelColumn, inputColumn"
+                                         class='ui-noborder'>
+                                <p:outputLabel value="Link To Facebook:"
+                                               for="linkToFacebook" />
+                                <p:inputText id="linkToFacebook"
+                                             value="#{globalConfigController.cg.linkToFacebook}"
+                                             title="LinkToFacebook" />
+                                <p:outputLabel value="Link To Instagram:"
+                                               for="linkToInstagram" />
+                                <p:inputText id="linkToInstagram"
+                                             value="#{globalConfigController.cg.linkToInstagram}"
+                                             title="LinkToFacebook" />
+                                <p:outputLabel value="Link To Youtube:"
+                                               for="linkToYoutube" />
+                                <p:inputText id="linkToYoutube"
+                                             value="#{globalConfigController.cg.linkToYoutube}"
+                                             title="LinkToYoutube" />
+                                <p:outputLabel value="Link To Twitter:"
+                                               for="linkToTwitter" />
+                                <p:inputText id="linkToTwitter"
+                                             value="#{globalConfigController.cg.linkToTwitter}"
+                                             title="LinkToTwitter" />
+                            </p:panelGrid>
+                        </p:fieldset>
+
+                        <p:fieldset legend="Rastreo">
+                            <p:panelGrid columns="2"
+                                         layout="grid"
+                                         columnClasses="labelColumn, inputColumn"
+                                         class='ui-noborder'>
+                                <p:outputLabel value="Google Analytics Tracking Code:"
+                                               for="googleAnalyticsTrackingCode" />
+                                <p:inputText id="googleAnalyticsTrackingCode"
+                                             value="#{globalConfigController.cg.googleAnalyticsTrackingCode}"
+                                             title="GoogleAnalyticsTrackingCode" />
+                                <p:outputLabel value="AddThis URL:"
+                                               for="addThisURL" />
+                                <p:inputText id="addThisURL"
+                                             value="#{globalConfigController.cg.addThisURL}"
+                                             title="AddThisURL" />
+                                <h:panelGroup/>
+                                <p:commandButton value="Guardar"
+                                                 icon="ui-icon ui-icon-disk"
+                                                 styleClass="defaultButton"
+                                                 update='@(.outputPanel) growl'
+                                                 actionListener="#{globalConfigController.save}">
+                                    <p:confirm header="Confirmar"
+                                               message="¿Guardar cambios a configuración general? "
+                                               icon="fas fa-exclamation-triangle"/>
+                                </p:commandButton>
+                            </p:panelGrid>
+                        </p:fieldset>
+
+                    </p:outputPanel>
+
+
+
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                         <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
@@ -62,4 +230,3 @@
         </ui:define>
     </ui:composition>
 </html>
-

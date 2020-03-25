@@ -17,78 +17,633 @@
         </ui:define>
         <ui:define name="content">
             <h:form>
+                <p:outputPanel id="contentPanel">
+                    <p:tabView scrollable="true">
+                        <p:tab>
+                            <f:facet name="title">
+                                <i class="fas fa-info-circle"></i>&nbsp;General
+                            </f:facet>
+                            <p:outputPanel styleClass="outputPanel informacionGeneralPanel">
+                                <div class='card'>
+                                    <h5>Información General</h5>
+                                    <p:panelGrid columns="2"
+                                                 columnClasses="labelColumn, inputColumn"
+                                                 layout="grid"
+                                                 class='ui-noborder'>
+                                        <p:outputLabel for="name"
+                                                       value="Nombre"/>
+                                        <p:inputText id="name"
+                                                     required="true"
+                                                     placeholder="Nombre de Tour"
+                                                     maxlength="100"
+                                                     requiredMessage="Campo nombre tour requerido"
+                                                     value="#{tourCreateManager.tour.name}"/>
+                                        <p:outputLabel for="shortDesc"
+                                                       value="Descripción corta"/>
+                                        <p:inputTextarea id="shortDesc"
+                                                         rows="2"
+                                                         maxlength="200"
+                                                         required="true"
+                                                         placeholder="Descripción que aparecerá en la búsqueda de tours"
+                                                         requiredMessage="Campo descripción corta requerido"
+                                                         value="#{tourCreateManager.tour.shortdescription}"/>
+                                        <p:outputLabel for="description"
+                                                       value="Descripción"/>
+                                        <p:inputTextarea id="description"
+                                                         rows="5"
+                                                         maxlength="490"
+                                                         placeholder="Descripción larga que aparecerá en la vista completa del tour"
+                                                         required="true"
+                                                         requiredMessage="Campo descripción larga requerido"
+                                                         value="#{tourCreateManager.tour.description}"/>
+                                        <p:outputLabel for="grupo"
+                                                       value="Nombre"/>
+                                        <p:inputText id="grupo"
+                                                     required="true"
+                                                     placeholder="Grupo"
+                                                     maxlength="100"
+                                                     requiredMessage="Campo grupo tour requerido"
+                                                     value="#{tourCreateManager.tour.grupo}"/>
+                                        <p:outputLabel for="inicialesConfirma"
+                                                       value="Iniciales Confirma"/>
+                                        <p:inputText id="inicialesConfirma"
+                                                     required="true"
+                                                     placeholder="Iniciales Confirma"
+                                                     maxlength="100"
+                                                     requiredMessage="Campo iniciales confirma requerido"
+                                                     value="#{tourCreateManager.tour.inicialesConfirma}"/>
+                                        <p:outputLabel for="active"
+                                                       value="Activo"/>
+                                        <p:selectBooleanButton id="active"
+                                                               onLabel="Si"
+                                                               offLabel="No"
+                                                               styleClass='defaultButton'
+                                                               value="#{tourCreateManager.tour.active}">
+                                            <p:ajax process="@this"/>
+                                        </p:selectBooleanButton>
+                                        <p:outputLabel for="topTour"
+                                                       styleClass="control-label col-sm-4"
+                                                       value="Top Tour"/>
+                                        <p:selectBooleanButton id="topTour"
+                                                               onLabel="Si"
+                                                               offLabel="No"
+                                                               styleClass='defaultButton'
+                                                               value="#{tourCreateManager.tour.topTour}"/>
+                                        <p:outputLabel for="providerSelect"
+                                                       value="Proveedor"/>
+                                        <p:inputText id='providerSelect'/>
+                                    </p:panelGrid>
+                                </div>
+                            </p:outputPanel>
 
-                <p:outputPanel id='generalInputPanel'>
-                    <div class="card">
-                        <h5>Registro Servicio</h5>
-                        <p:fieldset legend="Información General">
-                            <p:panelGrid columns="1"
-                                         layout='grid'
-                                         styleClass="fullwidth ui-noborder">
-                                <p:outputLabel for="name" value="Nombre:"/>
-                                <p:inputText id="name"
-                                             required="true"
-                                             validator="#{tourNameValidator.validateAdd}"
-                                             requiredMessage="Nombre requerido"
-                                             value="#{tourCreateManager.tour.name}" />
-                                <p:outputLabel for="grupo" value="Grupo:"/>
-                                <p:inputText id="grupo"
-                                             required="true"
-                                             requiredMessage="Campo Grupo Requerido"
-                                             value="#{tourCreateManager.tour.grupo}" />
-                                <p:outputLabel for="iniciales" value="Iniciales Confirma:"/>
-                                <p:inputText id="iniciales"
-                                             required="true"
-                                             validator="#{tourInitialsValidator.validateInicialesAdd}"
-                                             requiredMessage="Iniciales campo requerido"
-                                             value="#{tourCreateManager.tour.inicialesConfirma}" />
-                                <p:outputLabel for="description" value="Description"/>
-                                <p:editor id="description"
-                                          required="false"
-                                          requiredMessage="Description field required"
-                                          value="#{tourCreateManager.tour.description}" />
-                                <p:outputLabel for="manejaVehiculo" value="Maneja Vehiculo"/>
-                                <p:selectBooleanButton id="manejaVehiculo"
-                                                       styleClass='defaultButton'
-                                                       offLabel="No" onLabel="Si"
-                                                       value='#{tourCreateManager.tour.manejaVehiculo}'/>
-                                <p:outputLabel for="buceo" value="Buceo"/>
-                                <p:selectBooleanButton id="buceo"
-                                                       styleClass='defaultButton'
-                                                       offLabel="No" onLabel="Si"
-                                                       value='#{tourCreateManager.tour.buceo}'/>
-                            </p:panelGrid>
-                        </p:fieldset>
-                        <p:fieldset legend="Costos">
-                            <p:panelGrid columns="4" layout="grid" class="ui-noborder">
-                                <p:outputLabel for="costoUnitarioAdulto" value="Costo Unitario Adulto RVM/CUN"/>
-                                <p:inputText id='costoUnitarioAdulto' value="#{tourCreateManager.tour.costoUnitarioAdulto}"/>
-                                <p:outputLabel for="costoUnitarioNino" value="Costo Unitario Niño  RVM/CUN"/>
-                                <p:inputText id='costoUnitarioNino' value="#{tourCreateManager.tour.costoUnitarioNino}"/>
-                                <p:outputLabel for="costoUnitarioAdultoCZM" value="Costo Unitario Adulto CZM"/>
-                                <p:inputText id='costoUnitarioAdultoCZM' value="#{tourCreateManager.tour.costoUnitarioAdultoCZM}"/>
-                                <p:outputLabel for="costoUnitarioNinoCZM" value="Costo Unitario Niño  CZM"/>
-                                <p:inputText id='costoUnitarioNinoCZM' value="#{tourCreateManager.tour.costoUnitarioNinoCZM}"/>
-                            </p:panelGrid>
-                        </p:fieldset>
-                        <div class='text-right'>
-                            <p:commandButton id="saveButton"
-                                             styleClass="defaultButton verifyButton"
-                                             actionListener="#{tourCreateManager.create()}"
-                                             icon="ui-icon ui-icon-disk"
-                                             value="Guardar" update="generalInputPanel growl">
-                                <p:confirm header="Confirmar"
-                                           message="¿Agregar a base de datos? "
-                                           icon="fas fa-exclamation-triangle"/>
-                            </p:commandButton>
-                        </div>
-                    </div>
+
+                        </p:tab>
+                        <p:tab>
+                            <f:facet name="title">
+                                <i class="fas fa-dollar-sign"></i>&nbsp;Precios
+                            </f:facet>
+                            <p:outputPanel styleClass="outputPanel preciosPanel">
+                                <div class='card'>
+                                    <h5>Precios</h5>
+                                    <p:fieldset legend="General">
+                                        <p:panelGrid columns="2"
+                                                     columnClasses="labelColumn, inputColumn"
+                                                     class='ui-noborder'
+                                                     layout="grid">
+                                            <p:outputLabel for="adultprice"
+                                                           value="Precio Adulto"/>
+                                            <p:inputNumber id="adultprice"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           decimalPlaces="2"
+                                                           required="true"
+                                                           placeholder="Precio Adulto"
+                                                           requiredMessage="Campo precio adulto requerido"
+                                                           emptyValue="$"
+                                                           symbol="$"
+                                                           value="#{tourCreateManager.tour.adultPrice}"
+                                                           minValue="0">
+                                                <p:ajax process="@this"/>
+                                            </p:inputNumber>
+                                            <p:outputLabel for="childprice"
+                                                           value="Precio Niño"/>
+                                            <p:inputNumber id="childprice"
+                                                           decimalPlaces="2"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           required="true"
+                                                           placeholder="Precio Niño"
+                                                           requiredMessage="Campo precio niño requerido"
+                                                           emptyValue="$"
+                                                           symbol="$"
+                                                           value="#{tourCreateManager.tour.childPrice}"
+                                                           minValue="0"/>
+                                            <p:outputLabel for="childDescription"
+                                                           value="Descripción niño"/>
+                                            <p:inputText id="childDescription"
+                                                         required="true"
+
+                                                         placeholder="Describe lo que es un niño"
+                                                         requiredMessage="Campo descripción niño"
+                                                         value="#{tourCreateManager.tour.childrenDescription}"/>
+                                            <p:outputLabel for="infantprice"
+                                                           value="Precio Infante"/>
+                                            <p:inputNumber id="infantprice"
+                                                           decimalPlaces="2"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           required="true"
+                                                           emptyValue="$"
+                                                           symbol="$"
+                                                           placeholder="Precio infante"
+                                                           requiredMessage="Campo precio infante requerido"
+                                                           value="#{tourCreateManager.tour.infantPrice}"
+                                                           minValue="0"/>
+                                            <p:outputLabel for="infantDescription"
+                                                           value="Descripción Infante"/>
+                                            <p:inputText id="infantDescription"
+                                                         required="true"
+
+                                                         placeholder="Descripción de infante"
+                                                         requiredMessage="Campo descripción de infante requerido"
+                                                         value="#{tourCreateManager.tour.infantsDescription}"/>
+                                            <p:outputLabel for="transfer"
+                                                           value="Transportación Incluida"/>
+                                            <p:selectBooleanButton id="transfer"
+                                                                   styleClass="defaultButton"
+                                                                   onLabel="Si"
+                                                                   offLabel="No"
+                                                                   value="#{tourCreateManager.tour.isTransportationIncluded}"/>
+                                            <p:outputLabel for="transfernotes"
+                                                           value="Notas de transportación"/>
+                                            <p:inputTextarea id="transfernotes"
+                                                             maxlength="300"
+                                                             rows="5"
+                                                             required="false"
+                                                             requiredMessage="Campo notas transportación requires"
+                                                             placeholder="Notas importantes de la transportación"
+                                                             value="#{tourCreateManager.tour.transportationNotes}"/>
+                                            <p:outputLabel for="childrenAllowed"
+                                                           value="Niños pueden hacer actividad?"/>
+                                            <p:selectBooleanButton id="childrenAllowed"
+                                                                   onLabel="Si"
+                                                                   styleClass='defaultButton'
+                                                                   offLabel="No"
+                                                                   value="#{tourCreateManager.tour.childrenAllowed}"/>
+                                            <p:outputLabel for="infantsAllowed"
+                                                           value="Infantes pueden hacer la actividad?"/>
+                                            <p:selectBooleanButton id="infantsAllowed"
+                                                                   styleClass='defaultButton'
+                                                                   onLabel="Si"
+                                                                   offLabel="No"
+                                                                   value="#{tourCreateManager.tour.infantsAllowed}"/>
+                                        </p:panelGrid>
+                                    </p:fieldset>
+
+
+                                    <p:fieldset legend="Operación">
+                                        <p:panelGrid columns="2"
+                                                     columnClasses="labelColumn, inputColumn"
+                                                     layout="grid"
+                                                     class='ui-noborder'>
+                                            <p:outputLabel for="publicDiscount"
+                                                           value="Descuento al público"/>
+                                            <p:inputNumber id="publicDiscount"
+                                                           decimalPlaces="2"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           required="true"
+                                                           emptyValue="%"
+                                                           symbolPosition="s"
+                                                           symbol="%"
+                                                           value="#{tourCreateManager.tour.publicDiscount}"
+                                                           minValue="0"/>
+                                            <p:outputLabel for="operationalprice"
+                                                           value="Costo operacion adulto"/>
+                                            <p:inputNumber id="operationalprice"
+                                                           decimalPlaces="2"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           required="true"
+                                                           emptyValue="$"
+                                                           symbol="$"
+                                                           value="#{tourCreateManager.tour.operationalCost}"
+                                                           minValue="0"/>
+                                            <p:outputLabel for="minSalePrice"
+                                                           value="Precio mínimo a la venta adulto"/>
+                                            <p:inputNumber id="minSalePrice"
+                                                           decimalPlaces="2"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           required="true"
+                                                           emptyValue="$"
+                                                           symbol="$"
+                                                           value="#{tourCreateManager.tour.minSalePrice}"
+                                                           minValue="0"/>
+                                            <p:outputLabel for="operationalpriceChild"
+                                                           value="Costo operación niño"/>
+                                            <p:inputNumber id="operationalpriceChild"
+                                                           decimalPlaces="2"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           required="true"
+                                                           emptyValue="$"
+                                                           symbol="$"
+                                                           value="#{tourCreateManager.tour.operationalCostChild}"
+                                                           minValue="0"/>
+                                            <p:outputLabel for="minSalePriceChild"
+                                                           value="Precio mínimo venta niño"/>
+                                            <p:inputNumber id="minSalePriceChild"
+                                                           decimalPlaces="2"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           required="true"
+                                                           emptyValue="$"
+                                                           symbol="$"
+                                                           value="#{tourCreateManager.tour.minSalePriceChild}"
+                                                           minValue="0"/>
+                                            <p:outputLabel for="operationalpriceInfant"
+                                                           value="Costo operación infante"/>
+                                            <p:inputNumber id="operationalpriceInfant"
+                                                           decimalPlaces="2"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           required="true"
+                                                           emptyValue="$"
+                                                           symbol="$"
+                                                           value="#{tourCreateManager.tour.operationalCostInfant}"
+                                                           minValue="0"/>
+                                            <p:outputLabel for="minSalePriceInfant"
+                                                           value="Precio mínimo venta infante"/>
+                                            <p:inputNumber id="minSalePriceInfant"
+                                                           decimalPlaces="2"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           required="true"
+                                                           emptyValue="$"
+                                                           symbol="$"
+                                                           value="#{tourCreateManager.tour.minSalePriceInfant}"
+                                                           minValue="0"/>
+                                        </p:panelGrid>
+                                    </p:fieldset>
+                                    <p:fieldset legend="Representantes">
+                                        <p:panelGrid columnClasses="labelColumn, inputColumn"
+                                                     class='ui-noborder'
+                                                     layout="grid"
+                                                     columns='2'>
+                                            <p:outputLabel for="maxDiscount"
+                                                           value="Descuento máximo"/>
+                                            <p:inputNumber id="maxDiscount"
+                                                           decimalPlaces="2"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           required="true"
+                                                           emptyValue="%"
+                                                           symbolPosition="s"
+                                                           symbol="%"
+                                                           value="#{tourCreateManager.tour.maxDiscountAllowed}"
+                                                           minValue="0"/>
+                                            <p:outputLabel for="repCommission"
+                                                           value="Comisión representante"/>
+                                            <p:inputNumber id="repCommission"
+                                                           decimalPlaces="2"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           required="true"
+                                                           emptyValue="%"
+                                                           symbolPosition="s"
+                                                           symbol="%"
+                                                           value="#{tourCreateManager.tour.repCommissionFullPrice}"
+                                                           minValue="0"/>
+                                            <p:outputLabel for="repCommissionDiscount"
+                                                           value="Comisión representante con descuento"/>
+                                            <p:inputNumber id="repCommissionDiscount"
+                                                           decimalPlaces="2"
+                                                           decimalSeparator="."
+                                                           thousandSeparator=","
+                                                           required="true"
+                                                           emptyValue="%"
+                                                           symbolPosition="s"
+                                                           symbol="%"
+                                                           value="#{tourCreateManager.tour.repCommissionDiscount}"
+                                                           minValue="0"/>
+                                        </p:panelGrid>
+
+                                    </p:fieldset>
+                                </div>
+                            </p:outputPanel>
+
+
+
+                        </p:tab>
+                        <p:tab>
+                            <f:facet name="title">
+                                <i class="fas fa-file-alt"></i>&nbsp;Detalles
+                            </f:facet>
+                            <p:outputPanel styleClass="outputPanel detallesPanel">
+                                <div class='card'>
+                                    <h5>Detalles</h5>
+                                    <p:panelGrid columns="2"
+                                                 columnClasses="labelColumn, inputColumn"
+                                                 layout="grid"
+                                                 class='ui-noborder'>
+                                        <p:outputLabel for="itinerary"
+                                                       value="Itinerario"/>
+                                        <p:inputTextarea id="itinerary"
+                                                         rows="5"
+                                                         maxlength="490"
+                                                         placeholder="Itinerario tour"
+                                                         required="false"
+                                                         requiredMessage="Campo itinerario requerido"
+                                                         value="#{tourCreateManager.tour.itinerary}"/>
+                                        <p:outputLabel for="includes"
+                                                       value="Qué incluye"/>
+                                        <p:inputTextarea id="includes"
+                                                         rows="5"
+                                                         placeholder="Lo que incluye el tour"
+                                                         maxlength="490"
+                                                         required="false"
+                                                         requiredMessage="Campo incluye requerido"
+                                                         value="#{tourCreateManager.tour.includes}" />
+                                        <p:outputLabel for="excludes"
+                                                       value="Excluye"/>
+                                        <p:inputTextarea id="excludes"
+                                                         rows="5"
+                                                         placeholder="Excluye"
+                                                         maxlength="490"
+                                                         required="false"
+                                                         requiredMessage="Campo excluye requerido"
+                                                         value="#{tourCreateManager.tour.excludes}"/>
+                                        <p:outputLabel for="recommendations"
+                                                       value="Recomendaciones"/>
+                                        <p:inputTextarea id="recommendations"
+                                                         rows="5"
+                                                         placeholder="Recomendaciones para el tour"
+                                                         required="false"
+                                                         maxlength="490"
+                                                         requiredMessage="Campo recomendaciones requerido"
+                                                         value="#{tourCreateManager.tour.recommendations}"/>
+                                        <p:outputLabel for="regulations"
+                                                       value="Regulaciones"/>
+                                        <p:inputTextarea id="regulations"
+                                                         rows="5"
+                                                         placeholder="Regulaciones"
+                                                         maxlength="490"
+                                                         required="false"
+                                                         requiredMessage="Campo regulaciones requerido"
+                                                         value="#{tourCreateManager.tour.regulations}"/>
+                                        <p:outputLabel id="restrictionsLabel" for="restrictions"
+                                                       value="Restricciones"/>
+                                        <p:inputTextarea id="restrictions"
+                                                         rows="5"
+                                                         placeholder="Restricciones"
+                                                         required="false"
+                                                         maxlength="490"
+                                                         requiredMessage="Campo restricciones"
+                                                         value="#{tourCreateManager.tour.restrictions}" />
+                                    </p:panelGrid>
+                                </div>
+                            </p:outputPanel>
+                        </p:tab>
+                        <p:tab>
+                            <f:facet name="title">
+                                <i class="fas fa-language"></i>&nbsp;Lenguaje
+                            </f:facet>
+                            <p:outputPanel styleClass='outputPanel lenguajePanel'>
+                                <div class='card'>
+                                    <h5>Lenguaje</h5>
+                                    <p:panelGrid columns="2"
+                                                 columnClasses="labelColumn, inputColumn"
+                                                 layout="grid"
+                                                 class='ui-noborder'>
+                                        <p:outputLabel for="descriptionLangSelect"
+                                                       value="Lenguaje de la descripción del tour"/>
+                                        <p:selectOneMenu id="descriptionLangSelect"
+                                                         value="#{tourCreateManager.tour.descriptionLang}"
+                                                         required="true"
+                                                         requiredMessage="Campo lenguaje descripción requerido"
+                                                         >
+                                            <f:selectItem itemLabel="Seleccionar uno..." itemValue="#{null}"/>
+                                            <f:selectItems value="#{localeSelectorManager.availableLanguages}"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="langSelect"
+                                                       value="Lenguaje en que se opera el tour"/>
+                                        <p:selectOneMenu id="langSelect"
+                                                         value="#{tourCreateManager.tour.lang}"
+                                                         required="true"
+                                                         requiredMessage="Campo lenguaje del tour requerido"
+                                                         >
+                                            <f:selectItem itemLabel="Seleccionar una opción..." itemValue="#{null}"/>
+                                            <f:selectItems value="#{localeSelectorManager.availableLanguages}"/>
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="latitude"
+                                                       value="Latitud"/>
+                                        <p:inputText id="latitude"
+                                                     value="#{tourCreateManager.tour.latitude}"
+                                                     required="false"
+                                                     placeholder="Latitud"
+                                                     requiredMessage="Campo latitud requerido"/>
+                                        <p:outputLabel for="longitude"
+                                                       value="Longitud"/>
+                                        <p:inputText id="longitude"
+                                                     value="#{tourCreateManager.tour.longitude}"
+                                                     placeholder="Longitud"
+                                                     requiredMessage="Campo logitud requerido"
+                                                     required="false"/>
+                                    </p:panelGrid>
+                                </div>
+                            </p:outputPanel>
+
+
+
+                        </p:tab>
+                        <p:tab>
+                            <f:facet name="title">
+                                <i class="fas fa-search"></i>&nbsp;Búsqueda
+                            </f:facet>
+                            <p:outputPanel styleClass="outputPanel busquedaPanel">
+                                <div class='card'>
+                                    <h5>Opciones de Búsqueda</h5>
+                                    <p:panelGrid columns="2"
+                                                 columnClasses="labelColumn, inputColumn"
+                                                 layout="grid"
+                                                 class='ui-noborder'>
+                                        <p:outputLabel for="tourScale"
+                                                       value="Escala"/>
+                                        <p:inputText id="tourScale"
+                                                     value="#{tourCreateManager.tour.tourScale}"
+                                                     required="true"/>
+                                        <p:outputLabel for="keywords"
+                                                       value="Palabras clave"/>
+                                        <p:inputTextarea id="keywords"
+                                                         rows="5"
+                                                         maxlength="490"
+                                                         required="false"
+                                                         placeholder="Palabras para la búsqueda"
+                                                         requiredMessage="Campo palabras clave requerido"
+                                                         value="#{tourCreateManager.tour.searchKeywords}"/>
+                                    </p:panelGrid>
+                                    <p:fieldset legend="Clasificación">
+                                        <p:panelGrid columns="4"
+                                                     layout="grid"
+                                                     class='ui-noborder'>
+                                            <p:outputLabel value="Acuático"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.aquatic}'/>
+                                            <p:outputLabel value="Cultural"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.cultural}'/>
+                                            <p:outputLabel value="Arquelógico"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.archeological}'/>
+                                            <p:outputLabel value="Cenotes"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.underground}'/>
+                                            <p:outputLabel value="Vida de noche"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.night}'/>
+                                            <p:outputLabel value="Aventura"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.adventure}'/>
+                                            <p:outputLabel value="City Tour"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.cityTour}'/>
+                                            <p:outputLabel value="Gastronomía"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.gastronomy}'/>
+                                            <p:outputLabel value="Golf"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.golf}'/>
+                                            <p:outputLabel value="Nado con Delfines"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.dolphinSwim}'/>
+                                            <p:outputLabel value="Otras Actividades"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.otherActivities}'/>
+                                            <p:outputLabel value="Parques"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.park}'/>
+                                            <p:outputLabel value="Botes"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.boat}'/>
+                                            <p:outputLabel value="Pesca"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.fishing}'/>
+                                            <p:outputLabel value="Fauna"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.animalTour}'/>
+                                            <p:outputLabel value="Buceo"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.scuba}'/>
+                                            <p:outputLabel value="Snorkel"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.snorkel}'/>
+                                            <p:outputLabel value="ATVs"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.atvs}'/>
+                                            <p:outputLabel value="Paquete"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.packageTour}'/>
+                                            <p:outputLabel value="Cancun"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.cancun}'/>
+                                            <p:outputLabel value="Cozumel"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.cozumel}'/>
+                                            <p:outputLabel value="Isla Mujeres"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.islaMujeres}'/>
+                                            <p:outputLabel value="Yucatan"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.yucatan}'/>
+                                            <p:outputLabel value="Matutino"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.morning}'/>
+                                            <p:outputLabel value="Vespertino"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.afternoon}'/>
+                                            <p:outputLabel value="Dia Completo"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.fullday}'/>
+                                            <p:outputLabel value="Medio Día"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.halfday}'/>
+                                        </p:panelGrid>
+                                    </p:fieldset>
+                                    <p:fieldset legend="Días de Operación">
+                                        <p:panelGrid columns="4"
+                                                     layout="grid"
+                                                     class='ui-noborder'>
+                                            <p:outputLabel value="Lunes"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.monday}'/>
+                                            <p:outputLabel value="Martes"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.tuesday}'/>
+                                            <p:outputLabel value="Miércoles"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.wednesday}'/>
+                                            <p:outputLabel value="Jueves"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.thursday}'/>
+                                            <p:outputLabel value="Viernes"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.friday}'/>
+                                            <p:outputLabel value="Sábado"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.saturday}'/>
+                                            <p:outputLabel value="Domingo"/>
+                                            <p:selectBooleanCheckbox value='#{tourCreateManager.tour.sunday}'/>
+                                        </p:panelGrid>
+                                    </p:fieldset>
+                                </div>
+                            </p:outputPanel>
+
+                        </p:tab>
+                        <p:tab>
+                            <f:facet name="title">
+                                <i class="fas fa-camera"></i>&nbsp;Galería
+                            </f:facet>
+                            <p:outputPanel styleClass="outputPanel">
+                                <div class="card">
+                                    <h5>Galería de Fotos</h5>
+                                    <p:panelGrid columnClasses="labelColumn, inputColumn"
+                                                 class="ui-noborder"
+                                                 layout="grid"
+                                                 columns="2">
+                                        <p:outputLabel value="Agregar Foto"/>
+                                        <h:panelGroup>
+                                            <p:fileUpload id="fileUploader"
+                                                          auto="true"
+                                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                          multiple="true"
+                                                          fileUploadListener="#{photoFileUploadController.upload}"
+                                                          update="photosTable"
+                                                          value="Subir Foto"
+                                                          mode="advanced">
+                                            </p:fileUpload>
+                                            <p:dataTable id="photosTable"
+                                                         value='#{photoFileUploadController.uploadedFiles}'
+                                                         var='file'>
+                                                <f:facet name="header">
+                                                    Fotos en galería
+                                                </f:facet>
+                                                <p:column>
+                                                    <h:outputText value='#{file.fileName}'/>
+                                                </p:column>
+                                                <p:column styleClass='column80'>
+                                                    <h:outputText value='#{file.size}'/>
+                                                </p:column>
+                                                <p:column styleClass='column40'>
+                                                    <p:commandButton icon='fa fa-trash'
+                                                                     actionListener="#{photoFileUploadController.remove(file)}"
+                                                                     update="photosTable">
+                                                        <p:confirm header="Remover Foto" message="Remover Foto?"/>
+                                                    </p:commandButton>
+                                                </p:column>
+                                                <f:facet name='footer'>
+                                                    <p:commandButton icon='fa fa-trash'
+                                                                     styleClass='defaultButton'
+                                                                     rendered='#{not empty photoFileUploadController.uploadedFiles}'
+                                                                     value='Remover todas'
+                                                                     actionListener="#{photoFileUploadController.reset()}"
+                                                                     update="photosTable"/>
+                                                </f:facet>
+                                            </p:dataTable>
+                                        </h:panelGroup>
+
+                                    </p:panelGrid>
+                                </div>
+                            </p:outputPanel>
+
+                        </p:tab>
+                    </p:tabView>
                 </p:outputPanel>
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                </p:confirmDialog>
+                <div class='card'>
+                    <h5>Opciones</h5>
+                    <p:commandButton styleClass='defaultButton'
+                                     value='Guardar'
+                                     icon='fa fa-save'
+                                     actionListener="#{tourCreateManager.create}"
+                                     update="@(.outputPanel) growl">
+                        <p:confirm header="Create new" message="Create new tour?"/>
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+
+                </div>
             </h:form>
+
+
         </ui:define>
     </ui:composition>
 </html>

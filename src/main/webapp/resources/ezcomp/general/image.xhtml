@@ -6,12 +6,16 @@
 
     <!-- INTERFACE -->
     <cc:interface>
-        <cc:attribute name="link" type="java.lang.String" required="true"/>
         <cc:attribute name="styleClass" type="java.lang.String" required="false"/>
+        <cc:attribute name="alt" type="java.lang.String" required="true"/>
+        <cc:attribute name="url" type="java.lang.String" required="false"/>
     </cc:interface>
 
     <!-- IMPLEMENTATION -->
     <cc:implementation>
-        <p:graphicImage value="https://#{request.serverName}/#{cc.attrs.link}" styleClass="#{cc.attrs.styleClass}"/>
+        <p:graphicImage styleClass="#{cc.attrs.styleClass}"
+                        alt="#{cc.attrs.alt}"
+                        value="#{globalConfigController.cg.http}://#{globalConfigController.cg.serverName}/#{globalConfigController.cg.pathToWebResources}/#{cc.attrs.url}"/>
+
     </cc:implementation>
 </html>
