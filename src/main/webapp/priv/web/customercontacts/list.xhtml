@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:general="http://xmlns.jcp.org/jsf/composite/ezcomp/general"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/WEB-INF/includes/morpheus/template_search.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="JTM" outcome="/priv/index" />
+                    <p:menuitem value="Contacto cliente" outcome="/priv/web/customercontacts/list" />
+                    <p:menuitem value="Filtro" outcome="/priv/web/customercontacts/list"/>
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="searchform">
+            <p:panel header="Búsqueda">
+                <p:panelGrid columns="1" layout="grid"
+                             styleClass="ui-panelgrid-blank grid-pad"
+                             style="margin-top:10px">
+                    <p:outputLabel value="De"/>
+                    <general:localDateSelect value="#{customerContactListController.from}"/>
+                    <p:outputLabel value="Hasta"/>
+                    <general:localDateSelect value="#{customerContactListController.to}"/>
+                    <p:commandButton icon="fa fa-search"
+                                     styleClass='defaultButton'
+                                     actionListener="#{customerContactListController.search}"
+                                     update="dataTableOutputPanel growl"
+                                     value="Buscar"/>
+                </p:panelGrid>
+            </p:panel>
+        </ui:define>
+        <ui:define name="searchresults">
+            <p:outputPanel id="dataTableOutputPanel">
+                <div class='card'>
+                    <h5>Resultados de Búsqueda</h5>
+                    <p:dataTable value="#{customerContactListController.contactos}"
+                                 var="item" reflow="true">
+                        <p:column headerText="Fecha" styleClass='column120 centerAligned'>
+                            <h:outputText value="#{item.localDateCreated.dayOfMonth}"/>/<h:outputText value="#{item.localDateCreated.monthValue}"/>/<h:outputText value="#{item.localDateCreated.year}"/>&nbsp;&nbsp;
+                            <h:outputText value="#{item.localDateCreated.hour}"/>:<h:outputText rendered="#{item.localDateCreated.minute lt 10}" value="0"/><h:outputText value="#{item.localDateCreated.minute}"/>
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+                        <p:column headerText="Razón">
+                            <h:outputText value="#{item.subject}"/>
+                        </p:column>
+                        <p:column headerText="Email">
+                            <h:outputText value="#{item.email}"/>
+                        </p:column>
+                        <p:column headerText="Mensaje">
+                            <h:outputText value="#{item.description}"/>
+                        </p:column>
+                        <p:column exportable="false" styleClass="singleOptionColumn">
+                            <p:link outcome="edit"
+                                    styleClass="ui-button ui-widget ui-state-default ui-corner-all cucuButton" >
+                                <i class="fa fa-mouse-pointer"></i><f:param name="id" value="#{item.id}"/>
+                            </p:link>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+
+            </p:outputPanel>
+        </ui:define>
+
+    </ui:composition>
+</html>
+

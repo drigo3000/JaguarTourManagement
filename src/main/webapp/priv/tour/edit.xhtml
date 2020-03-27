@@ -10,7 +10,7 @@
         <ui:define name="breadcrumbs">
             <h:form>
                 <p:breadCrumb>
-                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="JTM" outcome="/priv/index" />
                     <p:menuitem value="Servicios" outcome="/priv/tour/list" />
                     <p:menuitem value="Filtro" outcome="/priv/tour/list" />
                 </p:breadCrumb>
@@ -575,6 +575,26 @@
                                     <i class="fas fa-camera"></i>&nbsp;Galería
                                 </f:facet>
                                 <p:outputPanel styleClass="outputPanel">
+                                    <div class='card'>
+                                        <h5>Foto de Búsqueda</h5>
+                                        <p:panelGrid columnClasses="labelColumn, inputColumn"
+                                                     class="ui-noborder"
+                                                     layout="grid"
+                                                     columns="2">
+                                            <p:outputLabel value='Seleccionar Foto'/>
+                                            <p:fileUpload id="searchPhotoUploader"
+                                                          auto="true"
+                                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                          multiple="true"
+                                                          fileUploadListener="#{photoFileUploadController.uploadSingle}"
+                                                          update="searchPhotoFileName"
+                                                          value="Subir Foto"
+                                                          mode="advanced">
+                                            </p:fileUpload>
+                                            <h:panelGroup/>
+                                            <h:outputText id='searchPhotoFileName' value='#{photoFileUploadController.file.fileName}'/>
+                                        </p:panelGrid>
+                                    </div>
                                     <div class="card">
                                         <h5>Galería de Fotos</h5>
                                         <p:panelGrid columnClasses="labelColumn, inputColumn"

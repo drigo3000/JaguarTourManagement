@@ -1,0 +1,293 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ph="http://xmlns.jcp.org/jsf/composite/ezcomp/photos"
+      xmlns:g="http://xmlns.jcp.org/jsf/composite/ezcomp/general"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/WEB-INF/includes/templates/public_template.xhtml">
+        <ui:define name="title">Tour - #{tourEditManager.tour.name} - #{globalConfigController.cg.enterpriseName} - #{msgs['book']}, #{msgs['tour']} #{msgs['price']}, #{msgs['reserve']}</ui:define>
+        <ui:define name="meta-description">
+            <meta name="description" content="#{tourEditManager.tour.name} - #{tourEditManager.tour.shortdescription} - #{msgs['seotitledescription']} - #{globalConfigController.cg.enterpriseName}">
+            </meta></ui:define>
+        <ui:define name="head-scripts">
+            <script src="https://maps.google.com/maps/api/js?key=AIzaSyCpuWzl8dWUWWte5S-LhVfYCwTO_wNYF3o" type="text/javascript"></script>
+        </ui:define>
+        <ui:define name="open-graph">
+            <meta property="og:url"                content="#{globalConfigController.cg.http}://#{globalConfigController.cg.serverName}/view?id=#{tourEditManager.tour.id}" />
+            <meta property="og:type"               content="product" />
+            <meta property="og:title"              content="#{tourEditManager.tour.name} - #{globalConfigController.cg.enterpriseName}" />
+            <meta property="og:description"        content="#{tourEditManager.tour.shortdescription}" />
+            <meta property="og:image"              content="#{globalConfigController.cg.http}://#{globalConfigController.cg.serverName}/#{globalConfigController.cg.pathToWebResources}/imgs/tours/#{tourEditManager.tour.id}/hd_search_#{tourEditManager.tour.searchPhoto}"/>
+        </ui:define>
+        <ui:define name="center_content">
+            <article itemscope="itemscope" itemtype="http://schema.org/Product">
+                <div class="container">
+                    <meta itemprop="name" content="#{tourEditManager.tour.name}"/>
+                    <meta itemprop="brand" content="#{tourEditManager.tour.provider.name}"/>
+                    <meta itemprop="sku" content="#{tourEditManager.tour.id}"/>
+                    <meta itemprop="mpn" content="#{tourEditManager.tour.id}"/>
+                    <meta itemprop="description" content="#{tourEditManager.tour.shortdescription}"/>
+                    <meta itemprop="image" content="#{globalConfigController.cg.http}://#{globalConfigController.cg.serverName}/#{globalConfigController.cg.pathToWebResources}/imgs/tours/#{tourEditManager.tour.id}/hd_search_#{tourEditManager.tour.searchPhoto}"/>
+                    <g:mainTitleCard title="#{tourEditManager.tour.name}" type="card-info" icon="fas fa-binoculars"/>
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <div class="card">
+                                <g:image styleClass="searchPhoto"
+                                         alt="book excursion #{tourEditManager.tour.name} #{tourEditManager.tour.shortdescription}"
+                                         url="tours/hd_search_#{tourEditManager.tour.searchPhoto}.jpg"/>
+                                <h3 class="text-center">#{msgs['shareandlike']}</h3>
+                                <g:addthis_sharetoolbox/>
+                            </div>
+                            <g:textCard title="#{msgs['tour.goodfor']}" type="mediumPadding">
+                                <f:facet name="content">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <h4>
+                                                <i class="fas fa-cloud"></i>&nbsp; #{msgs['tour.anyclimate']}
+                                            </h4>
+                                        </li>
+
+
+                                        <h:panelGroup rendered="#{tourEditManager.tour.childrenAllowed}">
+                                            <li class="list-group-item">
+                                                <h4>
+                                                    <i class="fas fa-check-square"></i>&nbsp; #{msgs['tour.childrenAllowed']}
+                                                </h4>
+                                            </li>
+                                        </h:panelGroup>
+                                        <h:panelGroup rendered="#{tourEditManager.tour.infantsAllowed}">
+                                            <li class="list-group-item">
+                                                <h4>
+                                                    <i class="fas fa-check-square"></i>&nbsp; #{msgs['tour.infantsAllowed']}
+                                                </h4>
+                                            </li>
+                                        </h:panelGroup>
+                                        <h:panelGroup rendered="#{tourEditManager.tour.infantsAllowed and tourEditManager.tour.infantsAllowed}">
+                                            <li class="list-group-item">
+                                                <h4>
+                                                    <i class="fas fa-users"></i>&nbsp; #{msgs['tour.entirefamily']}
+                                                </h4>
+
+                                            </li>
+                                        </h:panelGroup>
+
+                                    </ul>
+                                </f:facet>
+                            </g:textCard>
+
+                        </div>
+                        <div class="col-md-8">
+                            <g:textCard title="#{msgs['description']}"
+                                        icon="fas fa-file-alt"
+                                        type="mediumPadding"
+                                        body="#{tourEditManager.tour.description}"/>
+                            <div class="card smallPadding">
+                                <table class="table table-striped table-bordered">
+                                    <tr>
+                                        <td>
+                                            <p:outputLabel value="#{msgs['tour.isTransferIncluded']}?"/><br/>
+                                            #{tourEditManager.tour.transportationNotes}
+                                        </td>
+                                        <td>
+                                            <span class="bolder">
+                                                #{tourEditManager.tour.isTransportationIncluded ? msgs['yes']:msgs['no']}
+                                            </span>
+
+                                        </td>
+                                    </tr>
+                                    <h:panelGroup rendered="#{currencySelectorManager.currencyString eq 'usd'}">
+                                        <tr>
+
+                                            <td>
+                                                #{msgs['adult']}:
+
+                                            </td>
+                                            <td>
+                                                <span class="bolder">
+                                                    <h:outputText value="#{tourEditManager.tour.adultPrice}">
+                                                        <f:convertNumber type="currency"
+                                                                         currencySymbol="$"
+                                                                         maxFractionDigits="2"
+                                                                         minFractionDigits="2" minIntegerDigits="1"/>
+                                                    </h:outputText>
+                                                    USD
+                                                </span>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                #{msgs['child']}: #{tourEditManager.tour.childrenDescription}
+                                            </td>
+                                            <td>
+                                                <span class="bolder">
+                                                    <h:outputText value="#{tourEditManager.tour.childPrice} ">
+                                                        <f:convertNumber type="currency"
+                                                                         currencySymbol="$"
+                                                                         maxFractionDigits="2"
+                                                                         minFractionDigits="2" minIntegerDigits="1"/>
+                                                    </h:outputText>
+                                                    USD
+                                                </span>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                #{msgs['infants']}: #{tourEditManager.tour.infantsDescription}
+                                            </td>
+                                            <td>
+                                                <span class="bolder">
+                                                    <h:outputText value="#{tourEditManager.tour.infantPrice} ">
+                                                        <f:convertNumber type="currency"
+                                                                         currencySymbol="$"
+                                                                         maxFractionDigits="2"
+                                                                         minFractionDigits="2" minIntegerDigits="1"/>
+                                                    </h:outputText>
+                                                    USD
+                                                </span>
+
+                                            </td>
+                                        </tr>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{currencySelectorManager.currencyString eq 'mxn'}">
+                                        <tr>
+                                            <td>#{msgs['adult']}:</td>
+                                            <td>
+                                                <span class="bolder">
+                                                    <h:outputText value="#{tourEditManager.tour.adultPrice * exchangeRateManager.exchangeRate}">
+                                                        <f:convertNumber type="currency"
+                                                                         currencySymbol="$"
+                                                                         maxFractionDigits="2"
+                                                                         minFractionDigits="2" minIntegerDigits="1"/>
+                                                    </h:outputText> MXN
+                                                </span>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td> #{msgs['child']}: #{tourEditManager.tour.childrenDescription}
+                                            </td>
+
+                                            <td>
+                                                <span class="bolder">
+                                                    <h:outputText value="#{tourEditManager.tour.childPrice * exchangeRateManager.exchangeRate}">
+                                                        <f:convertNumber type="currency"
+                                                                         currencySymbol="$"
+                                                                         maxFractionDigits="2"
+                                                                         minFractionDigits="2" minIntegerDigits="1"/>
+                                                    </h:outputText> MXN
+                                                </span>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                #{msgs['infants']}:#{tourEditManager.tour.infantsDescription}
+                                            </td>
+                                            <td>
+                                                <span class="bolder">
+                                                    <h:outputText value="#{tourEditManager.tour.infantPrice} ">
+                                                        <f:convertNumber type="currency"
+                                                                         currencySymbol="$"
+                                                                         maxFractionDigits="2"
+                                                                         minFractionDigits="2" minIntegerDigits="1"/>
+                                                    </h:outputText>
+                                                    USD
+                                                </span>
+
+                                            </td>
+                                        </tr>
+                                    </h:panelGroup>
+                                </table>
+                                <p class="text-center">
+                                    <p:link outcome="#{sessionInfo.currentUser ne null ? 'reserve': 'reserveLogin'}"
+                                            styleClass="btn btn-lg btn-success fullwidth">
+                                        <i class="fas fa-calendar-alt"></i>&nbsp;
+                                        <h:outputText value="#{msgs['reserve']}"/>
+                                        <f:param name="id" value="#{tourEditManager.tour.id}"/>
+                                    </p:link>
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <h:panelGroup rendered="#{not empty tourPhotosView.photos}">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <g:secondaryTitleCard title="#{msgs['tour.gallery']}" type="card-info "
+                                                      icon="fas fa-camera"/>
+                                <h:form>
+                                    <div class="gallery-container tz-gallery">
+                                        <p:repeat value="#{tourPhotosView.photos}"
+                                                  var="photo">
+                                            <ph:tourGalleryPhoto photo="#{photo}"/>
+                                        </p:repeat>
+                                    </div>
+                                </h:form>
+
+                            </div>
+
+                        </div>
+                    </h:panelGroup>
+
+                    <g:secondaryTitleCard title="#{msgs['information']}"
+                                          type="card-info" icon="fas fa-info-circle"/>
+
+                    <div class="card-columns row">
+                        <div class='col-lg-4'>
+                            <g:textCard title="#{msgs['tour.itinerary']}"
+                                        type="mediumPadding card-info"
+                                        icon="fas fa-clipboard-list" body="#{tourEditManager.tour.itinerary}"/>
+                        </div>
+                        <div class='col-lg-8'>
+                            <div class="col-lg-6">
+
+                                <g:textCard title="#{msgs['tour.includes']}"
+                                            type="mediumPadding card-info"
+                                            icon="fas fa-hiking" body="#{tourEditManager.tour.includes}"/>
+                                <g:textCard title="#{msgs['tour.recommendations']}"
+                                            type="mediumPadding card-info"
+                                            icon="fas fa-check-double" body="#{tourEditManager.tour.recommendations}"/>
+
+                            </div>
+                            <div class="col-lg-6">
+
+                                <g:textCard title="#{msgs['tour.excluded']}"
+                                            icon="fas fa-box" body="#{tourEditManager.tour.excludes}"
+                                            type="card-warning mediumPadding"/>
+                                <g:textCard title="#{msgs['tour.regulations']}"
+                                            icon="fas fa-id-card"
+                                            body="#{tourEditManager.tour.regulations}" type="card-danger mediumPadding"/>
+                                <g:textCard title="#{msgs['tour.restrictions']}"
+                                            icon="fas fa-stop-circle" body="#{tourEditManager.tour.restrictions}"
+                                            type="card-danger mediumPadding"/>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <h:panelGroup rendered="#{not empty tourEditManager.tour.longitude}">
+                    <h2 class="text-center">#{msgs['location']}</h2>
+                    <p:gmap center="#{tourEditManager.tour.latitude},#{tourEditManager.tour.longitude}" zoom="13" type="HYBRID" styleClass="map" />
+                </h:panelGroup>
+            </article>
+        </ui:define>
+        <ui:define name="footer-scripts">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
+            <script>
+                baguetteBox.run('.tz-gallery');
+            </script>
+            <!-- Go to www.addthis.com/dashboard to customize your tools -->
+            <script type="text/javascript" src="#{globalConfigController.cg.addThisURL}"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        </ui:define>
+        <ui:include src="/WEB-INF/includes/templates/views/structured/product.xhtml"/>
+    </ui:composition>
+
+</html>
+

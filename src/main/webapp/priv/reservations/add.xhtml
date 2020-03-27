@@ -15,7 +15,7 @@
         <ui:define name="breadcrumbs">
             <h:form>
                 <p:breadCrumb>
-                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="JTM" outcome="/priv/index" />
                     <p:menuitem value="Reservaciones" outcome="/priv/reservations/list" />
                     <p:menuitem value="Agregar" outcome="/priv/reservations/add"/>
                 </p:breadCrumb>
@@ -43,28 +43,28 @@
                                                     <tour:tourAutocomplete id="servicio"
                                                                            required="true"
                                                                            requiredMessage="Campo servicio requerido"
-                                                                           value="#{reservationCreateController.reservacion.servicio}">
+                                                                           value="#{reservationCreateController.reservacion.tour}">
                                                         <p:ajax event="itemSelect"
                                                                 update="@(.infoServicioPanel) @(.participantesPanel)"
                                                                 immediate="true"
                                                                 process="@this"
-                                                                listener="#{reservationCreateController.servicioChanged}"/>
+                                                                listener="#{reservationCreateController.tourChanged}"/>
                                                     </tour:tourAutocomplete>
 
                                                     <p:outputLabel value="Promo:"
-                                                                   rendered='#{not empty reservationCreateController.reservacion.servicio}'
+                                                                   rendered='#{not empty reservationCreateController.reservacion.tour}'
                                                                    for="nacionalidad" />
                                                     <general:promoNacionalidadSelectOneMenu id='nacionalidad'
-                                                                                            rendered='#{not empty reservationCreateController.reservacion.servicio}'
+                                                                                            rendered='#{not empty reservationCreateController.reservacion.tour}'
                                                                                             value='#{reservationCreateController.reservacion.nacionalidad}'>
                                                         <p:ajax event="itemSelect" process="@this"/>
                                                     </general:promoNacionalidadSelectOneMenu>
                                                     <p:outputLabel id="transportacionLabel"
-                                                                   rendered='#{not empty reservationCreateController.reservacion.servicio}'
+                                                                   rendered='#{not empty reservationCreateController.reservacion.tour}'
                                                                    value="Transportación:"
                                                                    for="transportacion" />
                                                     <p:selectOneMenu id="transportacion"
-                                                                     rendered='#{not empty reservationCreateController.reservacion.servicio}'
+                                                                     rendered='#{not empty reservationCreateController.reservacion.tour}'
                                                                      value="#{reservationCreateController.reservacion.conTransportacion}">
                                                         <f:selectItem itemValue="#{null}" itemLabel="Seleccionar Uno..." noSelectionOption="true"/>
                                                         <f:selectItem itemLabel="Con Transportación" itemValue="#{true}"/>
@@ -320,7 +320,7 @@
                                                         </p:inputText>
                                                     </p:panelGrid>
                                                 </p:fieldset>
-                                                <p:fieldset legend="Buceo" rendered="#{reservationCreateController.reservacion.servicio.buceo}">
+                                                <p:fieldset legend="Buceo" rendered="#{reservationCreateController.reservacion.tour.buceo}">
                                                     <p:panelGrid columns="4"
                                                                  columnClasses="text-right, text-left, text-right, text-left"
                                                                  layout="grid" styleClass="ui-panelgrid-blank">

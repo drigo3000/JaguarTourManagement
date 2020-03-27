@@ -16,7 +16,7 @@
         <ui:define name="breadcrumbs">
             <h:form>
                 <p:breadCrumb>
-                    <p:menuitem value="Cucurumbe Group" outcome="/priv/index" />
+                    <p:menuitem value="JTM" outcome="/priv/index" />
                     <p:menuitem value="Reservaciones" outcome="/priv/reservations/list" />
                     <p:menuitem value="Preliminares" outcome="/priv/reservations/preliminares"/>
                 </p:breadCrumb>
@@ -47,7 +47,7 @@
                     <p:outputLabel value="SUCURSALES:" for="sucursales" />
                     <general:sucursalesSelectCheckboxMenu id='sucursales' value="#{reservationFilterOptionsController.sucursales}"/>
                     <p:outputLabel value="SERVICIO"/>
-                    <tour:tourAutocomplete value="#{reservationFilterOptionsController.servicio}"/>
+                    <tour:tourAutocomplete value="#{reservationFilterOptionsController.tour}"/>
                     <p:outputLabel value="GRUPO" rendered="false"/>
                     <tour:tourGrupoAutocomplete value="#{reservationFilterOptionsController.grupo}" rendered="false"/>
                     <p:outputLabel value='CONFIRMA'/>

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="title" type="java.lang.String" required="true"/>
+        <cc:attribute name="type" type="java.lang.String" required="false"/>
+        <cc:attribute name="category" type="java.lang.String" required="true"/>
+        <cc:attribute name="icon" type="java.lang.String" required="false"/>
+        <cc:facet name="content"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <div class="card #{cc.attrs.type}">
+            <p:link outcome="results">
+                <h3 class="text-center">
+                    <i class="#{cc.attrs.icon}"/>#{cc.attrs.title}
+                </h3>
+                <f:param name="k" value="#{cc.attrs.category}"/>
+            </p:link>
+
+        </div>
+    </cc:implementation>
+</html>

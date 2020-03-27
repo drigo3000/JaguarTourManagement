@@ -35,7 +35,7 @@ public class VentasAddOnTotalsController implements Serializable {
         cantidadPorGuia = new HashMap<>();
         for (VentaAddOn v : ventas) {
             cantidadTotal += v.getCantidad();
-            Tour tourKey = v.getReserva().getServicio();
+            Tour tourKey = v.getReserva().getTour();
             User userKey = v.getGuia();
             if (cantidadPorTour.containsKey(tourKey)) {
                 int valor = cantidadPorTour.get(tourKey);

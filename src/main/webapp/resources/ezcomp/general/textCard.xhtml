@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="title" type="java.lang.String" required="true"/>
+        <cc:attribute name="body" type="java.lang.String" required="false"/>
+        <cc:attribute name="type" type="java.lang.String" required="false"/>
+        <cc:attribute name="icon" type="java.lang.String" required="false"/>
+        <cc:facet name="content"/>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <div class="card #{cc.attrs.type}">
+            <div class="card-body">
+                <h2 class="card-title text-center"><i class="#{cc.attrs.icon}"/>#{cc.attrs.title}</h2>
+                <c:if test="#{empty component.facets.content}" >
+                    <p class="card-text lightText text-justify">
+                        <h:outputText escape="false" value="#{cc.attrs.body}"/>
+                    </p>
+                </c:if>
+                <c:if test="#{not empty component.facets.content}">
+                    <cc:renderFacet name="content"/>
+                </c:if>
+            </div>
+        </div>
+    </cc:implementation>
+</html>

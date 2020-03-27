@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:gen="http://xmlns.jcp.org/jsf/composite/ezcomp/general"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/WEB-INF/includes/templates/public_template.xhtml">
+        <ui:define name="title">#{msgs['contact']} - #{globalConfigController.cg.enterpriseName}</ui:define>
+        <ui:define name="center_content">
+            <div class="container">
+                <gen:mainTitleCard title="#{msgs['contact']}" type="card-info" icon="fa fa-envelope"/>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card mediumPadding card-warning">
+                            <h3 class="text-center"><i class="fa fa-map-marker"/>#{msgs['contact.formTitle']}</h3>
+                            <h:form>
+                                <p:outputPanel styleClass="contactFormPanel">
+                                    <div class="form-group row">
+                                        <p:outputLabel for="name" value="#{msgs['name']} " styleClass="form-control-label col-sm-3"/>
+                                        <div class="col-sm-9">
+                                            <p:inputText value="#{addCustomerContactController.contact.name}"
+                                                         maxlength="50"
+                                                         placeholder="#{msgs['contact.namePlaceHolder']}"
+                                                         required="true" id="name"
+                                                         styleClass="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <p:outputLabel for="subject" value="#{msgs['subject']}" styleClass="form-control-label col-sm-3"/>
+                                        <div class="col-sm-9">
+                                            <p:inputText value="#{addCustomerContactController.contact.subject}"
+                                                         maxlength="100"
+                                                         placeholder="#{msgs['contact.subjectPlaceHolder']}"
+                                                         id="subject" required="true" styleClass="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <p:outputLabel for="email" value="#{msgs['email']}" styleClass="col-sm-3 form-control-label"/>
+                                        <div class="col-sm-9">
+                                            <p:inputText value="#{addCustomerContactController.contact.email}"
+                                                         maxlength="150"
+                                                         placeholder="#{msgs['contact.emailPlaceHolder']}"
+                                                         id="email"
+                                                         required="true" styleClass="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <p:outputLabel for="description" value="#{msgs['message']} " styleClass="col-sm-3 form-control-label"/>
+                                        <div class="col-sm-9">
+                                            <p:inputTextarea id="description"
+                                                             placeholder="#{msgs['contact.messagePlaceHolder']}"
+                                                             value="#{addCustomerContactController.contact.description}"
+                                                             required="true"
+                                                             rows="8"
+                                                             styleClass="form-control"/>
+                                        </div>
+                                    </div>
+                                    <p:panelGrid columns="2" columnClasses="labelcolumn, inputcolumn" styleClass="fullwidth ui-noborder">
+
+                                        <h:panelGroup>
+                                            <div class="text-right">
+                                                <p:commandLink
+                                                    styleClass="btn btn-success"
+                                                    actionListener="#{addCustomerContactController.create()}"
+                                                    update="@(.contactFormPanel) growl">
+                                                    <i class="fas fa-save"></i>&nbsp;#{msgs['send']}
+                                                </p:commandLink>
+                                                <button value="#{msgs['reset']}"
+                                                        class="btn btn-warning"
+                                                        type="reset"
+                                                        icon="fa fa-trash"
+                                                        immediate="true">
+                                                    Reset
+                                                </button>
+                                            </div>
+                                        </h:panelGroup>
+                                    </p:panelGrid>
+                                </p:outputPanel>
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
+                            </h:form>
+                        </div>
+
+                        <div class="mediumSpace"/>
+                        <div class="card mediumPadding card-success">
+                            <p>
+                                #{msgs['ourrootsdesc1']}
+                            </p>
+                        </div>
+
+
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card mediumPadding card-success">
+                            <h3 class="text-center"><i class="fa fa-map-marker"/>#{msgs['location']}</h3>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d14057.080184842811!2d-87.04902324471522!3d20.67922293888767!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2smx!4v1509161363099"
+                                    frameborder="0" class="map" allowfullscreen="true"></iframe>
+                        </div>
+                        <section class="card mediumPadding card-success h-card">
+                            <address>
+                                <p>Playa del Carmen</p>
+                            </address>
+                            <h3><i class="fa fa-phone"/>#{msgs['phonenumber']}</h3>
+                            <p>Phone Number: <span class="p-tel">#{globalConfigController.cg.contactPhone}</span></p>
+                            <p>#{msgs['email']}: <a class="u-email"
+                                                    href="mailto:#{globalConfigController.cg.contactEmailAccount}"><span class="p-tel">#{globalConfigController.cg.contactEmailAccount}</span></a></p>
+                        </section>
+
+                    </div>
+                </div>
+            </div>
+            <ui:include src="/WEB-INF/includes/templates/views/structured/knowledgegraph.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>
+

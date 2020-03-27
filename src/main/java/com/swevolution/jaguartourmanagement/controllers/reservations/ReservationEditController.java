@@ -6,21 +6,18 @@
 package com.swevolution.jaguartourmanagement.controllers.reservations;
 
 import com.swevolution.jaguartourmanagement.business.entityfacades.HorarioTurnoTourFacade;
-import com.swevolution.jaguartourmanagement.business.entityfacades.IMAFacade;
 import com.swevolution.jaguartourmanagement.business.entityfacades.ReservationsFacade;
 import com.swevolution.jaguartourmanagement.business.entityfacades.TurnoTourFacade;
 import com.swevolution.jaguartourmanagement.controllers.reservations.reflection.ReservationReflectionController;
-import com.swevolution.jsf.webutils.JsfUtil;
 import com.swevolution.jaguartourmanagement.model.entities.Agency;
 import com.swevolution.jaguartourmanagement.model.entities.HorarioTurnoTour;
 import com.swevolution.jaguartourmanagement.model.entities.Hotel;
-import com.swevolution.jaguartourmanagement.model.entities.IMA;
 import com.swevolution.jaguartourmanagement.model.entities.Representante;
 import com.swevolution.jaguartourmanagement.model.entities.Reservation;
 import com.swevolution.jaguartourmanagement.model.entities.Tour;
 import com.swevolution.jaguartourmanagement.model.entities.TurnoTour;
+import com.swevolution.jsf.webutils.JsfUtil;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -54,8 +51,6 @@ public class ReservationEditController implements Serializable {
     private Reservation reservacion;
     @EJB
     private ReservationsFacade rFacade;
-    @EJB
-    private IMAFacade imaFacade;
     private Map<String, Object> options;
     private boolean displayConfirmMessage;
     private boolean displayConfirmation;
@@ -69,18 +64,6 @@ public class ReservationEditController implements Serializable {
 
     //PAX POR TIPO VEHICULO
     private String paxPorTipoVehiculo;
-
-    public BigDecimal getMinimoAceptable() {
-        try {
-            IMA ima = imaFacade.findByTourAgency(reservacion.getTourCuponeado().getId(), reservacion.getAgencia().getId());
-            BigDecimal imaAdultos = ima.getImaAdultoUSD().multiply(new BigDecimal(reservacion.getAdulto()));
-            BigDecimal imaNinos = ima.getImaNinoUSD().multiply(new BigDecimal(reservacion.getNino()));
-            return imaAdultos.add(imaNinos);
-        } catch (Exception e) {
-            return BigDecimal.ZERO;
-        }
-
-    }
 
     public void edit() {
         try {
@@ -121,12 +104,12 @@ public class ReservationEditController implements Serializable {
         Long id = Long.parseLong(JsfUtil.getRequestParameter("id"));
         reservacion = rFacade.find(id);
         reservacionOriginal = reservacion.clone();
-        horarios = httFacade.findHorariosTurnoTourHotel(reservacion.getServicio(), reservacion.getHotel());
+        horarios = httFacade.findHorariosTurnoTourHotel(reservacion.getTour(), reservacion.getHotel());
         paxPorTipoVehiculo = resUtils.getTotalReservaciones(
                 reservacion.getFechaOperacion(),
                 reservacion.getFechaOperacion(),
                 reservacion.getTipoVehiculo());
-        groupTotals.updateTotals(reservacion.getServicio().getGrupo(), reservacion.getFechaOperacion());
+        groupTotals.updateTotals(reservacion.getTour().getGrupo(), reservacion.getFechaOperacion());
     }
 
     public Reservation getReservacion() {
@@ -174,9 +157,8 @@ public class ReservationEditController implements Serializable {
 
     private void setHotelInformation(Hotel hotel) {
         reservacion.setHotel(hotel);
-        horarios = httFacade.findHorariosTurnoTourHotel(reservacion.getServicio(), reservacion.getHotel());
+        horarios = httFacade.findHorariosTurnoTourHotel(reservacion.getTour(), reservacion.getHotel());
         reservacion.setHotel(hotel);
-        reservacion.setLugarReserva(hotel.getOperation());
         reservacion.setMeetingPoint(hotel.getLugarPickup());
         reservacion.setPickup("");
     }
@@ -189,50 +171,26 @@ public class ReservationEditController implements Serializable {
     public void servicioChanged(SelectEvent event) {
         try {
             Tour tour = (Tour) event.getObject();
-            setServicioInfo(tour);
+            setTourInfo(tour);
         } catch (Exception e) {
 
         }
 
     }
 
-    public void servicioCuponeadoChanged(SelectEvent event) {
-        try {
-            Tour tour = (Tour) event.getObject();
-            setServicioCuponeadoInfo(tour);
-        } catch (Exception e) {
-
-        }
-    }
-
-    private void setServicioCuponeadoInfo(Tour servicio) {
-        reservacion.setTourCuponeado(servicio);
-    }
-
-    private void setServicioInfo(Tour servicio) {
-        reservacion.setServicio(servicio);
+    private void setTourInfo(Tour servicio) {
+        reservacion.setTour(servicio);
         reservacion.setTipoVehiculo("N/A");
-        reservacion.setEst(false);
-        reservacion.setAut(false);
-        horarios = httFacade.findHorariosTurnoTourHotel(reservacion.getServicio(), reservacion.getHotel());
+        horarios = httFacade.findHorariosTurnoTourHotel(reservacion.getTour(), reservacion.getHotel());
         turnosServicio = ttFacade.findByTour(servicio);
         reservacion.setPickup("");
-        groupTotals.updateTotals(reservacion.getServicio().getGrupo(), reservacion.getFechaOperacion());
-    }
-
-    public void handleServicioCuponeadoFromDialog(SelectEvent event) {
-        try {
-            Tour tour = (Tour) event.getObject();
-            setServicioCuponeadoInfo(tour);
-        } catch (Exception e) {
-
-        }
+        groupTotals.updateTotals(reservacion.getTour().getGrupo(), reservacion.getFechaOperacion());
     }
 
     public void handleServicioFromDialog(SelectEvent event) {
         try {
             Tour tour = (Tour) event.getObject();
-            setServicioInfo(tour);
+            setTourInfo(tour);
         } catch (Exception e) {
 
         }
@@ -294,7 +252,7 @@ public class ReservationEditController implements Serializable {
         } else {
             paxPorTipoVehiculo = "0.0.0";
         }
-        groupTotals.updateTotals(reservacion.getServicio().getGrupo(), reservacion.getFechaOperacion());
+        groupTotals.updateTotals(reservacion.getTour().getGrupo(), reservacion.getFechaOperacion());
     }
 
     public List<HorarioTurnoTour> getHorarios() {
@@ -331,18 +289,6 @@ public class ReservationEditController implements Serializable {
 
     public void setActiveTab(int activeTab) {
         this.activeTab = activeTab;
-    }
-
-    public void cambioTransportacion() {
-        if (!reservacion.isConTransportacion()) {
-            reservacion.setTipoVehiculo("N/A");
-            reservacion.setPickup("");
-            reservacion.setAut(false);
-            reservacion.setEst(false);
-        } else {
-            reservacion.setAut(true);
-            reservacion.setEst(true);
-        }
     }
 
     public String getPaxPorTipoVehiculo() {

@@ -1,0 +1,870 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|PT+Serif|Ubuntu');
+
+html {
+    scroll-behavior: smooth;
+    font-family: 'Ubuntu', sans-serif !important;
+    font-size: 14px !important;
+    width:100% !important;
+    padding:0px;
+    margin:0px;
+}
+
+.container{
+    max-width: 1200px !important;
+}
+
+#backtotopButton {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 15px;
+    z-index: 99;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color: #124E78 !important;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+body{
+    padding: 0px !important;
+    margin: 0px !important;
+    width:100% !important;
+}
+
+h1, h2, h3{
+    font-family: 'PT Serif', sans-serif !important;
+    letter-spacing: 2px;
+    padding: 10px;
+    margin-top: 8px !important;
+}
+
+h1 {
+    font-size:2rem !important;
+    font-weight: bolder;
+    /* 2x body copy size = 32px */
+    line-height: 1.25 !important;
+    /* 45px / 36px */
+}
+
+h2.sectionHeader{
+    font-size:3rem !important;
+    /* 2x body copy size = 32px */
+    line-height: 2 !important;
+}
+
+.main-title{
+    padding-top: 3rem;
+    margin-bottom: 2rem;
+    font-size: 2.8rem !important;
+}
+
+#searchFormContainer{
+    margin-bottom: 2.5rem !important;
+}
+
+.slogan{
+    color: #124E78;
+    margin-bottom: 2.5rem;
+}
+
+h2 {
+    font-size: 1.5rem !important;
+    /* 1.625x body copy size = 26px */
+    line-height: 1.15384615 !important;
+    /* 30px / 26px */
+}
+h3 {
+    font-size: 1.4rem !important;
+    /* 1.375x body copy size = 22px */
+    line-height: 1.13636364 !important;
+    /* 25px / 22px */
+}
+h4 {
+    font-size: 1.3rem !important;
+    /* 1.125x body copy size = 18px */
+    line-height: 1.11111111 !important;
+    font-weight: bolder !important;
+}
+blockquote {
+    font-size: 1.25rem !important;
+    /* 20px / 16px */
+    line-height: 1.25 !important;
+    /* 25px / 20px */
+}
+
+p{
+    padding: 8px;
+    line-height: 1.9rem !important;
+    letter-spacing: 0.08rem !important;
+    font-size: 1rem !important;
+    margin-bottom: 10px !important;
+}
+
+.bolder{
+    font-weight: bolder;
+}
+
+a{
+    text-decoration: none !important;
+}
+
+.tourViewPhoto{
+
+}
+
+.searchPhoto{
+    width:100%;
+    max-width: 350px;
+    height: 160px;
+    margin: 0 auto;
+    margin-bottom: 0.5rem !important;
+    background-color:#fcfcfc;
+}
+
+.borderedSearchPhoto{
+    padding:11px 14px;
+}
+
+.caption{
+    padding: 1px;
+    height: 200px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.caption p {
+    color: #7b7d7d;
+    margin: 0;
+}
+
+.idColumn{
+    width: 75px !important;
+    text-align: right !important;
+}
+
+.currencyColumn{
+    width: 75px !important;
+    text-align: center !important;
+}
+
+.totalColumn{
+    width: 120px !important;
+    text-align: right !important;
+}
+
+.gallery-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.results-list-item-grid{
+    display: grid;
+    grid-template-columns: 60px 8fr 2fr;
+    padding: 10px;
+    font-size: 0.8rem !important;
+}
+
+.results-list-item-grid>div:last-child{
+    padding-left: 20px;
+    text-align: right;
+}
+
+.list-group-item{
+    padding: 25px 15px !important;
+}
+
+.list-group-item-heading{
+    font-size: 0.9rem !important;
+}
+
+.whybuycontainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+}
+
+.buyprocesscontainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+}
+
+.categories-grid-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 10px;
+}
+
+.categories-item{
+    margin: 10px;
+}
+
+.buyprocesscontainer-item{
+    height: 280px;
+}
+
+.buyprocesscontainer-item .card-text{
+    font-size: 1.3rem !important;
+}
+
+.buyprocesscontainer i{
+    font-size: 150px !important;
+}
+
+.whybuydesc{
+    margin-bottom: 80px !important;
+}
+
+.whybuycontainer-item{
+    height: 480px;
+}
+.whybuycontainer-item .card-text{
+    font-size: 1.3rem !important;
+}
+
+
+.whybuycontainer-item i{
+    font-size: 120px !important;
+}
+
+
+.tour-card-grid-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 0px;
+}
+
+
+.card{
+    border:1px solid #e4e0e0;
+    border-top-width: 3px;
+    transition: 0.15s ease-in-out;
+    box-shadow: 8px 7px #f1f1f1;
+    margin-bottom: 15px;
+}
+
+.smallPadding{
+    padding:5px;
+}
+
+.mediumPadding{
+    padding:10px;
+}
+
+.largePadding{
+    padding:25px;
+}
+
+.card-info{
+    border-top-color: #124E78 !important;;
+}
+
+.card-danger{
+    border-top-color: #D5A021 !important;
+}
+
+.card-warning{
+    border-top-color: #FFDC00 !important;
+}
+
+.card-success{
+    border-top-color: #a2b9bc !important;
+}
+
+.tourCard-grid-item{
+    background-color: #fff;
+    margin:0px;
+    height: 550px;
+}
+
+.tourCard-grid-item .tourCardDescriptionContainer{
+    height: 195px;
+    margin-bottom: 0.8rem;
+}
+
+.tourCardDescriptionContainer .tourCardTitle{
+    border-bottom:0.5px ridge #001f3f;
+    padding-bottom: 10px;
+    line-height: 1.5rem !important;
+    font-size: 0.95rem !important;
+    height: 45px;
+}
+
+.tourCard-grid-item .tourCardDescriptionContainer p{
+    font-size: 0.96em !important;
+}
+
+.card:hover {
+    transform: translateY(-1px) scale(1.0001);
+    box-shadow: 10px 15px 10px #f1f1f1;
+}
+
+.tourCard-grid-item > .tourCardDescriptionContainer{
+    padding:1px;
+}
+
+.tourCard-grid-item .searchImage{
+    width: 100%;
+    height: 180px;
+    margin-bottom: 15px;
+}
+
+.tourCard-grid-item .searchImage:hover{
+    transform: translateY(-1px) scale(1.01);
+}
+
+.tourcard-title{
+    font-size: 0.95rem !important;
+    padding-bottom: 0.5rem !important;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield{
+    box-shadow: none !important;
+}
+
+
+
+/****************************************************
+                    LAYOUT
+****************************************************/
+.tourSearchGrid{
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 40px;
+}
+
+.tourview-galleryImage{
+    width: 25%;
+    padding: 3px;
+}
+
+.header,
+.marketing,
+.footer {
+    padding: 1rem;
+}
+
+/* Custom page header */
+.header {
+    padding-bottom: 1rem;
+    border-bottom: .05rem solid #e5e5e5;
+}
+
+.fullwidth{
+    width:100% !important;
+}
+
+.clear{
+    clear:both !important;
+}
+
+.addthis{
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/************************************************************
+                HEADER
+************************************************************/
+.navbar i{
+    color: #124E78;
+    font-size: 1.2rem !important;
+}
+
+.nav-pills>li{
+    display: inline !important;
+}
+
+.nav-link:hover i{
+    color: #D5A021 !important;
+}
+
+.nav-link, .dropdown-toggle {
+    padding: 1rem 2rem !important;
+    font-weight: bold;
+    color: #124E78 !important;
+    background-color: transparent;
+    border-bottom: .5rem solid transparent;
+}
+
+.nav-link:hover, .dropdown-toggle:hover{
+    border-bottom-color: #D5A021;
+    background-color: #124E78 !important;;
+    color: white !important;
+}
+
+.dropdown-toggle:hover i{
+    color: white !important;
+}
+
+.centerElement{
+    position: relative;
+}
+
+.center i {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+}
+
+.list-icon{
+    font-size: 40px;
+}
+
+.medium-list-icon{
+    font-size: 20px;
+}
+
+.navIcon{
+    font-size: 2rem !important;
+}
+
+.nav-link:focus {
+    border-bottom-color: #D5A021;
+}
+
+.nav-link + .nav-link {
+    margin-left: 1rem;
+}
+
+.nav-link i{
+    color: #124E78;
+}
+
+.active {
+    color: white !important;
+    background-color: #124E78 !important;;
+    border-bottom-color: #D5A021;
+}
+
+.active i{
+    color: white !important;
+}
+
+.smallTextTable{
+    font-size: 0.8rem !important;
+}
+
+#logo{
+    font-size: 3rem !important;
+}
+
+.logo-icon{
+    color: #124E78 !important;
+}
+
+.largeIcon{
+    font-size: 120px;
+}
+
+.informationIcon{
+    color:#124E78;
+}
+
+.warningIcon{
+    color: #FF851B;
+}
+
+.dangerIcon{
+    color: #D5A021;
+}
+
+.form-group{
+    padding: 8px 5px;
+    margin: 8px 10px !important;
+    border-top: 2px solid #fcfcfc;
+    border-bottom: 2px solid #fcfcfc;
+}
+
+.form-group:nth-child(even){
+    background-color: #fcfcfc;
+
+}
+
+.pagination{
+    font-size: 1.3rem !important;
+    font-weight: bolder;
+    padding: 10px 25px !important;
+}
+
+/************************************************************
+                TOUR SEARCH AND VIEW
+************************************************************/
+.searchButton{
+    font-size: 1.4rem !important;
+    color: #124E78 !important;
+}
+
+#searchInput{
+    font-size: 2.5rem !important;
+    line-height: 36px !important;
+    height: 2.5rem !important;
+    padding: 2rem !important;
+}
+
+
+#index-subscribe{
+    background-color: #f7f7f7;
+    padding: 60px 80px;
+    text-align: center;
+    margin-top: 4em;
+}
+
+#index-subscribe>h2{
+    font-size: 3rem;
+}
+
+/* Custom page footer */
+.footer {
+    padding-top: 1.5rem;
+    color: #777;
+    border-top: .05rem solid #e5e5e5;
+}
+
+.tourdesc{
+    font-size: 1.2em;
+}
+
+.primaryColor{
+    color: #124E78 !important;
+}
+
+.secondaryColor{
+    color: #D5A021 !important;
+}
+
+.thirdColor{
+    color: rgba(0,0,0,0.5) !important;
+}
+
+.alert-default{
+    background-color: #124E78 !important;
+    color: white !important;
+    border: 1px solid white !important;
+}
+
+i{
+    margin: 0.01rem 0.5rem !important;
+    color: #D5A021;
+}
+
+.darkGrayText{
+    color: #595959;
+}
+
+.bluebackground{
+    background-color: #124E78 !important;
+    color:#f9f9f9;
+}
+
+.redbackground{
+    background-color: #D5A021 !important;
+    color: #124E78;
+}
+
+.orangebackground{
+    background-color: #FF851B !important;
+    color:white !important;
+}
+
+.yellowbackground{
+    background-color: #FF851B !important;
+    color:#f9f9f9;
+}
+
+.text-red{
+    color: #D5A021 !important;
+}
+
+.btn{
+    padding: 15px !important;
+    text-align: center;
+    font-weight: bolder;
+    border-radius: 0px !important;
+    transition: 0.15s ease-in-out;
+    box-shadow: 8px 7px #f1f1f1;
+}
+
+.btn:hover {
+    transform: translateY(-1px) scale(1.001);
+    box-shadow: 10px 15px 10px #f1f1f1;
+}
+
+
+
+.btn-success{
+    background-color: #124E78 !important;
+    color: white !important;
+    border: none !important;
+    border-bottom: 0.4rem solid #D5A021 !important;
+}
+
+.btn-success:hover{
+    border-bottom: 0.4rem solid #FFDC00 !important;
+    font-weight: bolder;
+}
+
+.btn-warning{
+    background-color: #FFDC00 !important;
+    color: black !important;
+    border: none !important;
+    border-bottom: 0.4rem solid #D5A021 !important;
+}
+
+.smallSpace{
+    margin-bottom: 1.4rem !important;
+}
+
+.mediumSpace{
+    margin-bottom: 2.5rem !important;
+}
+
+.largeSpace{
+    margin-bottom: 190px !important;
+}
+
+
+.yellowcolor{
+    color: #ffdc00;
+}
+
+.map{
+    border:0;
+    width: 100%;
+    height: 680px;
+    margin-bottom: 30px;
+}
+
+.pricebox{
+    font-size: 0.9rem;
+    font-weight: bolder;
+}
+
+.form-control{
+    margin-bottom: 5px !important;
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+    html{
+        font-size: 13px;
+    }
+
+    .tour-card-grid-container{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .tourview-galleryImage{
+        width: 25%;
+    }
+
+    .searchPhoto{
+        width:100%;
+        margin: 0 auto;
+        height: 185px !important;
+    }
+}
+
+@media (min-width: 980px) and (max-width: 1199px){
+    .categories-grid-container{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+    html{
+        font-size: 12.9px;
+    }
+    p{
+        font-size: 0.9rem !important;
+        line-height: 1.3rem !important;
+    }
+
+    .tourview-galleryImage{
+        width: 33.3%;
+    }
+    .searchPhoto{
+        height: 175px !important;
+    }
+    #index-subscribe{
+        padding: 60px 40px;
+    }
+    .searchPhotoListContainer{
+        padding: 1px !important;
+        width: 20%;
+        -webkit-box-shadow: 0 10px 6px -6px #777;
+        -moz-box-shadow: 0 10px 6px -6px #777;
+        box-shadow: 0 10px 6px -6px #777;
+    }
+
+    .tourListInfoContainer{
+        width: 54% !important;
+        padding: 10px;
+        float: left;
+        -webkit-box-shadow: 0 10px 6px -6px #777;
+        -moz-box-shadow: 0 10px 6px -6px #777;
+        box-shadow: 0 10px 6px -6px #777;
+    }
+    .tour-card-grid-container{
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .categories-grid-container{
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .tourCard-grid-item .tourCardDescriptionContainer{
+        height: 190px;
+    }
+
+    .whybuycontainer{
+        grid-template-columns: 1fr;
+    }
+
+    .buyprocesscontainer{
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    html{
+        font-size: 12.6px;
+    }
+
+    .container{
+        padding:0px 13% !important;
+    }
+
+    #logo{
+        font-size: 1.9rem !important;
+    }
+
+    .tourview-galleryImage{
+        width: 50%;
+    }
+    #index-subscribe{
+        padding: 60px 20px;
+    }
+    .addthis{
+        margin-bottom: 10px !important;
+    }
+    .map{
+        border:0;
+        width: 100%;
+        height: 420px;
+        margin-bottom: 30px;
+    }
+
+    .tour-card-grid-container{
+        grid-template-columns: 1fr;
+    }
+
+    .whybuycontainer{
+        grid-template-columns: 1fr;
+    }
+
+    .buyprocesscontainer{
+        grid-template-columns: 1fr;
+    }
+
+    .categories-grid-container{
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .tour-card-grid-item{
+        margin:10px 0px !important;
+        padding:0px !important;
+    }
+
+    .tour-card-grid-item{
+        margin:10px 0px !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .container{
+        padding:0px 8% !important;
+    }
+    .categories-grid-container{
+        grid-template-columns: 1fr;
+    }
+
+    .tour-card-grid-container{
+        padding: 0px !important;
+    }
+
+    .tour-card-grid-item{
+        margin:10px 0px !important;
+        padding:0px !important;
+    }
+
+    .logo-icon{
+        display: block !important;
+        padding-bottom: 2rem !important;
+        font-size: 7rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .container{
+        padding: 1% !important;
+        margin: 0px 30px 0px 5px !important;
+    }
+
+    .tour-card-grid-container{
+        grid-template-columns: auto;
+        padding: 0px !important;
+    }
+
+    .tourCard-grid-item{
+        margin:15px 0px !important;
+    }
+
+    .results-list-item-grid{
+        display: grid;
+        grid-template-columns: 60px 8fr 3fr;
+        padding: 10px;
+        font-size: 0.8rem !important;
+    }
+
+    .logo-icon{
+        display: block !important;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+BLUE
+#124E78
+
+BROWN
+#D5A021
+
+ORANGE
+#FF851B
+
+NEUTRAL
+#F0F0C9
+
+#FFDC00 YELLOW
+**/
+

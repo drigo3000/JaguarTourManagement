@@ -14,17 +14,14 @@ import com.swevolution.jaguartourmanagement.business.entityfacades.ReservationsF
 import com.swevolution.jaguartourmanagement.business.entityfacades.TurnoTourFacade;
 import com.swevolution.jaguartourmanagement.business.session.SessionInfo;
 import com.swevolution.jaguartourmanagement.controllers.turno.TurnoTourUtils;
-import com.swevolution.jsf.webutils.JsfUtil;
-import com.swevolution.jaguartourmanagement.model.entities.Adendum;
 import com.swevolution.jaguartourmanagement.model.entities.Agency;
 import com.swevolution.jaguartourmanagement.model.entities.HorarioTurnoTour;
 import com.swevolution.jaguartourmanagement.model.entities.Hotel;
-import com.swevolution.jaguartourmanagement.model.entities.IMA;
 import com.swevolution.jaguartourmanagement.model.entities.Representante;
 import com.swevolution.jaguartourmanagement.model.entities.Reservation;
-import com.swevolution.jaguartourmanagement.model.entities.ReservationCuponEntry;
 import com.swevolution.jaguartourmanagement.model.entities.Tour;
 import com.swevolution.jaguartourmanagement.model.entities.TurnoTour;
+import com.swevolution.jsf.webutils.JsfUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -92,16 +89,10 @@ public class ReservationCreateController implements Serializable {
             reservacion.setAdultosReales(reservacion.getAdulto());
             reservacion.setNinosReales(reservacion.getNino());
             reservacion.setInfantesReales(reservacion.getInfante());
-            reservacion.setBuceoAdultosReales(reservacion.getBuceoAdultos());
-            reservacion.setBuceoNinosReales(reservacion.getBuceoNinos());
-            reservacion.setTourCuponeado(reservacion.getServicio());
-            setImaInformation();
             reservacion.setClaveConfirmacion(resUtils.getConfirma(reservacion));
             reservacion.setLog(getReservationCreteLog());
             rFacade.create(reservacion);
             userReservations.search();
-            setAdendumInformation();
-
             displayConfirmMessage = false;
             displayConfirmation = true;
             JsfUtil.addSuccessMessage("Éxito");
@@ -137,31 +128,22 @@ public class ReservationCreateController implements Serializable {
         reservacion.setQuienGeneraReserva("REP");
         reservacion.setActive(true);
         reservacion.setAdulto(0);
-        reservacion.setAut(false);
         reservacion.setClaveConfirmacion("");
-        reservacion.setColor("");
-        reservacion.setComida("");
-        reservacion.setEst(false);
         reservacion.setFechaOperacion(null);
         reservacion.setFechaReserva(JsfUtil.getCancunDate());
         reservacion.setHabitacion("");
         reservacion.setIdioma("");
         reservacion.setInfante(0);
-        reservacion.setLugarReserva("");
         reservacion.setMeetingPoint("");
         reservacion.setNino(0);
         reservacion.setNoCupon("");
-        reservacion.setNoJeep("");
         reservacion.setNombreCliente("");
         reservacion.setObservacionesContables("");
         reservacion.setObservacionesGenerales("");
         reservacion.setObservacionesOperativas("");
         reservacion.setPickup("");
         reservacion.setQuienAutoriza("");
-        reservacion.setSucursales("CUCURUMBE");
         reservacion.setAdultosReales(0);
-        reservacion.setBuceoAdultos(0);
-        reservacion.setBuceoNinos(0);
         reservacion.setCuponNuevo("");
         reservacion.setDtvMXN(BigDecimal.ZERO);
         reservacion.setDtvUSD(BigDecimal.ZERO);
@@ -181,15 +163,6 @@ public class ReservationCreateController implements Serializable {
         reservacion.setSegurosMXN(BigDecimal.ZERO);
         reservacion.setSegurosUSD(BigDecimal.ZERO);
         reservacion.setOtrosIngresosMXN(BigDecimal.ZERO);
-        reservacion.setConTransportacion(true);
-        reservacion.setPrecioAdultoUSD(BigDecimal.ZERO);
-        reservacion.setPrecioAdultoMXN(BigDecimal.ZERO);
-        reservacion.setPrecioNinoMXN(BigDecimal.ZERO);
-        reservacion.setPrecioNinoUSD(BigDecimal.ZERO);
-        reservacion.setComisionAdultoMXN(BigDecimal.ZERO);
-        reservacion.setComisionAdultoUSD(BigDecimal.ZERO);
-        reservacion.setComisionNinoMXN(BigDecimal.ZERO);
-        reservacion.setComisionNinoUSD(BigDecimal.ZERO);
         reservacion.setFacturadoPesos(true);
         reservacion.setTipoVehiculo("N/A");
         reservacion.setHorario(null);
@@ -234,9 +207,8 @@ public class ReservationCreateController implements Serializable {
 
     private void setHotelInformation(Hotel hotel) {
         reservacion.setHotel(hotel);
-        horarios = httFacade.findHorariosTurnoTourHotel(reservacion.getServicio(), reservacion.getHotel());
+        horarios = httFacade.findHorariosTurnoTourHotel(reservacion.getTour(), reservacion.getHotel());
         reservacion.setHotel(hotel);
-        reservacion.setLugarReserva(hotel.getOperation());
         reservacion.setMeetingPoint(hotel.getLugarPickup());
         reservacion.setPickup("");
         reservacion.setHorario(null);
@@ -266,36 +238,12 @@ public class ReservationCreateController implements Serializable {
         }
     }
 
-    public void servicioCuponeadoChanged(SelectEvent event) {
-        try {
-            Tour tour = (Tour) event.getObject();
-            setServicioCuponeadoInfo(tour);
-        } catch (Exception e) {
-
-        }
-    }
-
-    private void setServicioCuponeadoInfo(Tour servicio) {
-        reservacion.setTourCuponeado(servicio);
-    }
-
     private void setServicioInfo(Tour servicio) {
-        reservacion.setServicio(servicio);
+        reservacion.setTour(servicio);
         reservacion.setTipoVehiculo("N/A");
-        reservacion.setEst(false);
-        reservacion.setAut(false);
-        horarios = httFacade.findHorariosTurnoTourHotel(reservacion.getServicio(), reservacion.getHotel());
+        horarios = httFacade.findHorariosTurnoTourHotel(reservacion.getTour(), reservacion.getHotel());
         reservacion.setPickup("");
-        groupTotals.updateTotals(reservacion.getServicio().getGrupo(), reservacion.getFechaOperacion());
-    }
-
-    public void handleServicioCuponeadoFromDialog(SelectEvent event) {
-        try {
-            Tour tour = (Tour) event.getObject();
-            setServicioCuponeadoInfo(tour);
-        } catch (Exception e) {
-
-        }
+        groupTotals.updateTotals(reservacion.getTour().getGrupo(), reservacion.getFechaOperacion());
     }
 
     public void handleServicioFromDialog(SelectEvent event) {
@@ -346,9 +294,8 @@ public class ReservationCreateController implements Serializable {
     public void tipoVehiculoChanged(final AjaxBehaviorEvent event) {
         SelectOneMenu selectOneMenu = (SelectOneMenu) event.getSource();
         String tipoVehiculo = selectOneMenu.getValue().toString();
-        reservacion.setAut(false);
-        reservacion.setEst(false);
-        paxPorTipoVehiculo = resUtils.getTotalReservaciones(reservacion.getFechaOperacion(), reservacion.getFechaOperacion(), tipoVehiculo);
+        paxPorTipoVehiculo = resUtils.getTotalReservaciones(reservacion.getFechaOperacion(),
+                reservacion.getFechaOperacion(), tipoVehiculo);
     }
 
     public void dateChanged(SelectEvent event) {
@@ -363,7 +310,7 @@ public class ReservationCreateController implements Serializable {
         } else {
             paxPorTipoVehiculo = "0.0.0";
         }
-        groupTotals.updateTotals(reservacion.getServicio().getGrupo(), reservacion.getFechaOperacion());
+        groupTotals.updateTotals(reservacion.getTour().getGrupo(), reservacion.getFechaOperacion());
     }
 
     public boolean isDisplayConfirmMessage() {
@@ -408,54 +355,6 @@ public class ReservationCreateController implements Serializable {
 
     public void setPaxPorTipoVehiculo(String paxPorTipoVehiculo) {
         this.paxPorTipoVehiculo = paxPorTipoVehiculo;
-    }
-
-    private void setImaInformation() {
-        IMA ima = imaFacade.findByTourAgency(
-                reservacion.getServicio().getId(),
-                reservacion.getAgencia().getId());
-        if (ima != null) {
-            reservacion.setImaAdultoMXN(ima.getImaAdultoMXN());
-            reservacion.setImaAdultoUSD(ima.getImaAdultoUSD());
-            reservacion.setImaNinoMXN(ima.getImaNinoMXN());
-            reservacion.setImaNinoUSD(ima.getImaNinoUSD());
-        } else {
-            reservacion.setImaAdultoMXN(reservacion.getServicio().getImaAdultoMXN());
-            reservacion.setImaAdultoUSD(reservacion.getServicio().getImaAdultoUSD());
-            reservacion.setImaNinoMXN(reservacion.getServicio().getImaNinoMXN());
-            reservacion.setImaNinoUSD(reservacion.getServicio().getImaNinoUSD());
-        }
-    }
-
-    private void setAdendumInformation() {
-        Adendum adendum = adendumFacade.find(reservacion.getAgencia(), reservacion.getHotel().getOperation(), reservacion.getServicio(), reservacion.getNacionalidad(), reservacion.isConTransportacion(), reservacion.getTipoVehiculo(), reservacion.getBuceoAdultos() > 0);
-        ReservationCuponEntry cupon = null;
-        if (adendum != null) {
-            cupon = new ReservationCuponEntry();
-            cupon.setAdults(reservacion.getAdulto());
-            cupon.setChildren(reservacion.getNino());
-            cupon.setInfants(reservacion.getInfante());
-            //SET COMISSION
-            cupon.setComisionAdultoUSD(adendum.getComisionAdultoUSD());
-            cupon.setComisionAdultoMXN(adendum.getComisionAdultoUSD());
-            cupon.setComisionNinoMXN(adendum.getComisionAdultoUSD());
-            cupon.setComisionNinoUSD(adendum.getComisionAdultoUSD());
-            //SET PRICE
-            cupon.setPrecioAdultoUSD(adendum.getPrecioAdultoUSD());
-            cupon.setPrecioNinoUSD(adendum.getPrecioNinoUSD());
-            cupon.setImpuestoUSD(adendum.getImpuestoUSD());
-            cupon.setIncluyeTransportacion(reservacion.isConTransportacion());
-            cupon.setNoCupon(reservacion.getNoCupon());
-            cupon.setPromo(reservacion.getNacionalidad());
-            cupon.setReservation(reservacion);
-            cupon.setTipoVehiculo(reservacion.getTipoVehiculo());
-            cupon.setTour(reservacion.getServicio());
-        } else {
-            //JsfUtil.addErrorMessage("No se encontró Adendum");
-        }
-        if (cupon != null) {
-            rcFacade.create(cupon);
-        }
     }
 
     private String getReservationCreteLog() {

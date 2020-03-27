@@ -82,8 +82,6 @@ public class ReservationTotalsController implements Serializable {
             ninos += r.getNino();
             infantes += r.getInfante();
             cortesias += r.getAdultoCortesia();
-            buceoNinos += r.getBuceoNinos();
-            buceoAdultos += r.getBuceoAdultos();
 
             if (r.isCuponCancelado()) {
                 adultosCancelados += r.getAdulto();

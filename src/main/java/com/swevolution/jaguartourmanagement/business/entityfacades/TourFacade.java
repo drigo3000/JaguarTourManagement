@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -76,5 +77,53 @@ public class TourFacade extends AbstractFacade<Tour> {
         return em.createQuery("select t from Tour t where t.grupo = :grupo order by t.name asc")
                 .setParameter("grupo", group)
                 .getResultList();
+    }
+
+    public List<Tour> getForSiteMap(String lang) {
+        return em.createQuery("SELECT t FROM Tour t WHERE t.lang LIKE :name AND t.active = true ORDER BY t.name ASC")
+                .setParameter("name", "%" + lang + "%")
+                .getResultList();
+    }
+
+    public long countByKeywords(String keywords, String lang, int limit, int offset, boolean active) {
+        StringBuilder sb = new StringBuilder("SELECT Count(t) FROM Tour t WHERE ");
+        if (keywords != null && !keywords.isEmpty()) {
+            sb.append("(t.name LIKE :keywords OR t.searchKeywords LIKE :keywords) AND ");
+        }
+        sb.append("t.active = :active AND t.descriptionLang = :lang ORDER BY t.adultPrice ASC");
+        Query createQuery = em.createQuery(sb.toString());
+        if (keywords != null && !keywords.isEmpty()) {
+            createQuery.setParameter("keywords", "%" + keywords + "%");
+        }
+        createQuery.setParameter("lang", lang);
+        createQuery.setParameter("active", active);
+        createQuery.setMaxResults(limit);
+        createQuery.setFirstResult(offset);
+        return (long) createQuery.getSingleResult();
+    }
+
+    public List<Tour> getByKeywords(String keywords, String lang, int limit, int offset, boolean active) {
+        StringBuilder sb = new StringBuilder("SELECT t FROM Tour t WHERE ");
+        if (keywords != null && !keywords.isEmpty()) {
+            sb.append("(t.name LIKE :keywords OR t.searchKeywords LIKE :keywords) AND ");
+        }
+        sb.append("t.active = :active AND t.descriptionLang = :lang ORDER BY t.adultPrice ASC");
+        Query createQuery = em.createQuery(sb.toString());
+        if (keywords != null && !keywords.isEmpty()) {
+            createQuery.setParameter("keywords", "%" + keywords + "%");
+        }
+        createQuery.setParameter("lang", lang);
+        createQuery.setParameter("active", active);
+        createQuery.setMaxResults(limit);
+        createQuery.setFirstResult(offset);
+        return createQuery.getResultList();
+    }
+
+    public List<Tour> findTopTours(String langCode, int max) {
+        return em.createQuery("SELECT t FROM Tour t WHERE t.topTour = true AND t.descriptionLang = :lang AND t.active = true")
+                .setParameter("lang", langCode)
+                .setMaxResults(max)
+                .getResultList();
+
     }
 }

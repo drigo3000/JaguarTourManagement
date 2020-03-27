@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:g="http://xmlns.jcp.org/jsf/composite/ezcomp/general"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/WEB-INF/includes/templates/public_template.xhtml">
+        <ui:define name="title">#{msgs['reserve']} - #{config.jaguarConfig.enterpriseName}</ui:define>
+        <ui:define name="searchbar"/>
+        <ui:define name="bottom_marketing"/>
+        <ui:define name="center_content">
+            <div class="container">
+                <p:outputPanel id="contentPanel">
+                    <div class="mediumSpace"/>
+                    <h:panelGroup rendered="#{empty sessionInfo.currentUser}">
+                        <h3 class="text-center"><i class="fas fa-user-plus"></i>&nbsp;#{msgs['register']} / <i class="fas fa-sign-in-alt"></i>&nbsp; #{msgs['login']}</h3>
+                        <div class="row">
+                            <div class="col-sm-6 mediumPadding">
+                                <div class="card mediumPadding">
+                                    <h3 class="text-center"><i class="fas fa-user-plus"></i>&nbsp;#{msgs['newuser']}</h3>
+
+                                </div>
+
+                            </div>
+                            <div class="col-sm-6 mediumPadding">
+                                <div class="card mediumPadding">
+                                    <h3 class="text-center"><i class="fas fa-user"></i>#{msgs['registeredUser']}</h3>
+                                    <h:form  styleClass="form-horizontal">
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <p:inputText placeholder="#{msgs['login.userPlaceHolder']}"
+                                                             required="true"
+                                                             requiredMessage="#{msgs['login.userRequiredMessage']}"
+                                                             styleClass="form-control"
+                                                             value="#{loginViewController.username}"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <p:password placeholder="#{msgs['login.passwordPlaceHolder']}"
+                                                            required="true"
+                                                            requiredMessage="#{msgs['login.passwordRequiredMessage']}"
+                                                            styleClass="form-control"
+                                                            value="#{loginViewController.password}"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-12 text-right">
+                                                <p:commandLink styleClass="btn btn-default"
+                                                               update="contentPanel :publicHeaderForm growl"
+                                                               action="#{loginViewController.navReserve()}">
+                                                    <i class="fas fa-sign-in-alt"></i>#{msgs['login']}
+                                                </p:commandLink>
+                                            </div>
+                                        </div>
+                                    </h:form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </h:panelGroup>
+                </p:outputPanel>
+                <div class="largeSpace"/>
+            </div>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

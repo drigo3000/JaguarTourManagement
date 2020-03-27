@@ -1,0 +1,379 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:g="http://xmlns.jcp.org/jsf/composite/ezcomp/general"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/WEB-INF/includes/templates/public_template.xhtml">
+        <ui:define name="title">#{msgs['reserve']} - #{tourView.tour.name} - #{globalConfigController.cg.enterpriseName}</ui:define>
+        <ui:define name="searchbar"/>
+        <ui:define name="bottom_marketing"/>
+        <ui:define name="center_content">
+            <div class="container">
+                <p:outputPanel id="contentPanel">
+                    <g:mainTitleCard title="#{tourView.tour.name}" type="card-info" icon="fas fa-calendar-alt"/>
+                    <div class="mediumSpace"/>
+                    <h:panelGroup rendered="#{not empty sessionInfo.currentUser}">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="text-center">
+                                    <g:image styleClass="searchPhoto"
+                                             alt="#{reservationWebCreateController.reservacion.id} - #{tourView.tour.shortdescription}"
+                                             url="imgs/tours/#{reservationWebCreateController.reservacion.id}/hd_search_#{tourView.tour.searchPhoto}"/>
+                                </div>
+
+                                <p class="text-justify">#{tourView.tour.shortdescription}</p>
+                                <g:textCard title="#{globalConfigController.cg.enterpriseName}"
+                                            icon="fa fa-institution"
+                                            type="card-success mediumPadding"
+                                            body="#{msgs['enterprisedesc']}"/>
+                            </div>
+                            <div class="col-sm-8">
+                                <h:form>
+                                    <p:wizard flowListener="#{tourReserve.onFlowProcess}">
+                                        <p:tab id="personalInfoTab" title="Personal">
+                                            <g:textCard title="#{msgs['reserve.personalInformation']}" icon="fas fa-info-circle" type="mediumPadding">
+                                                <f:facet name="content">
+                                                    <div class="form-group row">
+                                                        <p:outputLabel id="ownerNameLabel" for="ownerName" styleClass="col-sm-3 col-form-label " value="#{msgs['owner']}"/>
+                                                        <div class="col-sm-9">
+                                                            <h:outputText id="ownerName"
+                                                                          value="#{sessionInfo.currentUser.login}"/>
+                                                            <br/>
+                                                            <h:outputText value="#{sessionInfo.currentUser.name}"/>
+                                                            <br/>
+                                                            <h:outputText value="#{sessionInfo.currentUser.telephone}"/>
+                                                            <br/>
+                                                            <p:commandLink actionListener="#{tourReserve.setOwnerInformation()}"
+                                                                           process="@this"
+                                                                           immediate="true"
+                                                                           update="@form">
+                                                                <i class="fab fa-cc-paypal"></i>&nbsp; #{msgs['reserve.useOwnerInformation']}?
+                                                            </p:commandLink>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <p:outputLabel id="nameLabel" for="name" styleClass="col-sm-3 col-form-label " value="#{msgs['name']}"/>
+                                                        <div class="col-sm-9">
+                                                            <h:inputText id="name"
+                                                                         required="true"
+                                                                         value="#{tourReserve.reservation.name}"
+                                                                         requiredMessage="#{msgs['reserve.namefieldrequired']}"
+                                                                         styleClass="form-control"/>
+                                                            <p:message id="nameMessage" for="name"
+                                                                       showDetail="false"
+                                                                       showSummary="true"/>
+                                                            <small>
+                                                                <h:outputText value="#{msgs['reserve.entername']}" styleClass="form-text text-muted"/>
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <p:outputLabel id="emailLabel" for="email"
+                                                                       styleClass="col-sm-3 col-form-label"
+                                                                       value="#{msgs['reserve.email']}"/>
+                                                        <div class="col-sm-9">
+                                                            <p:inputText id="email"
+                                                                         value="#{tourReserve.reservation.email}"
+                                                                         required="true"
+                                                                         onblur="this.value = this.value.toLowerCase();"
+                                                                         onchange="this.value = this.value.toLowerCase();"
+                                                                         validator="#{emailValidator.validate}"
+                                                                         requiredMessage="#{msgs['reserve.emailfieldrequired']}"
+                                                                         styleClass="form-control"/>
+                                                            <p:message id="emailMessage" for="email" showDetail="false" showSummary="true"/>
+                                                            <small>
+                                                                <h:outputText value="#{msgs['reserve.enteremail']}" styleClass="form-text text-muted"/>
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <p:outputLabel id="telephoneLabel" for="telephoneInput"
+                                                                       styleClass="col-sm-3 col-form-label"
+                                                                       value="#{msgs['reserve.phone']}"/>
+                                                        <div class="col-sm-9">
+                                                            <p:inputText id="telephoneInput"
+                                                                         value="#{tourReserve.reservation.telephone}"
+                                                                         required="false"
+                                                                         type="tel"
+                                                                         styleClass="form-control"/>
+                                                            <small>
+                                                                <h:outputText value="#{msgs['reserve.enterphone']}" styleClass="form-text text-muted"/>
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <p:outputLabel for="tourdate"
+                                                                       styleClass="col-sm-3 col-form-label"
+                                                                       value="#{msgs['reserve.tourdate']}"/>
+                                                        <div class="col-sm-9">
+                                                            <h:panelGroup>
+                                                                <p:calendar id="tourdate" required="true"
+                                                                            styleClass="form-control noborder"
+                                                                            mindate="#{tourReserve.validReserveDate}"
+                                                                            requiredMessage="#{msgs['reserve.tourdatefieldrequired']}"
+                                                                            locale="#{localeSelectorManager.locale}"
+                                                                            value="#{reservationWebCreateController.reservacion.fechaOperacion}"/>
+                                                                <p:message for="tourdate" showDetail="false" showSummary="true"/>
+                                                                <small>
+                                                                    <h:outputText value="#{msgs['reserve.tourdatedesc']}" styleClass="text-muted"/>
+                                                                </small>
+                                                            </h:panelGroup>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <p:outputLabel for="hotelSelector"
+                                                                       styleClass="col-sm-3 col-form-label"
+                                                                       value="#{msgs['reserve.hotel']}"/>
+                                                        <div class="col-sm-9">
+                                                            <p:selectOneMenu id="hotelSelector"
+                                                                             value="#{tourReserve.reservation.hotel}"
+                                                                             converter="#{hotelConverter}"
+                                                                             effect="fade"
+                                                                             required="true"
+                                                                             requiredMessage="#{msgs['reserve.hotelfieldrequired']}"
+                                                                             var="t"
+                                                                             style="width:100%"
+                                                                             filter="true"
+                                                                             filterMatchMode="contains">
+                                                                <f:selectItem itemLabel="#{msgs['reserve.selectanoption']}" itemValue="#{null}"/>
+                                                                <f:selectItems value="#{allHotelsViewScoped.hotels}"
+                                                                               var="hotel"
+                                                                               itemLabel="#{hotel.name}"
+                                                                               itemValue="#{hotel}" />
+                                                                <p:column>
+                                                                    <h:outputText value="#{t.name}" />
+                                                                </p:column>
+                                                            </p:selectOneMenu>
+                                                            <p:message for="hotelSelector" showDetail="false" showSummary="true"/>
+                                                            <small>
+                                                                <h:outputText value="#{msgs['reserve.enterhotel']}" styleClass="text-muted"/>
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <p:outputLabel for="roomNumber"
+                                                                       id="roomNumberLabel"
+                                                                       styleClass="col-sm-3 col-form-label"
+                                                                       value="#{msgs['reserve.roomNumber']}"/>
+                                                        <div class="col-sm-9">
+                                                            <p:inputText id="roomNumber"
+                                                                         value="#{tourReserve.reservation.roomNumber}"
+                                                                         placeholder="#{msgs['reserve.roomNumberPlaceHolder']}"
+                                                                         styleClass="form-control"/>
+                                                            <small>
+                                                                <h:outputText value="#{msgs['reserve.enterroom']}" styleClass="form-text text-muted"/>
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </f:facet>
+                                            </g:textCard>
+                                        </p:tab>
+                                        <p:tab id="participantInfoTab" title="#{msgs['reserve.participants']}">
+                                            <g:textCard title="#{msgs['reserve.participants']}" icon="fas fa-users" type="mediumPadding">
+                                                <f:facet name="content">
+                                                    <div class="form-group row">
+                                                        <p:outputLabel styleClass="control-label col-md-3"
+                                                                       for="noadults"
+                                                                       value="#{msgs['reserve.adults']}"/>
+                                                        <div class="col-md-3">
+                                                            <p:inputText id="noadults"
+                                                                         type="number"
+                                                                         value="#{tourReserve.reservation.noadults}"
+                                                                         styleClass="form-control">
+                                                                <p:ajax event="keyup" process="@this"
+                                                                        update="@form" listener="#{tourReserve.updatePrice()}"/>
+                                                            </p:inputText>
+                                                            <p:message id="noadultsMessage" for="noadults"/>
+                                                        </div>
+                                                        <p:outputLabel styleClass="control-label col-md-3"
+                                                                       value="#{msgs['tour.adultPrice']}"/>
+                                                        <p:outputPanel id="adultPricePanel">
+                                                            <div class="col-md-3 text-right">
+                                                                <h:panelGroup rendered="#{currencySelectorManager.currencyString eq 'usd'}">
+                                                                    <h:outputText value="#{tourReserve.reservation.adultPrice}">
+                                                                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                                                    </h:outputText> USD
+                                                                </h:panelGroup>
+                                                                <h:panelGroup rendered="#{currencySelectorManager.currencyString eq 'mxn'}">
+                                                                    <h:outputText value="#{tourReserve.reservation.adultPrice * tourReserve.reservation.exchangeRate}">
+                                                                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                                                    </h:outputText> MXN
+                                                                </h:panelGroup>
+                                                            </div>
+                                                        </p:outputPanel>
+
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <p:outputLabel styleClass="control-label col-md-3"
+                                                                       for="nochild"
+                                                                       value="#{msgs['reserve.children']}"/>
+                                                        <div class="col-md-3 text-right">
+                                                            <p:inputText id="nochild"
+                                                                         type="number"
+                                                                         styleClass="form-control"
+                                                                         value="#{tourReserve.reservation.nochild}">
+                                                                <p:ajax event="keyup" process="@this"
+                                                                        update="totalPricePanel" listener="#{tourReserve.updatePrice()}"/>
+                                                            </p:inputText>
+                                                            <p:message id="nochildMessage" for="nochild"/>
+                                                        </div>
+                                                        <p:outputLabel styleClass="control-label col-md-3"
+                                                                       value="#{msgs['tour.childPrice']}"/>
+                                                        <div class="col-md-3 text-right">
+                                                            <h:panelGroup rendered="#{currencySelectorManager.currencyString eq 'usd'}">
+                                                                <h:outputText value="#{tourReserve.reservation.childPrice}">
+                                                                    <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                                                </h:outputText> USD
+                                                            </h:panelGroup>
+                                                            <h:panelGroup rendered="#{currencySelectorManager.currencyString eq 'mxn'}">
+                                                                <h:outputText value="#{tourReserve.reservation.childPrice * tourReserve.reservation.exchangeRate}">
+                                                                    <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                                                </h:outputText> MXN
+                                                            </h:panelGroup>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <p:outputLabel styleClass="control-label col-md-3"
+                                                                       value="#{msgs['reserve.infants']}"/>
+                                                        <div class="col-md-3 text-right">
+                                                            <p:inputText styleClass="form-control" type="number" value="#{tourReserve.reservation.noinfants}">
+                                                                <p:ajax event="keyup" process="@this" update="totalPricePanel" listener="#{tourReserve.updatePrice()}"/>
+                                                            </p:inputText>
+                                                        </div>
+                                                        <p:outputLabel styleClass="control-label col-md-3"
+                                                                       value="#{msgs['tour.infantPrice']}"/>
+                                                        <div class="col-md-3 text-right">
+                                                            <h:panelGroup rendered="#{currencySelectorManager.currencyString eq 'usd'}">
+                                                                <h:outputText value="#{tourReserve.reservation.infantPrice}">
+                                                                    <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                                                </h:outputText> USD
+                                                            </h:panelGroup>
+                                                            <h:panelGroup rendered="#{currencySelectorManager.currencyString eq 'mxn'}">
+                                                                <h:outputText value="#{tourReserve.reservation.infantPrice * tourReserve.reservation.exchangeRate}">
+                                                                    <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                                                </h:outputText> MXN
+                                                            </h:panelGroup>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <h:panelGroup rendered="#{sessionInfo.userSecurityClearance gt SecurityRoles.GUEST}">
+                                                            <p:outputLabel styleClass="control-label col-md-3"
+                                                                           for="discount"
+                                                                           value="#{msgs['reserve.discount']}"/>
+                                                            <div class="col-md-3 text-right">
+                                                                <p:inputNumber id="discount"
+                                                                               decimalPlaces="2"
+                                                                               decimalSeparator="."
+                                                                               thousandSeparator=","
+                                                                               required="true"
+                                                                               emptyValue="%"
+                                                                               symbolPosition="s"
+                                                                               symbol="%"
+                                                                               value="#{tourReserve.reservation.discount}"
+                                                                               minValue="0">
+                                                                    <p:ajax event="keyup" process="@this" update="totalPricePanel" listener="#{tourReserve.updatePrice()}"/>
+                                                                </p:inputNumber>
+                                                            </div>
+                                                        </h:panelGroup>
+                                                        <h:panelGroup rendered="#{sessionInfo.userSecurityClearance gt SecurityRoles.GUEST}">
+                                                            <p:outputLabel styleClass="control-label col-md-3"
+                                                                           value="#{msgs['reserve.maxDiscount']}"/>
+                                                            <div class="col-md-3 text-right">
+                                                                <h:outputText value="#{tourReserve.maxDiscount} %"/>
+                                                            </div>
+                                                        </h:panelGroup>
+                                                        <h:panelGroup rendered="#{sessionInfo.userSecurityClearance eq SecurityRoles.GUEST and reservationWebCreateController.reservacion.publicDiscount gt 0}">
+                                                            <p:outputLabel styleClass="control-label col-md-3"
+                                                                           for="discount"
+                                                                           value="#{msgs['reserve.discount']}"/>
+                                                            <div class="col-md-3 text-right">
+                                                                <h:outputText rendered="false" value="#{reservationWebCreateController.reservacion.publicDiscount} %"/>
+                                                            </div>
+                                                        </h:panelGroup>
+
+
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <p:outputPanel id="totalPricePanel">
+                                                            <p:outputLabel styleClass="control-label col-md-3"
+                                                                           value="#{msgs['reserve.total']}"/>
+                                                            <div class="col-md-3 text-right">
+                                                                <h:panelGroup rendered="#{currencySelectorManager.currencyString eq 'usd'}">
+                                                                    <h:outputText value="#{tourReserve.reservation.totalReservation}" >
+                                                                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                                                    </h:outputText>
+                                                                </h:panelGroup>
+                                                                <h:panelGroup rendered="#{currencySelectorManager.currencyString eq 'mxn'}">
+                                                                    <h:outputText value="#{tourReserve.reservation.totalReservation * exchangeRateManager.exchangeRate}" >
+                                                                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                                                    </h:outputText>
+                                                                </h:panelGroup>&nbsp;
+                                                                <h:outputText value="#{tourReserve.reservation.currency}" styleClass="text-uppercase"/>
+
+                                                            </div>
+                                                            <p:outputLabel styleClass="control-label col-md-3"
+                                                                           value="#{msgs['reserve.totalWithDiscount']}"/>
+                                                            <div class="col-md-3 text-right">
+                                                                <h:panelGroup rendered="#{currencySelectorManager.currencyString eq 'usd'}">
+                                                                    <h:outputText value="#{tourReserve.reservation.grandTotal}" >
+                                                                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                                                    </h:outputText>&nbsp;
+                                                                </h:panelGroup>
+                                                                <h:panelGroup rendered="#{currencySelectorManager.currencyString eq 'mxn'}">
+                                                                    <h:outputText value="#{tourReserve.reservation.grandTotal * exchangeRateManager.exchangeRate}" >
+                                                                        <f:convertNumber type="currency" locale="#{localeSelectorManager.locale}"/>
+                                                                    </h:outputText>&nbsp;
+                                                                </h:panelGroup>
+                                                                <h:outputText value="#{tourReserve.reservation.currency}" styleClass="text-uppercase"/>
+                                                            </div>
+                                                        </p:outputPanel>
+                                                    </div>
+
+                                                </f:facet>
+                                            </g:textCard>
+                                        </p:tab>
+                                        <p:tab id="notesInfoTab" title="#{msgs['reserve.notes']}">
+                                            <g:textCard title="#{msgs['reserve.notes']}" icon="fas fa-users" type="mediumPadding">
+                                                <f:facet name="content">
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <h:panelGroup>
+                                                                <p:inputTextarea id="tournotes"
+                                                                                 required="false"
+                                                                                 placeholder="#{msgs['reserve.notesPlaceHolder']}"
+                                                                                 styleClass="form-control"
+                                                                                 value="#{tourReserve.reservation.publicComments}" />
+                                                                <p:message for="tournotes" showDetail="false" showSummary="true"/>
+                                                            </h:panelGroup>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <p:commandLink action="#{tourReserve.createReservation()}"
+                                                                       update="@form growl"
+                                                                       styleClass="btn btn-default">
+                                                            <i class="fab fa-cc-paypal"></i>&nbsp;#{msgs['reserve.saveandpay']}
+                                                        </p:commandLink>
+                                                    </div>
+                                                </f:facet>
+
+                                            </g:textCard>
+                                        </p:tab>
+                                    </p:wizard>
+                                </h:form>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+                </p:outputPanel>
+                <div class="largeSpace"/>
+            </div>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

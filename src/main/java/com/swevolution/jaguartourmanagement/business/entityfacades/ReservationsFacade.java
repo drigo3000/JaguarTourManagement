@@ -5,7 +5,6 @@
  */
 package com.swevolution.jaguartourmanagement.business.entityfacades;
 
-import com.swevolution.jsf.webutils.JsfUtil;
 import com.swevolution.jaguartourmanagement.model.entities.Agency;
 import com.swevolution.jaguartourmanagement.model.entities.Hotel;
 import com.swevolution.jaguartourmanagement.model.entities.Representante;
@@ -13,6 +12,7 @@ import com.swevolution.jaguartourmanagement.model.entities.Reservation;
 import com.swevolution.jaguartourmanagement.model.entities.Tour;
 import com.swevolution.jaguartourmanagement.model.entities.TurnoTour;
 import com.swevolution.jaguartourmanagement.model.entities.User;
+import com.swevolution.jsf.webutils.JsfUtil;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -77,7 +77,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
             LocalDate to,
             String cupon,
             String claveConfirma,
-            Tour servicio,
+            Tour tour,
             String grupo,
             Agency agencia,
             Representante rep,
@@ -85,7 +85,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
             User reservo,
             boolean dateOperated) {
         Query createQuery = em.createQuery(query);
-        addQueryParams(createQuery, from, to, cupon, claveConfirma, servicio, grupo,
+        addQueryParams(createQuery, from, to, cupon, claveConfirma, tour, grupo,
                 agencia, rep, hotel, reservo, dateOperated);
         return createQuery.getResultList();
     }
@@ -96,7 +96,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
             LocalDateTime toLocalDateTime,
             String cupon,
             String claveConfirma,
-            Tour servicio,
+            Tour tour,
             String grupo,
             Agency agencia,
             Representante rep,
@@ -104,7 +104,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
             User reservo, int reporte) {
         Query createQuery = em.createQuery(query);
         addQueryParamsPreliminar(createQuery, operacion, fromLocalDateTime, toLocalDateTime,
-                cupon, claveConfirma, servicio, grupo,
+                cupon, claveConfirma, tour, grupo,
                 agencia, rep, hotel, reservo, reporte);
         return createQuery.getResultList();
     }
@@ -115,7 +115,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
             LocalDateTime toLocalDateTime,
             String cupon,
             String claveConfirma,
-            Tour servicio,
+            Tour tour,
             String grupo,
             Agency agencia,
             Representante rep,
@@ -146,8 +146,8 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
         }
         createQuery.setParameter("cupon", "%" + cupon + "%");
         createQuery.setParameter("claveConfirma", "%" + claveConfirma + "%");
-        if (servicio != null) {
-            createQuery.setParameter("servicio", servicio.getId());
+        if (tour != null) {
+            createQuery.setParameter("tour", tour.getId());
         }
         if (grupo != null && !grupo.isEmpty()) {
             createQuery.setParameter("grupo", grupo);
@@ -160,7 +160,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
             LocalDate to,
             String cupon,
             String claveConfirma,
-            Tour servicio,
+            Tour tour,
             String grupo,
             Agency agencia,
             Representante rep,
@@ -190,8 +190,8 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
         }
         createQuery.setParameter("cupon", "%" + cupon + "%");
         createQuery.setParameter("claveConfirma", "%" + claveConfirma + "%");
-        if (servicio != null) {
-            createQuery.setParameter("servicio", servicio.getId());
+        if (tour != null) {
+            createQuery.setParameter("tour", tour.getId());
         }
         if (grupo != null && !grupo.isEmpty()) {
             createQuery.setParameter("grupo", grupo);
@@ -217,7 +217,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
 
     public List<Reservation> findRangeOperation(LocalDate from, LocalDate to) {
         return em.createQuery("select r from Reservation r where r.cuponCancelado = false and r.noShow = false "
-                + "and r.fechaOperacion between :from and :to order by r.servicio.grupo, r.servicio.name, r.hotel.position asc")
+                + "and r.fechaOperacion between :from and :to order by r.tour.grupo, r.tour.name, r.hotel.position asc")
                 .setParameter("from", from)
                 .setParameter("to", to)
                 .getResultList();
@@ -322,7 +322,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
 
     public long countAdults(LocalDate from, LocalDate to, Tour tour) {
         try {
-            return (long) em.createQuery("select sum(r.adulto) from Reservation r where r.adulto is not null and r.servicio.id = :tour and r.fechaOperacion between :from and :to and r.cuponCancelado = false and r.noShow = false")
+            return (long) em.createQuery("select sum(r.adulto) from Reservation r where r.adulto is not null and r.tour.id = :tour and r.fechaOperacion between :from and :to and r.cuponCancelado = false and r.noShow = false")
                     .setParameter("from", from)
                     .setParameter("to", to)
                     .setParameter("tour", tour.getId())
@@ -345,7 +345,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
 
     public long countNinos(LocalDate from, LocalDate to, Tour tour) {
         try {
-            return (long) em.createQuery("select sum(r.nino) from Reservation r where r.nino is not null and r.servicio.id = :tour and r.fechaOperacion between :from and :to  and r.cuponCancelado = false and r.noShow = false")
+            return (long) em.createQuery("select sum(r.nino) from Reservation r where r.nino is not null and r.tour.id = :tour and r.fechaOperacion between :from and :to  and r.cuponCancelado = false and r.noShow = false")
                     .setParameter("from", from)
                     .setParameter("to", to)
                     .setParameter("tour", tour.getId())
@@ -368,7 +368,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
 
     public long countInfants(LocalDate from, LocalDate to, Tour tour) {
         try {
-            return (long) em.createQuery("select sum(r.infante) from Reservation r where r.infante is not null and r.servicio.id = :tour and r.fechaOperacion between :from and :to  and r.cuponCancelado = false and r.noShow = false")
+            return (long) em.createQuery("select sum(r.infante) from Reservation r where r.infante is not null and r.tour.id = :tour and r.fechaOperacion between :from and :to  and r.cuponCancelado = false and r.noShow = false")
                     .setParameter("from", from)
                     .setParameter("to", to)
                     .setParameter("tour", tour.getId())
@@ -424,7 +424,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
 
     public long countAdultsTour(LocalDate from, LocalDate to, Tour tour) {
         try {
-            return (long) em.createQuery("select sum(r.adulto) from Reservation r where r.adulto is not null and r.fechaOperacion between :from and :to and r.servicio.id = :tour and r.cuponCancelado = false and r.noShow = false")
+            return (long) em.createQuery("select sum(r.adulto) from Reservation r where r.adulto is not null and r.fechaOperacion between :from and :to and r.tour.id = :tour and r.cuponCancelado = false and r.noShow = false")
                     .setParameter("tour", tour.getId())
                     .setParameter("from", from)
                     .setParameter("to", to)
@@ -436,7 +436,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
 
     public long countNinosTour(LocalDate from, LocalDate to, Tour tour) {
         try {
-            return (long) em.createQuery("select sum(r.nino) from Reservation r where r.nino is not null and r.fechaOperacion between :from and :to and r.servicio.id = :tour and r.cuponCancelado = false and r.noShow = false")
+            return (long) em.createQuery("select sum(r.nino) from Reservation r where r.nino is not null and r.fechaOperacion between :from and :to and r.tour.id = :tour and r.cuponCancelado = false and r.noShow = false")
                     .setParameter("tour", tour.getId())
                     .setParameter("from", from)
                     .setParameter("to", to)
@@ -448,7 +448,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
 
     public long countInfantesTour(LocalDate from, LocalDate to, Tour tour) {
         try {
-            return (long) em.createQuery("select sum(r.infante) from Reservation r where r.infante is not null and r.fechaOperacion between :from and :to and r.servicio.id = :tour and r.cuponCancelado = false and r.noShow = false")
+            return (long) em.createQuery("select sum(r.infante) from Reservation r where r.infante is not null and r.fechaOperacion between :from and :to and r.tour.id = :tour and r.cuponCancelado = false and r.noShow = false")
                     .setParameter("tour", tour.getId())
                     .setParameter("from", from)
                     .setParameter("to", to)
@@ -460,7 +460,7 @@ public class ReservationsFacade extends AbstractFacade<Reservation> {
 
     public long countIncentivosTour(LocalDate from, LocalDate to, Tour tour) {
         try {
-            return (long) em.createQuery("select sum(r.adultoCortesia) from Reservation r where r.adultoCortesia is not null and r.fechaOperacion between :from and :to and r.servicio.id = :tour and r.cuponCancelado = false and r.noShow = false")
+            return (long) em.createQuery("select sum(r.adultoCortesia) from Reservation r where r.adultoCortesia is not null and r.fechaOperacion between :from and :to and r.tour.id = :tour and r.cuponCancelado = false and r.noShow = false")
                     .setParameter("tour", tour.getId())
                     .setParameter("from", from)
                     .setParameter("to", to)

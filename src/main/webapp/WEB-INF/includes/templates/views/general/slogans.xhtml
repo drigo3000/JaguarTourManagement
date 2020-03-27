@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:g="http://xmlns.jcp.org/jsf/composite/ezcomp/general"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:body>
+        <g:secondaryTitleCard icon="fas fa-info-circle" title="#{msgs['aboutus']}" type="card-info"/>
+        <div class="row">
+            <div class="col-md-6 col-lg-4">
+                <g:textCard title="#{msgs['excursions']}"
+                            icon="fa fa-binoculars"
+                            type="card-success mediumPadding"
+                            body="#{msgs['makeaplandesc']}"/>
+                <g:textCard title="#{msgs['options']}"
+                            icon="fa fa-id-card card-success-o"
+                            type="card-success mediumPadding"
+                            body="#{msgs['ouroptions']}"/>
+
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <g:textCard title="#{msgs['bestreviews']}"
+                            icon="fa fa-heart"
+                            type="card-success mediumPadding"
+                            body="#{msgs['customercommentariesp2']}"/>
+                <g:textCard title="#{config.jaguarConfig.enterpriseName}"
+                            icon="fa fa-institution"
+                            type="card-success mediumPadding"
+                            body="#{msgs['enterprisedesc']}"/>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <g:textCard title="#{msgs['improvement']}"
+                            icon="fa fa-line-chart"
+                            type="card-success mediumPadding"
+                            body="#{msgs['customercommentariesp1']}"/>
+
+                <g:textCard title="#{msgs['share']}"
+                            icon="fa fa-share-alt-square"
+                            type="card-success mediumPadding" >
+                    <f:facet name="content">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="#{config.jaguarConfig.linkToFacebook}">
+                                    <i class="fab fa-facebook-square"></i>&nbsp; Facebook
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#{config.jaguarConfig.linkToTwitter}">
+                                    <i class="fab fa-twitter-square"></i>&nbsp; Twitter
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#{config.jaguarConfig.linkToYoutube}">
+                                    <i class="fab fa-youtube-square"></i>&nbsp; YouTube
+                                </a>
+                            </li>
+                        </ul>
+                    </f:facet>
+
+                </g:textCard>
+
+
+
+            </div>
+        </div>
+    </h:body>
+</html>

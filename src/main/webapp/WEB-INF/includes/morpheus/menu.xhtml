@@ -201,6 +201,13 @@
                                         icon="fa fa-fw fa-list"
                                         outcome="/priv/user/contacts"/>
                         </p:submenu>
+                        <p:submenu label="Contacto Clientes"
+                                   icon="fas fa-mail-bulk">
+                            <p:menuitem id="contactoclientesmenuitem"
+                                        value="Filtro"
+                                        icon="fa fa-fw fa-list"
+                                        outcome="/priv/web/customercontacts/list"/>
+                        </p:submenu>
                         <p:menuitem id="settingsmenuitem" value="Configuración"
                                     rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.SUPERVISOR_RESERVACIONES}"
                                     icon="fas fa-fw fa-cogs"

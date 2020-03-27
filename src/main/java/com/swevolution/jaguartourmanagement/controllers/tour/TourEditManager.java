@@ -68,6 +68,7 @@ public class TourEditManager implements Serializable {
 
     public void edit() {
         try {
+            subirFotoBusqueda();
             tourController.edit(tour);
             tour = null;
             tour = tourController.find(id);
@@ -144,6 +145,18 @@ public class TourEditManager implements Serializable {
             }
             photoController.reset();
         } catch (IOException e) {
+        }
+    }
+
+    private void subirFotoBusqueda() {
+        try {
+            if (photoController.getFile() != null) {
+                String fileName = UUID.randomUUID().toString();
+                tour.setSearchPhoto(fileName);
+                photoManager.uploadSearchPhoto(photoController.getFile().getInputstream(),
+                        fileName + ".jpg", photoManager.getSaveLocationFolder("tours", ""));
+            }
+        } catch (Exception e) {
         }
 
     }

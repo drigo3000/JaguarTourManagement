@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:form>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <p:link class="navbar-brand" outcome="/index">
+                        <i class="fas fa-street-view"></i>&nbsp;
+                        #{config.jaguarConfig.enterpriseName}
+                    </p:link>
+
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-cogs"></i>&nbsp;#{msgs['options']}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+
+                                <li>
+                                    <p:link styleClass="nav-link #{request.getParameter('p').equals('home')?'active':''}"
+                                            outcome="/priv/index">
+                                        <i class="fas fa-street-view"></i>&nbsp;
+                                        Home
+                                        <f:param name="p" value="home"/>
+                                    </p:link>
+                                </li>
+                                <h:panelGroup rendered="#{sessionInfo.userSecurityClearance eq SecurityRoles.GUEST}">
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <p:link  styleClass="nav-link" outcome="/priv/profile">
+                                            <i class="fas fa-user"></i>&nbsp;<h:outputText value="#{msgs['profile']}"/>
+                                        </p:link>
+                                    </li>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{sessionInfo.userSecurityClearance eq SecurityRoles.GUEST}">
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <p:link  styleClass="nav-link" outcome="/priv/client/reservations">
+                                            <i class="fas fa-calendar-alt"></i>&nbsp;<h:outputText value="#{msgs['reservations']}"/>
+                                        </p:link>
+                                    </li>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}">
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <p:link  styleClass="nav-link" outcome="/priv/tour/reservations/list">
+                                            <i class="fas fa-calendar-alt"></i>&nbsp;<h:outputText value="#{msgs['reservations']}"/>
+                                        </p:link>
+                                    </li>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}">
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <p:link  styleClass="nav-link" outcome="/priv/tour/list">
+                                            <i class="fas fa-suitcase"></i>&nbsp;<h:outputText value="#{msgs['tours']}"/>
+                                        </p:link>
+                                    </li>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}">
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <p:link  styleClass="nav-link" outcome="/priv/tour/provider/list">
+                                            <i class="fas fa-hands-helping"></i>&nbsp;<h:outputText value="#{msgs['providers']}"/>
+                                        </p:link>
+                                    </li>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}">
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <p:link  styleClass="nav-link" outcome="/priv/hotel/list">
+                                            <i class="fas fa-bed"></i>&nbsp;<h:outputText value="#{msgs['hotels']}"/>
+                                        </p:link>
+                                    </li>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}">
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <p:link  styleClass="nav-link" outcome="/priv/config/edit">
+                                            <i class="fas fa-gears"></i>&nbsp;<h:outputText value="#{msgs['configuration']}"/>
+                                        </p:link>
+                                    </li>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{sessionInfo.userSecurityClearance ge SecurityRoles.WEBADMIN}">
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <p:link  styleClass="nav-link" outcome="/priv/user/list">
+                                            <i class="fas fa-users"></i>&nbsp;<h:outputText value="#{msgs['users']}"/>
+                                        </p:link>
+                                    </li>
+                                </h:panelGroup>
+                            </ul>
+
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle"
+                               data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false"> <i class="fas fa-language"></i>&nbsp;#{msgs.language} <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <p:link outcome="/index">
+                                        <i class="fas fa-language"></i>&nbsp;
+                                        English
+                                        <f:param name="lo" value="en"/>
+                                    </p:link>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <p:link  outcome="/index">
+                                        <i class="fas fa-language"></i>&nbsp;
+                                        Español
+                                        <f:param name="lo" value="es"/>
+                                    </p:link>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle"
+                               data-toggle="dropdown" role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false"><i class="fas fa-user"></i>&nbsp;
+                                <h:panelGroup rendered="#{not empty sessionInfo.currentUser}">
+                                    <h:outputText value="#{sessionInfo.currentUser.name}"/>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{empty sessionInfo.currentUser}">
+                                    <h:outputText value="Login"/>
+                                </h:panelGroup>
+                                <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <p:link  styleClass="nav-link" outcome="/priv/index">
+                                        <i class="glyphicon glyphicon-user"></i>&nbsp;<h:outputText value="#{msgs['home']}"/>
+                                    </p:link>
+                                </li>
+                                <h:panelGroup rendered="#{not empty sessionInfo.currentUser}">
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <p:link  styleClass="nav-link" outcome="/priv/editpassword">
+                                            <i class="fas fa-key"></i>&nbsp;<h:outputText value="Password"/>
+                                            <f:param name="id" value="#{sessionInfo.currentUser.login}"/>
+                                        </p:link>
+                                    </li>
+                                </h:panelGroup>
+
+                            </ul>
+
+                        </li>
+                        <h:panelGroup rendered="#{not empty sessionInfo.currentUser}">
+                            <li><p:commandLink  styleClass="nav-link" action="#{logoutManager.invalidateSession}"><i class="fas fa-sign-out-alt"></i>&nbsp; Logout</p:commandLink></li>
+                        </h:panelGroup>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </h:form>
+</html>
+

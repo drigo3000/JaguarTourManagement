@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:gen="http://xmlns.jcp.org/jsf/composite/ezcomp/general"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <link rel="apple-touch-icon" sizes="180x180" href="#{resource['imgs/apple-touch-icon.png']}"/>
+        <link rel="icon" type="image/png" sizes="16x16" href="#{resource['imgs/favicon-16x16.png']}"/>
+        <ui:insert name="meta-data">
+            <meta charset="utf-8"></meta>
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"></meta>
+        </ui:insert>
+        <title><ui:insert name="title">#{globalConfigController.cg.enterpriseName} - #{msgs['seotitledescription']}</ui:insert></title>
+        <ui:insert name="meta-description">
+            <meta name="description" content="#{globalConfigController.cg.enterpriseName} -  #{msgs['enterprisedesc']}"></meta>
+        </ui:insert>
+        <ui:insert name="open-graph"></ui:insert>
+        <ui:insert name="stylesheets">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css"></link>
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous"></link>
+            <h:outputStylesheet library="css" name="resetprime.css"/>
+            <h:outputStylesheet library="css" name="pub.css"/>
+        </ui:insert>
+        <ui:insert name="head-scripts">
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async="true" src="https://www.googletagmanager.com/gtag/js?id=#{globalConfigController.cg.googleAnalyticsTrackingCode}"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag() {
+                    dataLayer.push(arguments);
+                }
+                gtag('js', new Date());
+                gtag('config', '#{globalConfigController.cg.googleAnalyticsTrackingCode}');
+            </script>
+        </ui:insert>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    </h:head>
+    <h:body>
+        <div id="fb-root"></div>
+        <script>
+            $.extend($.ui.keyCode, {
+                NUMPAD_ENTER: 108
+            });
+        </script>
+        <f:view id="page" locale="#{localeSelectorManager.locale}">
+            <p:importEnum type="com.swevolution.jaguartourmanagement.business.session.SecurityClearance"
+                          var="SecurityRoles"
+                          allSuffix="ALL_SECURITY_ROLES"/>
+            <p:growl id="growl" escape="false" widgetVar="wmsj" life="7000" showDetail="true"/>
+            <ui:insert name="body">
+                <button onclick="topFunction()"
+                        id="backtotopButton" title="Go to top"><i class="fas fa-caret-up"></i></button>
+                <p:outputPanel id="page" autoUpdate="false">
+                    <ui:insert name="navbar">
+                        <ui:include src="/WEB-INF/includes/templates/views/general/header_public.xhtml"/>
+                    </ui:insert>
+                    <ui:insert name="main_title">
+                        <div class="container">
+                            <h1 class="text-center main-title">
+                                <i class="fas fa-street-view logo-icon"/> #{globalConfigController.cg.enterpriseNameShort}
+                                <i class="text-red">#{globalConfigController.cg.enterpriseNameTrail}</i>
+                            </h1>
+                            <ui:insert name="slogan"/>
+                        </div>
+                    </ui:insert>
+                    <ui:insert name="searchbar">
+                        <div class="container">
+                            <gen:SearchBar/>
+                        </div>
+                    </ui:insert>
+                    <ui:insert name="main_container">
+                        <ui:insert name="center_content">
+                        </ui:insert>
+                        <div class="largeSpace"/>
+                        <ui:insert name="bottom_full">
+                        </ui:insert>
+                    </ui:insert>
+                    <ui:insert name="footer">
+                        <div class="container">
+                            <ui:insert name="bottom_marketing">
+                                <div class="text-center">
+                                    <p:graphicImage value="#{resource['imgs/paypal_logo.png']}" style="width:100%; max-width: 400px;"/><br/>
+                                    <p:graphicImage value="#{resource['imgs/paypal_express_checkout.png']}" style="width:100%; max-width: 100%;"/>
+                                </div>
+                            </ui:insert>
+                            <ui:insert name="public_footer">
+                                <gen:public_footer/>
+                            </ui:insert>
+                        </div>
+                        <hr/>
+                        <footer class="container-fluid text-center">
+                            <p>SwEvolution</p>
+                        </footer>
+                    </ui:insert>
+                </p:outputPanel>
+
+
+
+            </ui:insert>
+        </f:view>
+
+        <ui:insert name="footer-scripts">
+            <script>
+                // When the user scrolls down 20px from the top of the document, show the button
+                window.onscroll = function () {
+                    scrollFunction()
+                };
+                function scrollFunction() {
+                    if ($(window).width() > 960) {
+                        if ((document.body.scrollTop > 20 || document.documentElement.scrollTop > 20)) {
+                            document.getElementById("backtotopButton").style.display = "block";
+                        }
+                    } else {
+                        document.getElementById("backtotopButton").style.display = "none";
+                    }
+                }
+
+
+                // When the user clicks on the button, scroll to the top of the document
+                function topFunction() {
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                }
+            </script>
+            <script type="text/javascript" src="#{globalConfigController.cg.addThisURL}"></script>
+            <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        </ui:insert>
+
+
+    </h:body>
+
+</html>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/WEB-INF/includes/templates/public_template.xhtml">
+        <ui:define name="title">#{msgs['aboutus']} - #{config.jaguarConfig.enterpriseName}</ui:define>
+        <ui:define name="center_content">
+            <div class="container">
+                <ui:include src="/WEB-INF/includes/templates/views/general/sitemap.xhtml"/>
+            </div>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

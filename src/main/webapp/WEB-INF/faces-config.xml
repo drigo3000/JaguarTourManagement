@@ -7,11 +7,12 @@
         <locale-config>
             <default-locale>es</default-locale>
             <supported-locale>en</supported-locale>
+            <supported-locale>fr</supported-locale>
             <supported-locale>es</supported-locale>
         </locale-config>
         <resource-bundle>
             <base-name>/Bundle</base-name>
-            <var>bundle</var>
+            <var>msgs</var>
         </resource-bundle>
         <navigation-handler>
             org.primefaces.mobile.application.MobileNavigationHandler

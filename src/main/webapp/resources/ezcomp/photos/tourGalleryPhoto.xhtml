@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:g="http://xmlns.jcp.org/jsf/composite/ezcomp/general"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="photo" type="com.swevolution.jaguartourmanagement.model.entities.TourPhoto" required="true"/>
+        <cc:attribute name="viewOnly" type="java.lang.Boolean" required="false" default="true"/>
+        <cc:attribute name="saveButtonListener" required="false"
+                      method-signature="void listener()" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <div class="tourview-galleryImage">
+            <a class="lightbox " href="#{globalConfigController.cg.http}://#{globalConfigController.cg.serverName}/#{globalConfigController.cg.pathToWebResources}/tours/hd_#{cc.attrs.photo.tour.id}_#{cc.attrs.photo.link}.jpg">
+                <g:image styleClass="searchPhoto"
+                         alt="#{cc.attrs.photo.tour.name}"
+                         url="tours/mid_#{cc.attrs.photo.tour.id}_#{cc.attrs.photo.link}.jpg"/>
+                <h:panelGroup rendered="#{not cc.attrs.viewOnly}">
+                    <p:commandLink styleClass="btn btn-default"
+                                   actionListener="#{cc.attrs.saveButtonListener}"
+                                   update="@form growl">
+                        <i class="fas fa-trash-alt"></i>&nbsp;Delete
+                        <p:confirm header="#{msgs['tourPhoto.confirmDeleteTitle']}"
+                                   message="#{msgs['tourPhoto.confirmDeleteMessage']}"/>
+                    </p:commandLink>
+                </h:panelGroup>
+
+            </a>
+        </div>
+    </cc:implementation>
+</html>

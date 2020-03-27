@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/includes/morpheus/template.xhtml">
+        <ui:define name="breadcrumbs">
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="JTM" outcome="/priv/index" />
+                    <p:menuitem value="Contacto Cliente" outcome="/priv/web/customercontacts/list" />
+                    <p:menuitem value="Editar" />
+                </p:breadCrumb>
+            </h:form>
+        </ui:define>
+        <ui:define name="content">
+            <h:form>
+                <p:outputPanel styleClass="outputPanel">
+                    <div class="card">
+                        <h5>Editar Contacto Cliente</h5>
+                        <p:panelGrid columns="2"
+                                     layout='grid'
+                                     columnClasses="labelColumn, inputColumn"
+                                     styleClass="fullwidth ui-noborder">
+                            <p:outputLabel value="Nombre"/>
+                            <p:inputText required="true"
+                                         disabled="true"
+                                         requiredMessage="Campo Nombre requerido"
+                                         value="#{customerContactEditController.contacto.name}"/>
+                            <p:outputLabel value="Razón"/>
+                            <p:inputText required="true"
+                                         disabled="true"
+                                         requiredMessage="Campo Razón requerido"
+                                         value="#{customerContactEditController.contacto.subject}"/>
+                            <p:outputLabel value="Email"/>
+                            <p:inputText required="true"
+                                         requiredMessage="Campo email requerido"
+                                         disabled="true"
+                                         value="#{customerContactEditController.contacto.email}"/>
+                            <p:outputLabel value="Mensaje"/>
+                            <p:inputTextarea required="true"
+                                             rows='5'
+                                             requiredMessage="Campo mensaje requerido"
+                                             disabled="true"
+                                             value="#{customerContactEditController.contacto.description}"/>
+
+                            <h:panelGroup/>
+                        </p:panelGrid>
+                    </div>
+                </p:outputPanel>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

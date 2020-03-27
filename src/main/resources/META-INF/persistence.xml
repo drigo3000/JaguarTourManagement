@@ -7,6 +7,7 @@
         <class>com.swevolution.jaguartourmanagement.model.entities.VentaAddOn</class>
         <class>com.swevolution.jaguartourmanagement.model.entities.Adendum</class>
         <class>com.swevolution.jaguartourmanagement.model.entities.AddOn</class>
+        <class>com.swevolution.jaguartourmanagement.model.entities.CustomerContact</class>
         <class>com.swevolution.jaguartourmanagement.model.entities.TurnoTour</class>
         <class>com.swevolution.jaguartourmanagement.model.entities.IMA</class>
         <class>com.swevolution.jaguartourmanagement.model.entities.ReservationCuponEntry</class>

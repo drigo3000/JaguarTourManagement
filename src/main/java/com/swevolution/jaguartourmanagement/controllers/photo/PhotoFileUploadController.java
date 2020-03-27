@@ -23,6 +23,7 @@ import org.primefaces.model.UploadedFile;
 public class PhotoFileUploadController implements Serializable {
 
     private List<UploadedFile> uploadedFiles;
+    private UploadedFile file;
 
     @PostConstruct
     public void init() {
@@ -31,6 +32,10 @@ public class PhotoFileUploadController implements Serializable {
 
     public void remove(UploadedFile file) {
         uploadedFiles.remove(file);
+    }
+
+    public void uploadSingle(FileUploadEvent event) {
+        file = event.getFile();
     }
 
     public void upload(FileUploadEvent event) {
@@ -47,6 +52,14 @@ public class PhotoFileUploadController implements Serializable {
 
     public void reset() {
         uploadedFiles = new ArrayList<>();
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
     }
 
 }

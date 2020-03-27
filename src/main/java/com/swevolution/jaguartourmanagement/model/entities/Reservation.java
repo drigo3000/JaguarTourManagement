@@ -46,32 +46,9 @@ public class Reservation extends PK_Long_Entity implements Serializable, Cloneab
     private String nacionalidad;
     private boolean review;
 
-    //OPERACIONES
-    private String tarjeta;
-    private String operador;
-    private String unidad;
-    private String unidadRetorno;
-    private String operadorRetorno;
-    private String dropoff;
-    private String guia;
-
     //EXCURSION
     private LocalDate fechaOperacion;
     private LocalDate fechaReserva;
-
-    private String color;
-    private String sucursales;
-    private String lugarReserva;
-
-    //CUPONEADO
-    private int adultoCuponeado;
-    private int ninoCuponeado;
-    private int infanteCuponeado;
-
-    private boolean aut;
-    private boolean est;
-    private String comida;
-    private String noJeep;
 
     @ManyToOne
     private Hotel hotel;
@@ -80,9 +57,7 @@ public class Reservation extends PK_Long_Entity implements Serializable, Cloneab
     @ManyToOne
     private User quienReserva;
     @ManyToOne
-    private Tour servicio;
-    @ManyToOne
-    private Tour tourCuponeado;
+    private Tour tour;
     @ManyToOne
     private Representante representante;
 
@@ -98,11 +73,6 @@ public class Reservation extends PK_Long_Entity implements Serializable, Cloneab
     private int adultosReales;
     private int ninosReales;
     private int infantesReales;
-    private int buceoAdultos;
-    private int buceoAdultosReales;
-    private int buceoNinos;
-    private int buceoNinosReales;
-    private String tipoBuceo;
     private boolean noShow;
     private boolean cuponPendiente;
     private boolean cuponCancelado;
@@ -121,29 +91,6 @@ public class Reservation extends PK_Long_Entity implements Serializable, Cloneab
     private String observacionesDiferenciasPax;
     @Lob
     private String log;
-
-    //ADENDUM FIELDS
-    boolean conTransportacion;
-    private BigDecimal precioAdultoUSD;
-    private BigDecimal comisionAdultoUSD;
-    private BigDecimal cashAdultoUSD;
-
-    private BigDecimal precioNinoUSD;
-    private BigDecimal comisionNinoUSD;
-    private BigDecimal cashNinoUSD;
-
-    private BigDecimal precioAdultoMXN;
-    private BigDecimal comisionAdultoMXN;
-    private BigDecimal cashAdultoMXN;
-
-    private BigDecimal precioNinoMXN;
-    private BigDecimal comisionNinoMXN;
-    private BigDecimal cashNinoMXN;
-    //IMA
-    private BigDecimal imaAdultoUSD;
-    private BigDecimal imaNinoUSD;
-    private BigDecimal imaAdultoMXN;
-    private BigDecimal imaNinoMXN;
 
     //HORARIOS
     @ManyToOne
@@ -223,38 +170,6 @@ public class Reservation extends PK_Long_Entity implements Serializable, Cloneab
         this.representante = representante;
     }
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getSucursales() {
-        return sucursales;
-    }
-
-    public void setSucursales(String sucursales) {
-        this.sucursales = sucursales;
-    }
-
-    public Tour getServicio() {
-        return servicio;
-    }
-
-    public void setServicio(Tour servicio) {
-        this.servicio = servicio;
-    }
-
-    public String getLugarReserva() {
-        return lugarReserva;
-    }
-
-    public void setLugarReserva(String lugarReserva) {
-        this.lugarReserva = lugarReserva;
-    }
-
     public int getAdulto() {
         return adulto;
     }
@@ -325,22 +240,6 @@ public class Reservation extends PK_Long_Entity implements Serializable, Cloneab
 
     public void setMeetingPoint(String meetingPoint) {
         this.meetingPoint = meetingPoint;
-    }
-
-    public String getComida() {
-        return comida;
-    }
-
-    public void setComida(String comida) {
-        this.comida = comida;
-    }
-
-    public String getNoJeep() {
-        return noJeep;
-    }
-
-    public void setNoJeep(String noJeep) {
-        this.noJeep = noJeep;
     }
 
     public String getClaveConfirmacion() {
@@ -520,22 +419,6 @@ public class Reservation extends PK_Long_Entity implements Serializable, Cloneab
         this.infantesReales = infantesReales;
     }
 
-    public int getBuceoAdultos() {
-        return buceoAdultos;
-    }
-
-    public void setBuceoAdultos(int buceoAdultos) {
-        this.buceoAdultos = buceoAdultos;
-    }
-
-    public int getBuceoNinos() {
-        return buceoNinos;
-    }
-
-    public void setBuceoNinos(int buceoNinos) {
-        this.buceoNinos = buceoNinos;
-    }
-
     public BigDecimal getFacturacionUSD() {
         return facturacionUSD;
     }
@@ -590,22 +473,6 @@ public class Reservation extends PK_Long_Entity implements Serializable, Cloneab
 
     public void setRealMXN(BigDecimal realMXN) {
         this.realMXN = realMXN;
-    }
-
-    public int getBuceoAdultosReales() {
-        return buceoAdultosReales;
-    }
-
-    public void setBuceoAdultosReales(int buceoAdultosReales) {
-        this.buceoAdultosReales = buceoAdultosReales;
-    }
-
-    public int getBuceoNinosReales() {
-        return buceoNinosReales;
-    }
-
-    public void setBuceoNinosReales(int buceoNinosReales) {
-        this.buceoNinosReales = buceoNinosReales;
     }
 
     public boolean isCuponPendiente() {
@@ -688,222 +555,6 @@ public class Reservation extends PK_Long_Entity implements Serializable, Cloneab
         this.segurosMXN = segurosMXN;
     }
 
-    public boolean isConTransportacion() {
-        return conTransportacion;
-    }
-
-    public void setConTransportacion(boolean conTransportacion) {
-        this.conTransportacion = conTransportacion;
-    }
-
-    public BigDecimal getPrecioAdultoUSD() {
-        return precioAdultoUSD;
-    }
-
-    public void setPrecioAdultoUSD(BigDecimal precioAdultoUSD) {
-        this.precioAdultoUSD = precioAdultoUSD;
-    }
-
-    public BigDecimal getComisionAdultoUSD() {
-        return comisionAdultoUSD;
-    }
-
-    public void setComisionAdultoUSD(BigDecimal comisionAdultoUSD) {
-        this.comisionAdultoUSD = comisionAdultoUSD;
-    }
-
-    public BigDecimal getCashAdultoUSD() {
-        return cashAdultoUSD;
-    }
-
-    public void setCashAdultoUSD(BigDecimal cashAdultoUSD) {
-        this.cashAdultoUSD = cashAdultoUSD;
-    }
-
-    public BigDecimal getPrecioNinoUSD() {
-        return precioNinoUSD;
-    }
-
-    public void setPrecioNinoUSD(BigDecimal precioNinoUSD) {
-        this.precioNinoUSD = precioNinoUSD;
-    }
-
-    public BigDecimal getComisionNinoUSD() {
-        return comisionNinoUSD;
-    }
-
-    public void setComisionNinoUSD(BigDecimal comisionNinoUSD) {
-        this.comisionNinoUSD = comisionNinoUSD;
-    }
-
-    public BigDecimal getCashNinoUSD() {
-        return cashNinoUSD;
-    }
-
-    public void setCashNinoUSD(BigDecimal cashNinoUSD) {
-        this.cashNinoUSD = cashNinoUSD;
-    }
-
-    public BigDecimal getPrecioAdultoMXN() {
-        return precioAdultoMXN;
-    }
-
-    public void setPrecioAdultoMXN(BigDecimal precioAdultoMXN) {
-        this.precioAdultoMXN = precioAdultoMXN;
-    }
-
-    public BigDecimal getComisionAdultoMXN() {
-        return comisionAdultoMXN;
-    }
-
-    public void setComisionAdultoMXN(BigDecimal comisionAdultoMXN) {
-        this.comisionAdultoMXN = comisionAdultoMXN;
-    }
-
-    public BigDecimal getCashAdultoMXN() {
-        return cashAdultoMXN;
-    }
-
-    public void setCashAdultoMXN(BigDecimal cashAdultoMXN) {
-        this.cashAdultoMXN = cashAdultoMXN;
-    }
-
-    public BigDecimal getPrecioNinoMXN() {
-        return precioNinoMXN;
-    }
-
-    public void setPrecioNinoMXN(BigDecimal precioNinoMXN) {
-        this.precioNinoMXN = precioNinoMXN;
-    }
-
-    public BigDecimal getComisionNinoMXN() {
-        return comisionNinoMXN;
-    }
-
-    public void setComisionNinoMXN(BigDecimal comisionNinoMXN) {
-        this.comisionNinoMXN = comisionNinoMXN;
-    }
-
-    public BigDecimal getCashNinoMXN() {
-        return cashNinoMXN;
-    }
-
-    public void setCashNinoMXN(BigDecimal cashNinoMXN) {
-        this.cashNinoMXN = cashNinoMXN;
-    }
-
-    public BigDecimal getNetoUSD() {
-        return getNetoAdultosUSD().add(getNetoNinosUSD());
-    }
-
-    public BigDecimal getNetoMXN() {
-        return getNetoAdultosMXN().add(getNetoNinosMXN());
-    }
-
-    public BigDecimal getNetoRealesUSD() {
-        return getNetoAdultosRealesUSD().add(getNetoNinosRealesUSD());
-    }
-
-    public BigDecimal getNetoRealesMXN() {
-        return getNetoAdultosRealesMXN().add(getNetoNinosRealesMXN());
-    }
-
-    public boolean isAut() {
-        return aut;
-    }
-
-    public void setAut(boolean aut) {
-        this.aut = aut;
-    }
-
-    public boolean isEst() {
-        return est;
-    }
-
-    public void setEst(boolean est) {
-        this.est = est;
-    }
-
-    public BigDecimal getNetoAdultosUSD() {
-        try {
-            return getPrecioAdultoUSD().multiply(getMultiplyPercent(getComisionAdultoUSD())).multiply(new BigDecimal(getAdulto()));
-        } catch (Exception e) {
-            return BigDecimal.ZERO;
-        }
-    }
-
-    public BigDecimal getNetoAdultosRealesUSD() {
-        try {
-            return getPrecioAdultoUSD().multiply(getMultiplyPercent(
-                    getComisionAdultoUSD())).multiply(new BigDecimal(getAdultosReales()));
-        } catch (Exception e) {
-            return BigDecimal.ZERO;
-        }
-    }
-
-    public BigDecimal getNetoNinosUSD() {
-        try {
-            return getPrecioNinoUSD().multiply(getMultiplyPercent(
-                    getComisionNinoUSD())).multiply(new BigDecimal(getNino()));
-        } catch (Exception e) {
-            return BigDecimal.ZERO;
-        }
-    }
-
-    public BigDecimal getNetoNinosRealesUSD() {
-        try {
-            return getPrecioNinoUSD().multiply(getMultiplyPercent(
-                    getComisionNinoUSD())).multiply(new BigDecimal(getNinosReales()));
-        } catch (Exception e) {
-            return BigDecimal.ZERO;
-        }
-    }
-
-    public BigDecimal getNetoAdultosMXN() {
-        try {
-            return getPrecioAdultoMXN().multiply(
-                    getMultiplyPercent(getComisionAdultoMXN())).multiply(new BigDecimal(getAdulto()));
-        } catch (Exception e) {
-            return BigDecimal.ZERO;
-        }
-    }
-
-    public BigDecimal getNetoAdultosRealesMXN() {
-        try {
-            return getPrecioAdultoMXN().multiply(
-                    getMultiplyPercent(getComisionAdultoMXN())).multiply(new BigDecimal(getAdultosReales()));
-        } catch (Exception e) {
-            return BigDecimal.ZERO;
-        }
-    }
-
-    public BigDecimal getNetoNinosMXN() {
-        try {
-            return getPrecioNinoMXN().multiply(getMultiplyPercent(getComisionNinoMXN())).multiply(new BigDecimal(getNino()));
-        } catch (Exception e) {
-            return BigDecimal.ZERO;
-        }
-    }
-
-    public BigDecimal getNetoNinosRealesMXN() {
-        try {
-            return getPrecioNinoMXN().multiply(getMultiplyPercent(getComisionNinoMXN()))
-                    .multiply(new BigDecimal(getNinosReales()));
-        } catch (Exception e) {
-            return BigDecimal.ZERO;
-        }
-    }
-
-    private BigDecimal getMultiplyPercent(BigDecimal commision) {
-        try {
-            BigDecimal one = new BigDecimal("1");
-            return one.subtract(commision);
-        } catch (Exception e) {
-            return BigDecimal.ZERO;
-        }
-
-    }
-
     public boolean isFacturadoPesos() {
         return facturadoPesos;
     }
@@ -928,54 +579,6 @@ public class Reservation extends PK_Long_Entity implements Serializable, Cloneab
         this.quienGeneraReserva = quienGeneraReserva;
     }
 
-    public String getTipoBuceo() {
-        return tipoBuceo;
-    }
-
-    public void setTipoBuceo(String tipoBuceo) {
-        this.tipoBuceo = tipoBuceo;
-    }
-
-    public Tour getTourCuponeado() {
-        return tourCuponeado;
-    }
-
-    public void setTourCuponeado(Tour tourCuponeado) {
-        this.tourCuponeado = tourCuponeado;
-    }
-
-    public int getAdultoCuponeado() {
-        return adultoCuponeado;
-    }
-
-    public void setAdultoCuponeado(int adultoCuponeado) {
-        this.adultoCuponeado = adultoCuponeado;
-    }
-
-    public int getNinoCuponeado() {
-        return ninoCuponeado;
-    }
-
-    public void setNinoCuponeado(int ninoCuponeado) {
-        this.ninoCuponeado = ninoCuponeado;
-    }
-
-    public int getInfanteCuponeado() {
-        return infanteCuponeado;
-    }
-
-    public void setInfanteCuponeado(int infanteCuponeado) {
-        this.infanteCuponeado = infanteCuponeado;
-    }
-
-    public int getAdultoCortesia() {
-        return adultoCortesia;
-    }
-
-    public void setAdultoCortesia(int adultoCortesia) {
-        this.adultoCortesia = adultoCortesia;
-    }
-
     public String getTipoVehiculo() {
         return tipoVehiculo;
     }
@@ -990,38 +593,6 @@ public class Reservation extends PK_Long_Entity implements Serializable, Cloneab
 
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
-    }
-
-    public BigDecimal getImaAdultoUSD() {
-        return imaAdultoUSD;
-    }
-
-    public void setImaAdultoUSD(BigDecimal imaAdultoUSD) {
-        this.imaAdultoUSD = imaAdultoUSD;
-    }
-
-    public BigDecimal getImaNinoUSD() {
-        return imaNinoUSD;
-    }
-
-    public void setImaNinoUSD(BigDecimal imaNinoUSD) {
-        this.imaNinoUSD = imaNinoUSD;
-    }
-
-    public BigDecimal getImaAdultoMXN() {
-        return imaAdultoMXN;
-    }
-
-    public void setImaAdultoMXN(BigDecimal imaAdultoMXN) {
-        this.imaAdultoMXN = imaAdultoMXN;
-    }
-
-    public BigDecimal getImaNinoMXN() {
-        return imaNinoMXN;
-    }
-
-    public void setImaNinoMXN(BigDecimal imaNinoMXN) {
-        this.imaNinoMXN = imaNinoMXN;
     }
 
     public String getReferenciaCortesia() {
@@ -1040,62 +611,6 @@ public class Reservation extends PK_Long_Entity implements Serializable, Cloneab
         this.horario = horario;
     }
 
-    public String getTarjeta() {
-        return tarjeta;
-    }
-
-    public void setTarjeta(String tarjeta) {
-        this.tarjeta = tarjeta;
-    }
-
-    public String getOperador() {
-        return operador;
-    }
-
-    public void setOperador(String operador) {
-        this.operador = operador;
-    }
-
-    public String getUnidad() {
-        return unidad;
-    }
-
-    public void setUnidad(String unidad) {
-        this.unidad = unidad;
-    }
-
-    public String getUnidadRetorno() {
-        return unidadRetorno;
-    }
-
-    public void setUnidadRetorno(String unidadRetorno) {
-        this.unidadRetorno = unidadRetorno;
-    }
-
-    public String getOperadorRetorno() {
-        return operadorRetorno;
-    }
-
-    public void setOperadorRetorno(String operadorRetorno) {
-        this.operadorRetorno = operadorRetorno;
-    }
-
-    public String getDropoff() {
-        return dropoff;
-    }
-
-    public void setDropoff(String dropoff) {
-        this.dropoff = dropoff;
-    }
-
-    public String getGuia() {
-        return guia;
-    }
-
-    public void setGuia(String guia) {
-        this.guia = guia;
-    }
-
     @Override
     public Reservation clone() {
         try {
@@ -1111,6 +626,22 @@ public class Reservation extends PK_Long_Entity implements Serializable, Cloneab
 
     public void setReview(boolean review) {
         this.review = review;
+    }
+
+    public int getAdultoCortesia() {
+        return adultoCortesia;
+    }
+
+    public void setAdultoCortesia(int adultoCortesia) {
+        this.adultoCortesia = adultoCortesia;
+    }
+
+    public Tour getTour() {
+        return tour;
+    }
+
+    public void setTour(Tour tour) {
+        this.tour = tour;
     }
 
 }

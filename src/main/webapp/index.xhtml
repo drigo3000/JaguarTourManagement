@@ -1,84 +1,97 @@
-<!DOCTYPE html>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:tour="http://xmlns.jcp.org/jsf/composite/ezcomp/tour"
+      xmlns:g="http://xmlns.jcp.org/jsf/composite/ezcomp/general"
       xmlns:p="http://primefaces.org/ui">
-
-    <h:head>
-        <f:facet name="first">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-            <meta name="apple-mobile-web-app-capable" content="yes" />
-        </f:facet>
-        <title>Jaguar Tour Manager</title>
-    </h:head>
-
-    <h:body styleClass="login-body">
-        <script>
-            $.extend($.ui.keyCode, {
-                NUMPAD_ENTER: 108
-            });
-        </script>
-        <div class="login-panel ui-fluid">
-            <div class="ui-g login-container" style="padding-bottom: 20px;">
-                <div class="ui-g-12 logo-container">
-                    <a class="morpheus-logo-link" href="dashboard.xhtml">
-                        <p:graphicImage name="images/morpheus-logo-cyan.svg" library="morpheus-layout" styleClass="morpheus-logo" />
-                        <span class="morpheus-logo-text">
-                            Tour Manager
-                        </span>
-                    </a>
-                </div>
-                <h:panelGroup rendered="#{empty sessionInfo.currentUser}">
-                    <h:form>
-                        <p:outputPanel id="loginInputPanel">
-                            <div class="ui-g-12">
-                                <p:inputText placeholder="Username" value="#{loginViewController.username}" />
-                            </div>
-                            <div class="ui-g-12">
-                                <p:password placeholder="Password"
-                                            value="#{loginViewController.password}"
-                                            feedback="false"/>
-                            </div>
-                            <h:panelGroup rendered="false">
-                                <div class="ui-g-12 chkbox-container">
-                                    <p:selectBooleanCheckbox id="remember-me" />
-                                    <p:outputLabel for="remember-me" value="Remember Me"/>
-                                </div>
-                            </h:panelGroup>
-
-                            <div class="ui-g-12 button-container">
-                                <p:commandButton id="submitButton" action="#{loginViewController.login}"
-                                                 value="Entrar"
-                                                 update='loginInputPanel messages'
-                                                 icon="fa fa-user"
-                                                 styleClass="cyan-btn raised-btn" />
-                                <p:messages id="messages"/>
-                            </div>
-                        </p:outputPanel>
-                        <p:defaultCommand target="submitButton"/>
-
-                    </h:form>
-                </h:panelGroup>
-                <h:panelGroup rendered="#{not empty sessionInfo.currentUser}">
-                    <div class="ui-g-6 button-container">
-                        <p:button outcome="/priv/index"
-                                  value="Inicio"
-                                  icon="fa fa-user" styleClass="green-btn raised-btn" />
-                    </div>
-                    <div class="ui-g-6 button-container">
-                        <h:form>
-                            <p:commandButton action="#{logoutManager.invalidateSession}"
-                                             value="Logout"
-                                             icon="fa fa-power-off" styleClass="pink-btn raised-btn" />
-                        </h:form>
-                    </div>
-                </h:panelGroup>
+    <ui:composition template="/WEB-INF/includes/templates/public_template.xhtml">
+        <ui:define name="slogan">
+            <div class="text-center">
+                <p:graphicImage value="#{resource['imgs/logo.jpg']}" style="width: 100%; max-width: 320px;"/>
             </div>
-        </div>
-        <h:outputStylesheet name="css/layout-blue.css" library="morpheus-layout" />
-    </h:body>
 
+            <div class="text-center slogan ">
+                <h2>#{msgs['slogan']}</h2>
+                <i class="fas fa-star "></i>
+                <i class="fas fa-star "></i>
+                <i class="fas fa-star "></i>
+                <i class="fas fa-star "></i>
+                <i class="fas fa-star-half "></i>
+            </div>
+        </ui:define>
+        <ui:define name="center_content">
+
+            <div class="container">
+                <g:secondaryTitleCard title="#{msgs['tour.toptours']}" icon="fas fa-award" type="card-info"/>
+                <div class="tour-card-grid-container">
+                    <ui:repeat value="#{topToursListView.tours}"
+                               var="tour">
+                        <tour:tourcard tour="#{tour}"/>
+                    </ui:repeat>
+                </div>
+                <div class="largeSpace"/>
+                <g:secondaryTitleCard title="#{msgs['category']}" icon="fas fa-filter" type="card-info"/>
+                <div class="categories-grid-container">
+                    <div class="categories-item">
+                        <g:categoriesCard title="#{msgs['category.archaeological']}" category="archaeological"/>
+                    </div>
+                    <div class="categories-item">
+                        <g:categoriesCard title="#{msgs['category.cenote']}" category="cenote"/>
+                    </div>
+                    <div class="categories-item">
+                        <g:categoriesCard title="#{msgs['category.island']}" category="islands"/>
+                    </div>
+                    <div class="categories-item">
+                        <g:categoriesCard title="#{msgs['category.night']}" category="night life"/>
+                    </div>
+                    <div class="categories-item">
+                        <g:categoriesCard title="#{msgs['category.snorkel']}" category="snorkel"/>
+                    </div>
+                    <div class="categories-item">
+                        <g:categoriesCard title="#{msgs['category.adventure']}" category="adventure" />
+                    </div>
+                    <div class="categories-item">
+                        <g:categoriesCard title="#{msgs['category.cultural']}" category="cultural" />
+                    </div>
+                    <div class="categories-item">
+                        <g:categoriesCard title="#{msgs['category.packages']}" category="cultural" />
+                    </div>
+                    <div class="categories-item">
+                        <g:categoriesCard title="#{msgs['category.aquatic']}" category="aquatic" />
+                    </div>
+                    <div class="categories-item">
+                        <g:categoriesCard title="#{msgs['category.fishing']}" category="fishing" />
+                    </div>
+                    <div class="categories-item">
+                        <g:categoriesCard title="#{msgs['category.dolphinSwim']}" category="dolphin swim" />
+                    </div>
+                    <div class="categories-item">
+                        <g:categoriesCard title="#{msgs['category.park']}" category="park" />
+                    </div>
+                </div>
+                <div class="largeSpace"/>
+            </div>
+
+            <ui:include src="/WEB-INF/includes/templates/views/general/whybuy.xhtml"/>
+            <div class="largeSpace"/>
+            <div class="container">
+                <ui:include src="/WEB-INF/includes/templates/views/general/slogans.xhtml"/>
+            </div>
+            <div class="largeSpace"/>
+            <ui:include src="/WEB-INF/includes/templates/views/general/buyprocess.xhtml"/>
+            <div class="largeSpace"/>
+            <div class="container">
+                <div class="fullwidth">
+                    <g:facebook_comments/>
+                </div>
+                <div class="fullwidth">
+                    <g:addthis_sharetoolbox/>
+                </div>
+                <!--<g:newslettersignin/>-->
+            </div>
+            <ui:include src="/WEB-INF/includes/templates/views/structured/knowledgegraph.xhtml"/>
+        </ui:define>
+    </ui:composition>
 </html>
+

@@ -8,10 +8,10 @@ package com.swevolution.jaguartourmanagement.controllers.reservations;
 import com.swevolution.jaguartourmanagement.business.entityfacades.ReservationsFacade;
 import com.swevolution.jaguartourmanagement.business.entityfacades.TourFacade;
 import com.swevolution.jaguartourmanagement.business.session.SessionInfo;
-import com.swevolution.jsf.webutils.JsfUtil;
 import com.swevolution.jaguartourmanagement.model.entities.Reservation;
 import com.swevolution.jaguartourmanagement.model.entities.Tour;
 import com.swevolution.jaguartourmanagement.model.entities.TurnoTour;
+import com.swevolution.jsf.webutils.JsfUtil;
 import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -82,7 +82,7 @@ public class ReservationsUtilityController implements Serializable {
             sb.append(totalPax);
         }
         sb.append(" ");
-        sb.append(reservacion.getServicio().getInicialesConfirma());
+        sb.append(reservacion.getTour().getInicialesConfirma());
         sb.append(" ");
         if (reservacion.getIdioma().equals("Inglés")) {
             sb.append("IN");
@@ -118,7 +118,7 @@ public class ReservationsUtilityController implements Serializable {
         if (original.getInfante() != original.getInfante()) {
             needsChange = true;
         }
-        if (!original.getServicio().getId().equals(reservacion.getServicio().getId())) {
+        if (!original.getTour().getId().equals(reservacion.getTour().getId())) {
             needsChange = true;
         }
 
@@ -161,7 +161,7 @@ public class ReservationsUtilityController implements Serializable {
                 sb.append(totalPax);
             }
             sb.append(" ");
-            sb.append(reservacion.getServicio().getInicialesConfirma());
+            sb.append(reservacion.getTour().getInicialesConfirma());
             sb.append(" ");
             if (reservacion.getIdioma().equals("Inglés")) {
                 sb.append("IN");
@@ -273,23 +273,7 @@ public class ReservationsUtilityController implements Serializable {
     }
 
     public String getRowClass(Reservation r) {
-        try {
-            switch (r.getColor()) {
-                case "FAM TRIP":
-                    return "famTrip";
-                case "DIRECTOS":
-                    return "directos";
-                case "CORTESIAS":
-                    return "cortesias";
-                case "INCENTIVOS":
-                    return "incentivos";
-                default:
-                    return "";
-            }
-        } catch (Exception e) {
-            return "";
-        }
-
+        return "";
     }
 
     public String getRowClassPreliminar(Reservation r) {

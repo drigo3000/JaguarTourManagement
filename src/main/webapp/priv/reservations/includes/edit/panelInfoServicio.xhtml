@@ -21,27 +21,27 @@
             <tour:tourAutocomplete id="servicio"
                                    required="true"
                                    requiredMessage="Campo servicio requerido"
-                                   value="#{reservationEditController.reservacion.servicio}">
+                                   value="#{reservationEditController.reservacion.tour}">
                 <p:ajax event="itemSelect"
                         update="@(.infoServicioPanel) @(.participantesPanel)"
                         immediate="true"
                         process="@this"
-                        listener="#{reservationEditController.servicioChanged}"/>
+                        listener="#{reservationEditController.tourChanged}"/>
             </tour:tourAutocomplete>
             <p:outputLabel value="Promo:"
-                           rendered='#{not empty reservationEditController.reservacion.servicio}'
+                           rendered='#{not empty reservationEditController.reservacion.tour}'
                            for="nacionalidad" />
             <general:promoNacionalidadSelectOneMenu id='nacionalidad'
-                                                    rendered='#{not empty reservationEditController.reservacion.servicio}'
+                                                    rendered='#{not empty reservationEditController.reservacion.tour}'
                                                     value='#{reservationEditController.reservacion.nacionalidad}'>
                 <p:ajax event="itemSelect" process="@this"/>
             </general:promoNacionalidadSelectOneMenu>
             <p:outputLabel id="transportacionLabel"
-                           rendered='#{not empty reservationEditController.reservacion.servicio}'
+                           rendered='#{not empty reservationEditController.reservacion.tour}'
                            value="Transportación:"
                            for="transportacion" />
             <p:selectOneMenu id="transportacion"
-                             rendered='#{not empty reservationEditController.reservacion.servicio}'
+                             rendered='#{not empty reservationEditController.reservacion.tour}'
                              value="#{reservationEditController.reservacion.conTransportacion}">
                 <f:selectItem itemValue="#{null}" itemLabel="Seleccionar Uno..." noSelectionOption="true"/>
                 <f:selectItem itemLabel="Con Transportación" itemValue="#{true}"/>
@@ -50,10 +50,10 @@
             </p:selectOneMenu>
 
             <p:outputLabel id="tipoVehiculoLabel"
-                           rendered='#{not empty reservationEditController.reservacion.servicio and reservationEditController.reservacion.servicio.manejaVehiculo}'
+                           rendered='#{not empty reservationEditController.reservacion.tour and reservationEditController.reservacion.tour.manejaVehiculo}'
                            value="Tipo Vehiculo:" for="tipoVehiculo" />
             <p:selectOneMenu id="tipoVehiculo"
-                             rendered='#{not empty reservationEditController.reservacion.servicio and reservationEditController.reservacion.servicio.manejaVehiculo}'
+                             rendered='#{not empty reservationEditController.reservacion.tour and reservationEditController.reservacion.tour.manejaVehiculo}'
                              value="#{reservationEditController.reservacion.tipoVehiculo}">
                 <f:selectItem itemLabel="N/A" itemValue="N/A"/>
                 <f:selectItem itemLabel="Jeep" itemValue="Jeep"/>
@@ -131,12 +131,12 @@
             <p:inputText value="#{reservationEditController.paxPorTipoVehiculo}"
                          disabled="true"
                          rendered="#{reservationEditController.reservacion.tipoVehiculo ne 'N/A' and not emptyreservationEditController.reservacion.fechaOperacion}"/>
-            <h:panelGroup rendered="#{not empty reservationEditController.reservacion.fechaOperacion and not empty reservationEditController.reservacion.servicio}"/>
-            <h:panelGroup rendered="#{not empty reservationEditController.reservacion.fechaOperacion and not empty reservationEditController.reservacion.servicio}">
+            <h:panelGroup rendered="#{not empty reservationEditController.reservacion.fechaOperacion and not empty reservationEditController.reservacion.tour}"/>
+            <h:panelGroup rendered="#{not empty reservationEditController.reservacion.fechaOperacion and not empty reservationEditController.reservacion.tour}">
                 <p:dataTable value="#{reservationGroupTotals.tours}"
                              var="item">
                     <f:facet name="header">
-                        Reservas Grupo: #{reservationEditController.reservacion.servicio.grupo}
+                        Reservas Grupo: #{reservationEditController.reservacion.tour.grupo}
                     </f:facet>
                     <p:column headerText="Tour">
                         <h:outputText value="#{item.key.name}"/>

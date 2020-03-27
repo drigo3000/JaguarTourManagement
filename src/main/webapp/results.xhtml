@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:tour="http://xmlns.jcp.org/jsf/composite/ezcomp/tour"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="/WEB-INF/includes/templates/public_template.xhtml">
+        <ui:define name="title">#{msgs['results']} - #{globalConfigController.cg.enterpriseName}</ui:define>
+        <ui:define name="center_content">
+
+            <div class="container">
+                <h:form>
+                    <div class="tour-card-grid-container">
+                        <p:repeat value="#{tourResults.results}"
+                                  var="tour">
+                            <tour:tourcard tour="#{tour}"/>
+                        </p:repeat>
+                    </div>
+                    <div class="text-center">
+
+                        <p:commandLink rendered="#{tourResults.page gt 0}"
+                                       oncomplete="topFunction()"
+                                       actionListener="#{tourResults.stepBackward()}"
+                                       update="@form growl"
+                                       styleClass="btn btn-default">
+                            <i class="fas fa-step-backward"></i>&nbsp;#{msgs['prev']}
+                        </p:commandLink>
+                        <span class="pagination">
+                            #{msgs['results']}:#{tourResults.offset+1} -
+                            <c:if test="#{tourResults.offset + tourResults.limit lt tourResults.count}"> #{tourResults.offset + tourResults.limit}</c:if>
+                            <c:if test="#{tourResults.offset + tourResults.limit ge tourResults.count}">#{tourResults.count}</c:if>
+                            (#{msgs['total']}:#{tourResults.count})
+                        </span>
+                        <p:commandLink rendered="#{tourResults.hasNextPage()}"
+                                       oncomplete="topFunction()"
+                                       actionListener="#{tourResults.stepFoward}"
+                                       update="@form growl"
+                                       styleClass="btn btn-default">
+                            <i class="fas fa-step-forward"></i>&nbsp;#{msgs['next']}
+                        </p:commandLink>
+                        <hr/>
+
+
+                    </div>
+                </h:form>
+
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
+
